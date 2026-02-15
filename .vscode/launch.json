@@ -1,0 +1,51 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+      "name": "Wails: Production velfi",
+      "type": "go",
+      "request": "launch",
+      "mode": "exec",
+      "program": "${workspaceFolder}/build/bin/velfi",
+      "preLaunchTask": "build",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Wails: Debug velfi",
+      "type": "go",
+      "request": "launch",
+      "mode": "exec",
+      "program": "${workspaceFolder}/build/bin/velfi",
+      "preLaunchTask": "build debug",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Wails: Dev velfi",
+      "type": "go",
+      "request": "launch",
+      "mode": "exec",
+      "program": "${workspaceFolder}/build/bin/velfi",
+      "preLaunchTask": "build dev",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+          "type": "node",
+          "request": "launch",
+          "name": "Debug Current Test File",
+          "autoAttachChildProcesses": true,
+          "skipFiles": [
+              "<node_internals>/**",
+              "**/node_modules/**"
+          ],
+          "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+          "args": [
+              "run",
+              "--mode=test",
+              "${relativeFile}"
+          ],
+          "smartStep": true,
+          "console": "integratedTerminal"
+      }
+  ]
+}

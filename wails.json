@@ -1,0 +1,14 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "velfi",
+"wailsjsdir": "./frontend/src/lib",
+  "outputfilename": "velfi",
+  "frontend:install": "pnpm install",
+  "frontend:build": "pnpm run build",
+  "frontend:dev:watcher": "pnpm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "Andrej Vckovski",
+    "email": "andrej@lufium.com"
+  }
+}
