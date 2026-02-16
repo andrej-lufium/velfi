@@ -59,6 +59,9 @@ jobs:
         with:
           version: latest
 
+      - name: Install NSIS
+        run: choco install nsis -y
+
       - name: Install Wails CLI
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
@@ -67,10 +70,15 @@ jobs:
           $version = "${{ github.ref_name }}".TrimStart("v")
           wails build -nsis -ldflags "-X main.Version=$version"
 
-      - name: Rename installer
+      - name: Find and rename installer
         run: |
-          $installer = Get-ChildItem -Path build/bin -Filter "*installer.exe" | Select-Object -First 1
-          Copy-Item $installer.FullName velfi-windows.exe
+          Get-ChildItem -Path build/bin -Recurse
+          $installer = Get-ChildItem -Path build/bin -Filter "*installer.exe" -Recurse | Select-Object -First 1
+          if ($installer) {
+            Copy-Item $installer.FullName velfi-windows.exe
+          } else {
+            Copy-Item build/bin/velfi.exe velfi-windows.exe
+          }
 
       - uses: actions/upload-artifact@v4
         with:
