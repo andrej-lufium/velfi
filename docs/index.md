@@ -2,6 +2,8 @@
 title: Velfi - Portfolio Management
 ---
 
+![Velfi](logo.svg)
+
 # Velfi
 
 Velfi is a desktop application for managing investment portfolios. It tracks entities, assets, investments, revenues, commitments, valuations and currency exchange rates. Reports can be generated per asset or across the entire portfolio.
