@@ -2,15 +2,20 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"io"
 	"os"
+	"path/filepath"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+// Version can be set at build time via ldflags: -ldflags "-X main.Version=1.0.0"
+var Version = "0.1.0"
+
 // App struct
 type App struct {
-	ctx context.Context
+	ctx      context.Context
+	quitting bool
 }
 
 // NewApp creates a new App application struct
@@ -24,9 +29,29 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+// beforeClose delegates to the frontend which checks dirty state and confirms
+func (a *App) beforeClose(ctx context.Context) (prevent bool) {
+	if a.quitting {
+		return false
+	}
+	a.quitting = true
+	runtime.EventsEmit(ctx, "app:beforeclose")
+	return true
+}
+
+// ResetQuit allows the frontend to cancel the quit (user chose "No")
+func (a *App) ResetQuit() {
+	a.quitting = false
+}
+
+// GetVersion returns the application version
+func (a *App) GetVersion() string {
+	return Version
+}
+
+// Print triggers the browser print dialog
+func (a *App) Print() {
+	runtime.WindowPrint(a.ctx)
 }
 
 // ReadFile reads a file and returns its contents as a string
@@ -48,7 +73,7 @@ func (a *App) OpenFileDialog() (string, error) {
 	path, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
 		Title: "Open Portfolio",
 		Filters: []runtime.FileFilter{
-			{DisplayName: "JSON Files (*.json)", Pattern: "*.json"},
+			{DisplayName: "Velfi Files (*.velfi)", Pattern: "*.velfi"},
 			{DisplayName: "All Files (*.*)", Pattern: "*.*"},
 		},
 	})
@@ -62,9 +87,9 @@ func (a *App) OpenFileDialog() (string, error) {
 func (a *App) SaveFileDialog() (string, error) {
 	path, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
 		Title:           "Save Portfolio As",
-		DefaultFilename: "portfolio.json",
+		DefaultFilename: "portfolio.velfi",
 		Filters: []runtime.FileFilter{
-			{DisplayName: "JSON Files (*.json)", Pattern: "*.json"},
+			{DisplayName: "Velfi Files (*.velfi)", Pattern: "*.velfi"},
 			{DisplayName: "All Files (*.*)", Pattern: "*.*"},
 		},
 	})
@@ -89,23 +114,77 @@ func (a *App) ConfirmDialog(title string, message string) (bool, error) {
 	return result == "Yes", nil
 }
 
-type Currency struct {
-	Code string  `json:"code"`
-	Name string  `json:"name"`
-	Rate float64 `json:"rate"`
+// FileExists checks if a file or directory exists at the given path
+func (a *App) FileExists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
 }
 
-type response struct {
-	Currencies []Currency `json:"currencies"`
+// OpenDirectoryDialog shows a native directory picker dialog
+func (a *App) OpenDirectoryDialog() (string, error) {
+	return runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
+		Title: "Select Document Folder",
+	})
 }
-type Currencies []Currency
-// Greet returns a greeting for the given name
-func (a *App) GetCurrencies(name string) *response {
-	currencies := Currencies{
-		{Code: "USD", Name: "US Dollar", Rate: 1.0},
-		{Code: "EUR", Name: "Euro", Rate: 0.92},
-		{Code: "CHF", Name: "Swiss Franc", Rate: 0.88},
+
+// SelectDocumentDialog shows a native file picker for any document
+func (a *App) SelectDocumentDialog() (string, error) {
+	return runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
+		Title: "Select Document",
+	})
+}
+
+// RelativePath computes the relative path from base to target
+func (a *App) RelativePath(basePath string, targetPath string) (string, error) {
+	return filepath.Rel(basePath, targetPath)
+}
+
+// DirOfFile returns the directory portion of a file path
+func (a *App) DirOfFile(path string) string {
+	return filepath.Dir(path)
+}
+
+// CreateDirectory creates a directory and all parent directories
+func (a *App) CreateDirectory(path string) error {
+	return os.MkdirAll(path, 0755)
+}
+
+// SaveCsvDialog shows a native save file dialog for CSV export
+func (a *App) SaveCsvDialog(defaultFilename string) (string, error) {
+	path, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
+		Title:           "Export CSV",
+		DefaultFilename: defaultFilename,
+		Filters: []runtime.FileFilter{
+			{DisplayName: "CSV Files (*.csv)", Pattern: "*.csv"},
+			{DisplayName: "All Files (*.*)", Pattern: "*.*"},
+		},
+	})
+	if err != nil {
+		return "", err
 	}
-	runtime.LogInfo(a.ctx, fmt.Sprintf("GetCurrencies called %v", currencies))
-	return &response{Currencies: currencies}
+	return path, nil
+}
+
+// CopyFile copies a file from src to dst
+func (a *App) CopyFile(src string, dst string) error {
+	srcFile, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer srcFile.Close()
+
+	dstFile, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer dstFile.Close()
+
+	_, err = io.Copy(dstFile, srcFile)
+	return err
 }

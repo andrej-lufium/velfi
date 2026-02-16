@@ -1,7 +1,7 @@
 {
   "$schema": "https://wails.io/schemas/config.v2.json",
   "name": "velfi",
-"wailsjsdir": "./frontend/src/lib",
+  "wailsjsdir": "./frontend/src/lib",
   "outputfilename": "velfi",
   "frontend:install": "pnpm install",
   "frontend:build": "pnpm run build",
@@ -10,5 +10,19 @@
   "author": {
     "name": "Andrej Vckovski",
     "email": "andrej@lufium.com"
+  },
+  "info": {
+    "productName": "Velfi",
+    "productVersion": "0.1.0",
+    "copyright": "Copyright 2026 lufium gmbh",
+    "comments": "Portfolio Management",
+    "fileAssociations": [
+      {
+        "ext": "velfi",
+        "name": "Velfi Portfolio",
+        "role": "Editor",
+        "iconName": "iconfile"
+      }
+    ]
   }
 }

@@ -1,1 +1,26 @@
 @import 'tailwindcss';
+
+@media print {
+  nav, footer, button, select, label {
+    display: none !important;
+  }
+
+  .p-6 {
+    padding: 0 !important;
+  }
+
+  table {
+    font-size: 10pt;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 2pt 4pt;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+}

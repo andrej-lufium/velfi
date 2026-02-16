@@ -6,14 +6,14 @@ export type Currency = {
 }
 
 export type Valuation = {
-	date: string // ISO 8601 date string
-	currency: Currency
-	amount: number
-	documents: DocumentReference[]
+	date: Date
+	unitPrice: number
+	doc: DocumentReference
 }
 
 export type Portfolio = {
-	assets: Asset[]
+	docroot: string
+	entities: Entity[]
 	baseCurrency: Currency
 	currencies: Currency[]
 }
@@ -21,16 +21,18 @@ export type Portfolio = {
 export type Investment = {
 	valuta: Date
 	description: string
-	amount: number
+	units: number
 	value: number
-	reference: DocumentReference
+	fxrate?: number
+	doc: DocumentReference
 }
 
 export type Revenue = {
 	valuta: Date
 	description: string
 	value: number
-	reference: DocumentReference
+	fxrate?: number
+	doc: DocumentReference
 }
 
 export const AssetTypes = {
@@ -50,84 +52,22 @@ export const AssetUnits = {
 
 export const defaultAssetUnit: keyof typeof AssetUnits = 'shares'
 
+export type Entity = {
+  name: string
+  address: string
+  country: string
+  assets: Asset[]
+  currency: Currency
+}
 export type Asset = {
 	name: string
 	type: keyof typeof AssetTypes
 	unit: keyof typeof AssetUnits
-	currency: Currency
-	documentFolder: DocumentReference
 	investments: Investment[]
 	revenues: Revenue[]
 	valuations: Valuation[]
 	commitments: Investment[]
-}
-
-// --- Portfolio functions ---
-
-export function addAsset(portfolio: Portfolio, asset: Asset): Asset {
-	portfolio.assets.push(asset)
-	return asset
-}
-
-export function deleteAsset(portfolio: Portfolio, index: number): boolean {
-	if (index < 0 || index >= portfolio.assets.length) return false
-	portfolio.assets.splice(index, 1)
-	return true
-}
-
-export function addCurrency(portfolio: Portfolio, currency: Currency): void {
-	portfolio.currencies.push(currency)
-}
-
-export function deleteCurrency(portfolio: Portfolio, iso: string): boolean {
-	const index = portfolio.currencies.findIndex((c) => c.iso === iso)
-	if (index === -1) return false
-	portfolio.currencies.splice(index, 1)
-	return true
-}
-
-// --- Currency functions ---
-
-export function addRate(currency: Currency, date: Date, rate: number): void {
-	currency.rates.push({ date, rate })
-}
-
-export function deleteRate(currency: Currency, index: number): boolean {
-	if (index < 0 || index >= currency.rates.length) return false
-	currency.rates.splice(index, 1)
-	return true
-}
-
-// --- Asset functions ---
-
-export function addInvestment(asset: Asset, investment: Investment): void {
-	asset.investments.push(investment)
-}
-
-export function deleteInvestment(asset: Asset, index: number): boolean {
-	if (index < 0 || index >= asset.investments.length) return false
-	asset.investments.splice(index, 1)
-	return true
-}
-
-export function addRevenue(asset: Asset, revenue: Revenue): void {
-	asset.revenues.push(revenue)
-}
-
-export function deleteRevenue(asset: Asset, index: number): boolean {
-	if (index < 0 || index >= asset.revenues.length) return false
-	asset.revenues.splice(index, 1)
-	return true
-}
-
-export function addCommitment(asset: Asset, commitment: Investment): void {
-	asset.commitments.push(commitment)
-}
-
-export function deleteCommitment(asset: Asset, index: number): boolean {
-	if (index < 0 || index >= asset.commitments.length) return false
-	asset.commitments.splice(index, 1)
-	return true
+  entity: Entity
 }
 
 // --- Serialization ---
@@ -135,14 +75,96 @@ export function deleteCommitment(asset: Asset, index: number): boolean {
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/
 
 export function serializePortfolio(portfolio: Portfolio): string {
-	return JSON.stringify(portfolio, null, 2)
+	return JSON.stringify(portfolio, (key, value) => {
+		if (key === 'docroot') return undefined
+		// Skip circular back-references: asset.entity and entity/asset currency (stored as iso)
+		if (key === 'entity' && value && typeof value === 'object' && 'assets' in value) return undefined
+		if (key === 'currency' && value && typeof value === 'object' && 'iso' in value) return value.iso
+		return value
+	}, 2)
 }
 
 export function deserializePortfolio(json: string): Portfolio {
-	return JSON.parse(json, (_key, value) => {
+	const pf = JSON.parse(json, (_key, value) => {
 		if (typeof value === 'string' && ISO_DATE_RE.test(value)) {
 			return new Date(value)
 		}
 		return value
 	}) as Portfolio
+	// Link baseCurrency to the same object in currencies[]
+	const match = pf.currencies.find(c => c.iso === pf.baseCurrency.iso)
+	if (match) {
+		pf.baseCurrency = match
+	} else {
+		pf.currencies.push(pf.baseCurrency)
+	}
+	// Relink entity.currency from iso string to currency object, and asset.entity back-references
+	const findCurrency = (iso: string): Currency => {
+		const c = pf.currencies.find(c => c.iso === iso)
+		if (c) return c
+		const newC: Currency = { iso, rates: [] }
+		pf.currencies.push(newC)
+		return newC
+	}
+	for (const entity of pf.entities) {
+		entity.currency = findCurrency(entity.currency as unknown as string)
+		for (const asset of entity.assets) {
+			asset.entity = entity
+		}
+	}
+	return pf
+}
+
+export const AggregateBy = {
+  year: 'year',
+  quarter: 'quarter',
+} as const
+
+export type AssetReport = {
+  name: string
+  aggregatedBy: keyof typeof AggregateBy
+  type: keyof typeof AssetTypes
+  unit: keyof typeof AssetUnits
+  currency: Currency
+  totalRow: AssetReportRow
+  rows: AssetReportRow[]
+}
+
+export type AssetReportRow = {
+  date: string
+  invested: number | null
+  divested: number | null
+  revenue: number  | null
+  cost: number | null
+  startUnits: number | null
+  endUnits: number | null
+  return: number | null
+  cumulativeReturn: number | null
+  valuation: number
+  netAssetValue: number
+  netRevenueInBaseCurrency: number | null
+  netInvestedInBaseCurrency: number | null
+  netAssetValueInBaseCurrency: number
+}
+
+export type PortfolioReport = {
+  name: string
+  year: number
+  totalRow: PortfolioReportRow
+  rows: PortfolioReportRow[]
+}
+
+export type PortfolioReportRow = {
+  entityName: string
+  country: string
+  assetName: string
+  type: keyof typeof AssetTypes
+  currency: Currency
+  invested: number | null
+  divested: number | null
+  startUnits: number | null
+  endUnits: number | null
+  netRevenueInBaseCurrency: number | null
+  netInvestedInBaseCurrency: number | null
+  netAssetValueInBaseCurrency: number
 }

@@ -3,8 +3,9 @@ import { page } from '$app/state'
 import Editable from '$lib/components/editable.svelte'
 import { getPortfolio } from '$lib/current.svelte'
 
+const pf = $derived(getPortfolio())
 const index = $derived(Number(page.url.searchParams.get('index')))
-const currency = $derived(getPortfolio()?.currencies[index])
+const currency = $derived(pf?.currencies[index])
 </script>
 
 {#if currency}

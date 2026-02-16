@@ -6,24 +6,60 @@ export function ConfirmDialog(arg1, arg2) {
   return window['go']['main']['App']['ConfirmDialog'](arg1, arg2);
 }
 
-export function GetCurrencies(arg1) {
-  return window['go']['main']['App']['GetCurrencies'](arg1);
+export function CopyFile(arg1, arg2) {
+  return window['go']['main']['App']['CopyFile'](arg1, arg2);
 }
 
-export function Greet(arg1) {
-  return window['go']['main']['App']['Greet'](arg1);
+export function CreateDirectory(arg1) {
+  return window['go']['main']['App']['CreateDirectory'](arg1);
+}
+
+export function DirOfFile(arg1) {
+  return window['go']['main']['App']['DirOfFile'](arg1);
+}
+
+export function FileExists(arg1) {
+  return window['go']['main']['App']['FileExists'](arg1);
+}
+
+export function GetVersion() {
+  return window['go']['main']['App']['GetVersion']();
+}
+
+export function OpenDirectoryDialog() {
+  return window['go']['main']['App']['OpenDirectoryDialog']();
 }
 
 export function OpenFileDialog() {
   return window['go']['main']['App']['OpenFileDialog']();
 }
 
+export function Print() {
+  return window['go']['main']['App']['Print']();
+}
+
 export function ReadFile(arg1) {
   return window['go']['main']['App']['ReadFile'](arg1);
 }
 
+export function RelativePath(arg1, arg2) {
+  return window['go']['main']['App']['RelativePath'](arg1, arg2);
+}
+
+export function ResetQuit() {
+  return window['go']['main']['App']['ResetQuit']();
+}
+
+export function SaveCsvDialog(arg1) {
+  return window['go']['main']['App']['SaveCsvDialog'](arg1);
+}
+
 export function SaveFileDialog() {
   return window['go']['main']['App']['SaveFileDialog']();
+}
+
+export function SelectDocumentDialog() {
+  return window['go']['main']['App']['SelectDocumentDialog']();
 }
 
 export function WriteFile(arg1, arg2) {

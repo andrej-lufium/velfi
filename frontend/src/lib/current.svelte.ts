@@ -1,10 +1,11 @@
 import { browser } from "$app/environment"
 import { deserializePortfolio, serializePortfolio, type Portfolio } from "./portfolio"
-import { ReadFile, WriteFile, OpenFileDialog, SaveFileDialog, ConfirmDialog } from "./wailsjs/go/main/App"
+import { ReadFile, WriteFile, OpenFileDialog, SaveFileDialog, ConfirmDialog, DirOfFile, ResetQuit } from "./wailsjs/go/main/App"
 import { EventsOn, Quit, WindowSetTitle } from "./wailsjs/runtime/runtime"
 
 const defaultPortfolio: Portfolio = {
-  assets: [],
+  docroot: '',
+  entities: [],
   baseCurrency: { iso: "CHF", rates: [] },
   currencies: [{ iso: "CHF", rates: [] }],
 }
@@ -39,6 +40,7 @@ export async function open(filename: string) {
   const json = await ReadFile(filename)
   console.log("Read file:", filename, json)
   currentPortfolio = deserializePortfolio(json)
+  currentPortfolio.docroot = await DirOfFile(filename)
   currentFile = filename
   markClean()
   updateTitle()
@@ -52,6 +54,7 @@ export async function openWithDialog() {
 
 export async function saveAs(filename: string) {
   if (!currentPortfolio) return
+  currentPortfolio.docroot = await DirOfFile(filename)
   const json = serializePortfolio(currentPortfolio)
   await WriteFile(filename, json)
   currentFile = filename
@@ -81,7 +84,10 @@ async function quit() {
       "Unsaved Changes",
       "You have unsaved changes. Are you sure you want to quit?"
     )
-    if (!confirmed) return
+    if (!confirmed) {
+      await ResetQuit()
+      return
+    }
   }
   Quit()
 }
@@ -92,4 +98,5 @@ if (browser) {
   EventsOn("menu:save", () => { save() })
   EventsOn("menu:saveas", () => { saveAsWithDialog() })
   EventsOn("menu:quit", () => { quit() })
+  EventsOn("app:beforeclose", () => { quit() })
 }

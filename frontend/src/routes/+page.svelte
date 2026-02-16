@@ -1,29 +1,31 @@
 <script lang="ts">
 	import Editable from '$lib/components/editable.svelte'
-
+	import NavButton from '$lib/components/navbutton.svelte'
+	import { goto } from '$app/navigation'
 
   import {getFile, getPortfolio} from '$lib/current.svelte'
-	import { AssetTypes, AssetUnits, defaultAssetType, defaultAssetUnit, type Portfolio } from '$lib/portfolio'
+	import type { Portfolio } from '$lib/portfolio'
 
   let pf: Portfolio = $derived(getPortfolio())
 </script>
 
-<h1>Welcome to Velfi</h1>
-
-<h1>Portfolio</h1>
-<div>{getFile()??'unnamed'}</div>
-<h2>Assets</h2>
-<Editable detailPages={[{key:undefined,path:'/asset'}]} bind:table={pf.assets} maker={()=>({
+<div class="flex items-center gap-3 mb-2">
+  <h1 class="text-xl font-semibold">Portfolio</h1>
+  <NavButton action={() => goto('/report')} name="View Report" tooltip="View the annual portfolio report" />
+</div>
+<div class="text-sm text-gray-500 mb-4">{getFile()??'unnamed'}</div>
+<h2 class="text-lg font-semibold mb-2">Entities</h2>
+<Editable detailPages={[{key:undefined,path:'/entity'}]} bind:table={pf.entities} maker={()=>({
   name:'unnamed',
+  address: '',
+  country: '',
+  assets: [],
   currency: pf.baseCurrency,
-  unit: defaultAssetUnit,
-  type: defaultAssetType,
-  documentFolder: '',
-  investments: [],
-  revenues: [],
-  valuations: [],
-  commitments: []
 })}
 currencies={pf.currencies}
-chooser={{ type: AssetTypes, unit: AssetUnits, currency: 'currency' }}
+chooser={{ currency: 'currency' }}
+displayColumns={['name', 'country', 'currency', 'assets']}
+narrowColumns={['assets']}
+wideColumns={['currency']}
+columnLabels={{}}
 />
