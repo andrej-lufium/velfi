@@ -35,6 +35,11 @@ func main() {
 		runtime.EventsEmit(app.ctx, "menu:quit")
 	})
 
+	helpMenu := appMenu.AddSubmenu("Help")
+	helpMenu.AddText("About Velfi", nil, func(_ *menu.CallbackData) {
+		runtime.EventsEmit(app.ctx, "menu:about")
+	})
+
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "velfi",

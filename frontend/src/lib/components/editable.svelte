@@ -1,5 +1,6 @@
 <script lang="ts" generics="T extends Record<string, any>">
 import { goto } from '$app/navigation'
+import CountrySelect from '$lib/components/countryselect.svelte'
 import CurrencySelect from '$lib/components/currencyselect.svelte'
 import FxRateInput from '$lib/components/fxrateinput.svelte'
 import NavButton from '$lib/components/navbutton.svelte'
@@ -9,7 +10,7 @@ import { OnFileDrop, OnFileDropOff } from '$lib/wailsjs/runtime/runtime'
 
 type DetailPage = { key: keyof T | undefined; path: string; indexParam?: string; extraParams?: Record<string, string> }
 
-type Chooser = { [K in keyof T]?: 'currency' | 'doc' | 'docfolder' | Record<string, string> }
+type Chooser = { [K in keyof T]?: 'currency' | 'country' | 'doc' | 'docfolder' | Record<string, string> }
 
 let {
   table = $bindable([]),
@@ -208,6 +209,8 @@ $effect(() => {
                 }} class="ml-1 text-xs text-blue-600 hover:underline cursor-pointer">change</button>
               {:else if chooser[col] === 'currency'}
                 <CurrencySelect bind:value={row[col]} {currencies} />
+              {:else if chooser[col] === 'country'}
+                <CountrySelect bind:value={row[col]} />
               {:else if chooser[col]}
                 <select bind:value={row[col]} class="w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none">
                   {#each Object.entries(chooser[col]!) as [key, label]}

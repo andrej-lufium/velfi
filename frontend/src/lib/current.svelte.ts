@@ -1,4 +1,6 @@
 import { browser } from "$app/environment"
+import { goto } from "$app/navigation"
+//import { goto } from "$app/navigation"
 import { deserializePortfolio, serializePortfolio, type Portfolio } from "./portfolio"
 import { ReadFile, WriteFile, OpenFileDialog, SaveFileDialog, ConfirmDialog, DirOfFile, ResetQuit } from "./wailsjs/go/main/App"
 import { EventsOn, Quit, WindowSetTitle } from "./wailsjs/runtime/runtime"
@@ -92,6 +94,14 @@ async function quit() {
   Quit()
 }
 
+// import { LogPrint } from "./wailsjs/runtime/runtime"
+
+async function about() {
+//  LogPrint("About dialog would go here")
+  // eslint-disable-next-line svelte/no-navigation-without-resolve
+  await goto("/about")
+}
+
 // Listen for menu events from the Go backend
 if (browser) {
   EventsOn("menu:open", () => { openWithDialog() })
@@ -99,4 +109,5 @@ if (browser) {
   EventsOn("menu:saveas", () => { saveAsWithDialog() })
   EventsOn("menu:quit", () => { quit() })
   EventsOn("app:beforeclose", () => { quit() })
+  EventsOn("menu:about", () => { about() })
 }

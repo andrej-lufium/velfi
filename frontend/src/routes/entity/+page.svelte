@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation'
 	import Editable from '$lib/components/editable.svelte'
 	import CurrencySelect from '$lib/components/currencyselect.svelte'
+	import CountrySelect from '$lib/components/countryselect.svelte'
 	import NavButton from '$lib/components/navbutton.svelte'
 
 	import {getPortfolio} from '$lib/current.svelte'
@@ -37,7 +38,9 @@
 		</label>
 		<label class="block text-sm">
 			<span class="font-medium text-gray-700">Country</span>
-			<input type="text" bind:value={entity.country} class="mt-1 block w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
+			<div class="mt-1">
+				<CountrySelect bind:value={entity.country} />
+			</div>
 		</label>
 	</div>
 </div>

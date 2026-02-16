@@ -23,7 +23,7 @@
   currency: pf.baseCurrency,
 })}
 currencies={pf.currencies}
-chooser={{ currency: 'currency' }}
+chooser={{ currency: 'currency', country: 'country' }}
 displayColumns={['name', 'country', 'currency', 'assets']}
 narrowColumns={['assets']}
 wideColumns={['currency']}
