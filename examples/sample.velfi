@@ -1,0 +1,1884 @@
+{
+  "name": "Sample Portfolio",
+  "entities": [
+    {
+      "name": "Alpine Ventures AG",
+      "address": "Bahnhofstrasse 42\n8001 Zurich",
+      "country": "CH",
+      "docfolder": "",
+      "assets": [
+        {
+          "name": "TechVentures Fund I",
+          "type": "equity",
+          "unit": "shares",
+          "investments": [
+            {
+              "valuta": "2021-03-27T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": -481,
+              "value": -20519.46,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-01-27T23:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -428,
+              "value": -18258.48,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-12-18T23:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -271,
+              "value": -12484.97,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-07-27T22:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -409,
+              "value": -18842.63,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-06-15T22:00:00.000Z",
+              "description": "Follow-on investment 4",
+              "units": -250,
+              "value": -12440,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-06-11T22:00:00.000Z",
+              "description": "Sell",
+              "units": 411,
+              "value": 20451.36,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-05-04T22:00:00.000Z",
+              "description": "Follow-on investment 6",
+              "units": -389,
+              "value": -20904.86,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-12-23T23:00:00.000Z",
+              "description": "Follow-on investment 7",
+              "units": -491,
+              "value": -26386.34,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-08-22T22:00:00.000Z",
+              "description": "Follow-on investment 8",
+              "units": -269,
+              "value": -15612.76,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2022-08-14T22:00:00.000Z",
+              "description": "Dividend 2022",
+              "value": 3318.02,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-07-14T22:00:00.000Z",
+              "description": "Dividend 2024",
+              "value": 3318.02,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-05-14T22:00:00.000Z",
+              "description": "Dividend 2025",
+              "value": 3318.02,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2021-12-30T23:00:00.000Z",
+              "unitPrice": 42.66,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 45.65,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 48.84,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 52.26,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 55.92,
+              "doc": ""
+            }
+          ],
+          "commitments": []
+        },
+        {
+          "name": "Alpine Innovation Convertible",
+          "type": "convertible",
+          "unit": "shares",
+          "investments": [
+            {
+              "valuta": "2021-07-13T22:00:00.000Z",
+              "description": "Initial investment",
+              "units": -323,
+              "value": -3049.12,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-12-24T23:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -106,
+              "value": -1167.06,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2022-04-14T22:00:00.000Z",
+              "description": "Dividend 2022",
+              "value": 42.16,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-04-14T22:00:00.000Z",
+              "description": "Dividend 2023",
+              "value": 42.16,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-04-14T22:00:00.000Z",
+              "description": "Dividend 2024",
+              "value": 42.16,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-03-14T23:00:00.000Z",
+              "description": "Dividend 2025",
+              "value": 42.16,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2021-12-30T23:00:00.000Z",
+              "unitPrice": 9.44,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 9.91,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 10.41,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 10.93,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 11.47,
+              "doc": ""
+            }
+          ],
+          "commitments": []
+        }
+      ],
+      "currency": "CHF"
+    },
+    {
+      "name": "Rhine Capital GmbH",
+      "address": "Friedrichstrasse 100\n10117 Berlin",
+      "country": "DE",
+      "docfolder": "",
+      "assets": [
+        {
+          "name": "Rhine Senior Secured Bond",
+          "type": "debt",
+          "unit": "amount",
+          "investments": [
+            {
+              "valuta": "2022-04-27T22:00:00.000Z",
+              "description": "Initial investment",
+              "units": -335039.11,
+              "value": -33503911,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-07-18T22:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -407798.26,
+              "value": -40779826,
+              "fxrate": 0.99,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-04-10T22:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -114247.6,
+              "value": -11424760,
+              "fxrate": 0.94,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-05-02T22:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -128559.61,
+              "value": -12855961,
+              "fxrate": 0.95,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2023-06-14T22:00:00.000Z",
+              "description": "Interest payment 2023",
+              "value": 5913867.48,
+              "fxrate": 0.99,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-06-14T22:00:00.000Z",
+              "description": "Interest payment 2025",
+              "value": 5913867.48,
+              "fxrate": 0.95,
+              "doc": ""
+            }
+          ],
+          "valuations": [],
+          "commitments": []
+        },
+        {
+          "name": "German Mittelstand Equity",
+          "type": "equity",
+          "unit": "shares",
+          "investments": [
+            {
+              "valuta": "2022-12-27T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": -79,
+              "value": -1613.97,
+              "fxrate": 1.04,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2025-05-14T22:00:00.000Z",
+              "description": "Dividend 2025",
+              "value": 32.28,
+              "fxrate": 0.95,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 20.43,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 22.47,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 24.72,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 27.19,
+              "doc": ""
+            }
+          ],
+          "commitments": []
+        },
+        {
+          "name": "Rhine Mezzanine Note",
+          "type": "convertible",
+          "unit": "amount",
+          "investments": [
+            {
+              "valuta": "2020-03-20T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": -71,
+              "value": -2750.54,
+              "fxrate": 1.08,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-04-13T22:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -98,
+              "value": -4290.44,
+              "fxrate": 1.08,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-03-09T23:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -269,
+              "value": -13307.43,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-04-27T22:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -250,
+              "value": -13975,
+              "fxrate": 0.99,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-12-08T23:00:00.000Z",
+              "description": "Follow-on investment 4",
+              "units": -208,
+              "value": -13137.28,
+              "fxrate": 0.94,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2021-03-14T23:00:00.000Z",
+              "description": "Dividend 2021",
+              "value": 474.61,
+              "fxrate": 1.08,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-03-14T23:00:00.000Z",
+              "description": "Dividend 2022",
+              "value": 474.61,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-05-14T22:00:00.000Z",
+              "description": "Dividend 2023",
+              "value": 474.61,
+              "fxrate": 0.99,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-07-14T22:00:00.000Z",
+              "description": "Dividend 2024",
+              "value": 474.61,
+              "fxrate": 0.94,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2020-12-30T23:00:00.000Z",
+              "unitPrice": 38.74,
+              "doc": ""
+            },
+            {
+              "date": "2021-12-30T23:00:00.000Z",
+              "unitPrice": 41.06,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 43.53,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 46.14,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 48.91,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 51.84,
+              "doc": ""
+            }
+          ],
+          "commitments": [
+            {
+              "valuta": "2020-01-14T23:00:00.000Z",
+              "description": "Capital commitment",
+              "units": 0,
+              "value": 211349.01,
+              "fxrate": 1.08,
+              "doc": ""
+            }
+          ]
+        }
+      ],
+      "currency": "EUR"
+    },
+    {
+      "name": "Lakeside Partners SA",
+      "address": "Rue du Rhône 8\n1204 Geneva",
+      "country": "CH",
+      "docfolder": "",
+      "assets": [
+        {
+          "name": "Lakeside Growth Equity II",
+          "type": "equity",
+          "unit": "shares",
+          "investments": [
+            {
+              "valuta": "2022-10-03T22:00:00.000Z",
+              "description": "Initial investment",
+              "units": -107,
+              "value": -4185.84,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-08-27T22:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -205,
+              "value": -9143,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-09-27T22:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -292,
+              "value": -14845.28,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-06-26T22:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -173,
+              "value": -10027.08,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2023-09-14T22:00:00.000Z",
+              "description": "Dividend 2023",
+              "value": 382.01,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-03-14T23:00:00.000Z",
+              "description": "Dividend 2024",
+              "value": 382.01,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-03-14T23:00:00.000Z",
+              "description": "Dividend 2025",
+              "value": 382.01,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 39.12,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 42.64,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 46.48,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 50.66,
+              "doc": ""
+            }
+          ],
+          "commitments": [
+            {
+              "valuta": "2022-01-14T23:00:00.000Z",
+              "description": "Capital commitment",
+              "units": 0,
+              "value": 105879.94,
+              "doc": ""
+            }
+          ]
+        },
+        {
+          "name": "Swiss RE Bond 2021",
+          "type": "debt",
+          "unit": "amount",
+          "investments": [
+            {
+              "valuta": "2021-05-13T22:00:00.000Z",
+              "description": "Initial investment",
+              "units": -318380.85,
+              "value": -31838085,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-04-23T22:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -189482.9,
+              "value": -18948290,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-08-16T22:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -77079.76,
+              "value": -7707976,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-02-04T23:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -336161.85,
+              "value": -33616185,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-11-05T23:00:00.000Z",
+              "description": "Follow-on investment 4",
+              "units": -464543.46,
+              "value": -46454346,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2022-06-14T22:00:00.000Z",
+              "description": "Interest payment 2022",
+              "value": 8313892.92,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-06-14T22:00:00.000Z",
+              "description": "Interest payment 2023",
+              "value": 8313892.92,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-06-14T22:00:00.000Z",
+              "description": "Interest payment 2024",
+              "value": 8313892.92,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-06-14T22:00:00.000Z",
+              "description": "Interest payment 2025",
+              "value": 8313892.92,
+              "doc": ""
+            }
+          ],
+          "valuations": [],
+          "commitments": [
+            {
+              "valuta": "2021-01-14T23:00:00.000Z",
+              "description": "Capital commitment",
+              "units": 0,
+              "value": 874148.21,
+              "doc": ""
+            }
+          ]
+        }
+      ],
+      "currency": "CHF"
+    },
+    {
+      "name": "Atlantic Growth Fund LP",
+      "address": "350 Park Avenue\nNew York, NY 10022",
+      "country": "US",
+      "docfolder": "",
+      "assets": [
+        {
+          "name": "US Tech Growth Fund",
+          "type": "equity",
+          "unit": "shares",
+          "investments": [
+            {
+              "valuta": "2021-05-09T22:00:00.000Z",
+              "description": "Initial investment",
+              "units": -127,
+              "value": -5563.87,
+              "fxrate": 0.89,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2022-06-14T22:00:00.000Z",
+              "description": "Dividend 2022",
+              "value": 55.64,
+              "fxrate": 0.91,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-08-14T22:00:00.000Z",
+              "description": "Dividend 2023",
+              "value": 55.64,
+              "fxrate": 0.92,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2021-12-30T23:00:00.000Z",
+              "unitPrice": 43.81,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 46,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 48.3,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 50.72,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 53.25,
+              "doc": ""
+            }
+          ],
+          "commitments": [
+            {
+              "valuta": "2021-01-14T23:00:00.000Z",
+              "description": "Capital commitment",
+              "units": 0,
+              "value": 165988.39,
+              "fxrate": 0.89,
+              "doc": ""
+            }
+          ]
+        },
+        {
+          "name": "Atlantic Convertible Note 2022",
+          "type": "convertible",
+          "unit": "shares",
+          "investments": [
+            {
+              "valuta": "2020-11-18T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": -33,
+              "value": -1521.3,
+              "fxrate": 0.97,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-03-12T23:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -71,
+              "value": -3600.41,
+              "fxrate": 0.89,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-06-07T22:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -211,
+              "value": -11769.58,
+              "fxrate": 0.91,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-06-21T22:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -150,
+              "value": -9204,
+              "fxrate": 0.92,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-01-15T23:00:00.000Z",
+              "description": "Follow-on investment 4",
+              "units": -42,
+              "value": -2835,
+              "fxrate": 0.85,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-04-14T22:00:00.000Z",
+              "description": "Follow-on investment 5",
+              "units": -395,
+              "value": -29324.8,
+              "fxrate": 0.88,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2021-08-14T22:00:00.000Z",
+              "description": "Dividend 2021",
+              "value": 1747.65,
+              "fxrate": 0.89,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-09-14T22:00:00.000Z",
+              "description": "Dividend 2022",
+              "value": 1747.65,
+              "fxrate": 0.91,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-05-14T22:00:00.000Z",
+              "description": "Dividend 2023",
+              "value": 1747.65,
+              "fxrate": 0.92,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-06-14T22:00:00.000Z",
+              "description": "Dividend 2024",
+              "value": 1747.65,
+              "fxrate": 0.85,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-03-14T23:00:00.000Z",
+              "description": "Dividend 2025",
+              "value": 1747.65,
+              "fxrate": 0.88,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2020-12-30T23:00:00.000Z",
+              "unitPrice": 46.1,
+              "doc": ""
+            },
+            {
+              "date": "2021-12-30T23:00:00.000Z",
+              "unitPrice": 49.33,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 52.78,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 56.47,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 60.43,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 64.66,
+              "doc": ""
+            }
+          ],
+          "commitments": []
+        },
+        {
+          "name": "High Yield Credit Fund",
+          "type": "debt",
+          "unit": "amount",
+          "investments": [
+            {
+              "valuta": "2020-12-03T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": -90820.54,
+              "value": -9082054,
+              "fxrate": 0.97,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-09-16T22:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -108574.89,
+              "value": -10857489,
+              "fxrate": 0.89,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-07-31T22:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -93095.68,
+              "value": -9309568,
+              "fxrate": 0.91,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-08-08T22:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -141600.7,
+              "value": -14160070,
+              "fxrate": 0.92,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-05-01T22:00:00.000Z",
+              "description": "Follow-on investment 4",
+              "units": -177592.05,
+              "value": -17759205,
+              "fxrate": 0.85,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-07-03T22:00:00.000Z",
+              "description": "Follow-on investment 5",
+              "units": -393930.18,
+              "value": -39393018,
+              "fxrate": 0.88,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2021-06-14T22:00:00.000Z",
+              "description": "Interest payment 2021",
+              "value": 5028070.2,
+              "fxrate": 0.89,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-06-14T22:00:00.000Z",
+              "description": "Interest payment 2023",
+              "value": 5028070.2,
+              "fxrate": 0.92,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-06-14T22:00:00.000Z",
+              "description": "Interest payment 2024",
+              "value": 5028070.2,
+              "fxrate": 0.85,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-06-14T22:00:00.000Z",
+              "description": "Interest payment 2025",
+              "value": 5028070.2,
+              "fxrate": 0.88,
+              "doc": ""
+            }
+          ],
+          "valuations": [],
+          "commitments": []
+        }
+      ],
+      "currency": "USD"
+    },
+    {
+      "name": "Nordic Bridge AB",
+      "address": "Strandvägen 7\n114 56 Stockholm",
+      "country": "SE",
+      "docfolder": "",
+      "assets": [
+        {
+          "name": "Nordic Green Energy Equity",
+          "type": "equity",
+          "unit": "shares",
+          "investments": [
+            {
+              "valuta": "2022-01-20T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": -451,
+              "value": -5754.76,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-04-25T22:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -281,
+              "value": -3908.71,
+              "fxrate": 0.99,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-03-17T23:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -458,
+              "value": -6943.28,
+              "fxrate": 0.94,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-07-16T22:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -493,
+              "value": -8144.36,
+              "fxrate": 0.95,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2024-08-14T22:00:00.000Z",
+              "description": "Dividend 2024",
+              "value": 495.02,
+              "fxrate": 0.94,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-05-14T22:00:00.000Z",
+              "description": "Dividend 2025",
+              "value": 495.02,
+              "fxrate": 0.95,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 12.76,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 14.16,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 15.72,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 17.45,
+              "doc": ""
+            }
+          ],
+          "commitments": [
+            {
+              "valuta": "2022-01-14T23:00:00.000Z",
+              "description": "Capital commitment",
+              "units": 0,
+              "value": 837180.36,
+              "fxrate": 1.04,
+              "doc": ""
+            }
+          ]
+        }
+      ],
+      "currency": "EUR"
+    },
+    {
+      "name": "Helvetia Credit Corp",
+      "address": "Bundesplatz 3\n3003 Bern",
+      "country": "CH",
+      "docfolder": "",
+      "assets": [
+        {
+          "name": "Swiss Corporate Bond Fund",
+          "type": "debt",
+          "unit": "amount",
+          "investments": [
+            {
+              "valuta": "2021-05-04T22:00:00.000Z",
+              "description": "Initial investment",
+              "units": -485145.63,
+              "value": -48514563,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-06-11T22:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -444005.72,
+              "value": -44400572,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-01-24T23:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -395338.12,
+              "value": -39533812,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-06-11T22:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -59232.27,
+              "value": -5923227,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-02-27T23:00:00.000Z",
+              "description": "Follow-on investment 4",
+              "units": -472864.47,
+              "value": -47286447,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2022-06-14T22:00:00.000Z",
+              "description": "Interest payment 2022",
+              "value": 7426344.84,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-06-14T22:00:00.000Z",
+              "description": "Interest payment 2023",
+              "value": 7426344.84,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-06-14T22:00:00.000Z",
+              "description": "Interest payment 2025",
+              "value": 7426344.84,
+              "doc": ""
+            }
+          ],
+          "valuations": [],
+          "commitments": []
+        },
+        {
+          "name": "Helvetia Balanced Convertible",
+          "type": "convertible",
+          "unit": "shares",
+          "investments": [
+            {
+              "valuta": "2021-12-04T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": -316,
+              "value": -13069.76,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-01-03T23:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -64,
+              "value": -2647.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-01-18T23:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -447,
+              "value": -20521.77,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-04-15T22:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -374,
+              "value": -19059.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-12-07T23:00:00.000Z",
+              "description": "Follow-on investment 4",
+              "units": -356,
+              "value": -18141.76,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-10-07T22:00:00.000Z",
+              "description": "Follow-on investment 5",
+              "units": -237,
+              "value": -13407.09,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-04-23T22:00:00.000Z",
+              "description": "Follow-on investment 6",
+              "units": -395,
+              "value": -24802.05,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2023-03-14T23:00:00.000Z",
+              "description": "Dividend 2023",
+              "value": 3349.46,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-09-14T22:00:00.000Z",
+              "description": "Dividend 2025",
+              "value": 3349.46,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2021-12-30T23:00:00.000Z",
+              "unitPrice": 41.36,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 43.43,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 45.6,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 47.88,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 50.27,
+              "doc": ""
+            }
+          ],
+          "commitments": []
+        }
+      ],
+      "currency": "CHF"
+    },
+    {
+      "name": "Pacific Rim Holdings",
+      "address": "1 Market Street\nSan Francisco, CA 94105",
+      "country": "US",
+      "docfolder": "",
+      "assets": [
+        {
+          "name": "Pacific Healthcare Equity",
+          "type": "equity",
+          "unit": "shares",
+          "investments": [
+            {
+              "valuta": "2021-08-26T22:00:00.000Z",
+              "description": "Initial investment",
+              "units": -499,
+              "value": -23293.32,
+              "fxrate": 0.89,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-03-10T23:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -251,
+              "value": -11716.68,
+              "fxrate": 0.89,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-05-19T22:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -411,
+              "value": -19760.88,
+              "fxrate": 0.91,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-01-22T23:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -202,
+              "value": -9712.16,
+              "fxrate": 0.91,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-03-25T23:00:00.000Z",
+              "description": "Follow-on investment 4",
+              "units": -52,
+              "value": -2575.04,
+              "fxrate": 0.92,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-02-07T23:00:00.000Z",
+              "description": "Follow-on investment 5",
+              "units": -246,
+              "value": -12181.92,
+              "fxrate": 0.92,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-10-09T22:00:00.000Z",
+              "description": "Follow-on investment 6",
+              "units": -84,
+              "value": -4284.84,
+              "fxrate": 0.85,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-07-04T22:00:00.000Z",
+              "description": "Follow-on investment 7",
+              "units": -288,
+              "value": -14690.88,
+              "fxrate": 0.85,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-10-10T22:00:00.000Z",
+              "description": "Follow-on investment 8",
+              "units": -121,
+              "value": -6357.34,
+              "fxrate": 0.88,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-09-03T22:00:00.000Z",
+              "description": "Follow-on investment 9",
+              "units": -401,
+              "value": -21068.54,
+              "fxrate": 0.88,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2022-06-14T22:00:00.000Z",
+              "description": "Dividend 2022",
+              "value": 2512.83,
+              "fxrate": 0.91,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-08-14T22:00:00.000Z",
+              "description": "Dividend 2023",
+              "value": 2512.83,
+              "fxrate": 0.92,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-09-14T22:00:00.000Z",
+              "description": "Dividend 2024",
+              "value": 2512.83,
+              "fxrate": 0.85,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-05-14T22:00:00.000Z",
+              "description": "Dividend 2025",
+              "value": 2512.83,
+              "fxrate": 0.88,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2021-12-30T23:00:00.000Z",
+              "unitPrice": 46.68,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 48.55,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 50.49,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 52.51,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 54.61,
+              "doc": ""
+            }
+          ],
+          "commitments": []
+        }
+      ],
+      "currency": "USD"
+    },
+    {
+      "name": "Central Europe Fund SCA",
+      "address": "Boulevard Royal 26\nL-2449 Luxembourg",
+      "country": "LU",
+      "docfolder": "",
+      "assets": [
+        {
+          "name": "CEE Infrastructure Debt",
+          "type": "debt",
+          "unit": "amount",
+          "investments": [
+            {
+              "valuta": "2022-12-11T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": -63860.77,
+              "value": -6386077,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-02-01T23:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -82491.54,
+              "value": -8249154,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-10-20T22:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -308841.05,
+              "value": -30884105,
+              "fxrate": 0.99,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-03-19T23:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -295178.42,
+              "value": -29517842,
+              "fxrate": 0.99,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-03-26T23:00:00.000Z",
+              "description": "Follow-on investment 4",
+              "units": -274732.25,
+              "value": -27473225,
+              "fxrate": 0.94,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-04-10T22:00:00.000Z",
+              "description": "Follow-on investment 5",
+              "units": -177681.87,
+              "value": -17768187,
+              "fxrate": 0.94,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-08-12T22:00:00.000Z",
+              "description": "Follow-on investment 6",
+              "units": -374641.78,
+              "value": -37464178,
+              "fxrate": 0.95,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-03-21T23:00:00.000Z",
+              "description": "Follow-on investment 7",
+              "units": -251699.46,
+              "value": -25169946,
+              "fxrate": 0.95,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2024-06-14T22:00:00.000Z",
+              "description": "Interest payment 2024",
+              "value": 10974762.84,
+              "fxrate": 0.94,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-06-14T22:00:00.000Z",
+              "description": "Interest payment 2025",
+              "value": 10974762.84,
+              "fxrate": 0.95,
+              "doc": ""
+            }
+          ],
+          "valuations": [],
+          "commitments": [
+            {
+              "valuta": "2022-01-14T23:00:00.000Z",
+              "description": "Capital commitment",
+              "units": 0,
+              "value": 712966.5,
+              "fxrate": 1.04,
+              "doc": ""
+            }
+          ]
+        },
+        {
+          "name": "Central Europe Growth Equity",
+          "type": "equity",
+          "unit": "percent",
+          "investments": [
+            {
+              "valuta": "2021-01-09T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": -333,
+              "value": -8664.66,
+              "fxrate": 1.08,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-11-06T23:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -311,
+              "value": -8092.22,
+              "fxrate": 1.08,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-03-27T22:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -462,
+              "value": -13462.68,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-09-18T22:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -291,
+              "value": -8479.74,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-11-10T23:00:00.000Z",
+              "description": "Follow-on investment 4",
+              "units": -302,
+              "value": -9857.28,
+              "fxrate": 0.99,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-07-07T22:00:00.000Z",
+              "description": "Follow-on investment 5",
+              "units": -48,
+              "value": -1754.88,
+              "fxrate": 0.94,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-10-17T22:00:00.000Z",
+              "description": "Follow-on investment 6",
+              "units": -233,
+              "value": -8518.48,
+              "fxrate": 0.94,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-08-23T22:00:00.000Z",
+              "description": "Follow-on investment 7",
+              "units": -295,
+              "value": -12077.3,
+              "fxrate": 0.95,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2022-04-14T22:00:00.000Z",
+              "description": "Dividend 2022",
+              "value": 2127.22,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-06-14T22:00:00.000Z",
+              "description": "Dividend 2024",
+              "value": 2127.22,
+              "fxrate": 0.94,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2021-12-30T23:00:00.000Z",
+              "unitPrice": 26.02,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 28.36,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 30.91,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 33.7,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 36.73,
+              "doc": ""
+            }
+          ],
+          "commitments": []
+        }
+      ],
+      "currency": "EUR"
+    },
+    {
+      "name": "Midland Equity Partners",
+      "address": "One Cabot Square\nLondon E14 4QJ",
+      "country": "GB",
+      "docfolder": "",
+      "assets": [
+        {
+          "name": "UK Property Equity Fund",
+          "type": "equity",
+          "unit": "shares",
+          "investments": [
+            {
+              "valuta": "2021-12-01T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": -265,
+              "value": -9783.8,
+              "fxrate": 1.08,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-01-18T23:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -33,
+              "value": -1218.36,
+              "fxrate": 1.08,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-07-20T22:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -320,
+              "value": -12406.4,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-02-04T23:00:00.000Z",
+              "description": "Follow-on investment 3",
+              "units": -117,
+              "value": -4761.9,
+              "fxrate": 0.99,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-07-01T22:00:00.000Z",
+              "description": "Follow-on investment 4",
+              "units": -178,
+              "value": -7244.6,
+              "fxrate": 0.99,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-02-23T23:00:00.000Z",
+              "description": "Follow-on investment 5",
+              "units": -191,
+              "value": -8163.34,
+              "fxrate": 0.94,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-11-14T23:00:00.000Z",
+              "description": "Follow-on investment 6",
+              "units": -188,
+              "value": -8437.44,
+              "fxrate": 0.95,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2023-06-14T22:00:00.000Z",
+              "description": "Dividend 2023",
+              "value": 1040.32,
+              "fxrate": 0.99,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-05-14T22:00:00.000Z",
+              "description": "Dividend 2024",
+              "value": 1040.32,
+              "fxrate": 0.94,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-07-14T22:00:00.000Z",
+              "description": "Dividend 2025",
+              "value": 1040.32,
+              "fxrate": 0.95,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2021-12-30T23:00:00.000Z",
+              "unitPrice": 36.92,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 41.35,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 46.31,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 51.87,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 58.09,
+              "doc": ""
+            }
+          ],
+          "commitments": [
+            {
+              "valuta": "2021-01-14T23:00:00.000Z",
+              "description": "Capital commitment",
+              "units": 0,
+              "value": 814988.91,
+              "fxrate": 1.08,
+              "doc": ""
+            }
+          ]
+        },
+        {
+          "name": "European Convertible Bond",
+          "type": "convertible",
+          "unit": "amount",
+          "investments": [
+            {
+              "valuta": "2020-01-27T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": -234,
+              "value": -8594.82,
+              "fxrate": 1.08,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-08-14T22:00:00.000Z",
+              "description": "Follow-on investment 1",
+              "units": -204,
+              "value": -8104.92,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-02-12T23:00:00.000Z",
+              "description": "Follow-on investment 2",
+              "units": -31,
+              "value": -1332.07,
+              "fxrate": 0.94,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2021-04-14T22:00:00.000Z",
+              "description": "Dividend 2021",
+              "value": 180.32,
+              "fxrate": 1.08,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-06-14T22:00:00.000Z",
+              "description": "Dividend 2023",
+              "value": 180.32,
+              "fxrate": 0.99,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-09-14T22:00:00.000Z",
+              "description": "Dividend 2025",
+              "value": 180.32,
+              "fxrate": 0.95,
+              "doc": ""
+            }
+          ],
+          "valuations": [
+            {
+              "date": "2020-12-30T23:00:00.000Z",
+              "unitPrice": 36.73,
+              "doc": ""
+            },
+            {
+              "date": "2021-12-30T23:00:00.000Z",
+              "unitPrice": 40.4,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-30T23:00:00.000Z",
+              "unitPrice": 44.44,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-30T23:00:00.000Z",
+              "unitPrice": 48.89,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-30T23:00:00.000Z",
+              "unitPrice": 53.78,
+              "doc": ""
+            },
+            {
+              "date": "2025-12-30T23:00:00.000Z",
+              "unitPrice": 59.15,
+              "doc": ""
+            }
+          ],
+          "commitments": []
+        }
+      ],
+      "currency": "EUR"
+    },
+    {
+      "name": "Summit Infrastructure AG",
+      "address": "Industriestrasse 25\n6300 Zug",
+      "country": "CH",
+      "docfolder": "",
+      "assets": [
+        {
+          "name": "Swiss Infra Senior Debt",
+          "type": "debt",
+          "unit": "amount",
+          "investments": [
+            {
+              "valuta": "2022-12-12T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": -101645.8,
+              "value": -10164580,
+              "doc": ""
+            }
+          ],
+          "revenues": [
+            {
+              "valuta": "2023-06-14T22:00:00.000Z",
+              "description": "Interest payment 2023",
+              "value": 304937.4,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-06-14T22:00:00.000Z",
+              "description": "Interest payment 2024",
+              "value": 304937.4,
+              "doc": ""
+            },
+            {
+              "valuta": "2025-06-14T22:00:00.000Z",
+              "description": "Interest payment 2025",
+              "value": 304937.4,
+              "doc": ""
+            }
+          ],
+          "valuations": [],
+          "commitments": [
+            {
+              "valuta": "2022-01-14T23:00:00.000Z",
+              "description": "Capital commitment",
+              "units": 0,
+              "value": 820608.59,
+              "doc": ""
+            }
+          ]
+        }
+      ],
+      "currency": "CHF"
+    }
+  ],
+  "baseCurrency": {
+    "iso": "CHF",
+    "rates": []
+  },
+  "currencies": [
+    {
+      "iso": "CHF",
+      "rates": []
+    },
+    {
+      "iso": "USD",
+      "rates": [
+        {
+          "date": "2019-12-31T23:00:00.000Z",
+          "rate": 0.97
+        },
+        {
+          "date": "2020-12-31T23:00:00.000Z",
+          "rate": 0.89
+        },
+        {
+          "date": "2021-12-31T23:00:00.000Z",
+          "rate": 0.91
+        },
+        {
+          "date": "2022-12-31T23:00:00.000Z",
+          "rate": 0.92
+        },
+        {
+          "date": "2023-12-31T23:00:00.000Z",
+          "rate": 0.85
+        },
+        {
+          "date": "2024-12-31T23:00:00.000Z",
+          "rate": 0.88
+        }
+      ]
+    },
+    {
+      "iso": "EUR",
+      "rates": [
+        {
+          "date": "2019-12-31T23:00:00.000Z",
+          "rate": 1.08
+        },
+        {
+          "date": "2020-12-31T23:00:00.000Z",
+          "rate": 1.08
+        },
+        {
+          "date": "2021-12-31T23:00:00.000Z",
+          "rate": 1.04
+        },
+        {
+          "date": "2022-12-31T23:00:00.000Z",
+          "rate": 0.99
+        },
+        {
+          "date": "2023-12-31T23:00:00.000Z",
+          "rate": 0.94
+        },
+        {
+          "date": "2024-12-31T23:00:00.000Z",
+          "rate": 0.95
+        }
+      ]
+    }
+  ]
+}

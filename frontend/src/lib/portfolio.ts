@@ -16,6 +16,7 @@ export type Portfolio = {
 	entities: Entity[]
 	baseCurrency: Currency
 	currencies: Currency[]
+  name: string
 }
 
 export type Investment = {
@@ -36,11 +37,20 @@ export type Revenue = {
 }
 
 export const AssetTypes = {
-	debt: 'debt',
-	equity: 'equity',
+	equity: 'non-listed stock',
 	convertible: 'convertible',
+	debt: 'debt',
+	listedequity: 'listed stock',
 	other: 'other'
 } as const
+
+export const AssetTypeNames: Record<keyof typeof AssetTypes, string> = {
+	debt: 'Debt',
+	equity: 'Equity',
+	convertible: 'Convertible',
+	listedequity: 'Listed Equity',
+	other: 'Other'
+}
 
 export const defaultAssetType: keyof typeof AssetTypes = 'equity'
 
@@ -52,12 +62,15 @@ export const AssetUnits = {
 
 export const defaultAssetUnit: keyof typeof AssetUnits = 'shares'
 
+export const assetUnitTitle = 'Quantity' // de: bestand, fr: quantité
+
 export type Entity = {
   name: string
   address: string
   country: string
   assets: Asset[]
   currency: Currency
+  docfolder: DocumentReference
 }
 export type Asset = {
 	name: string
@@ -141,10 +154,13 @@ export type AssetReportRow = {
   return: number | null
   cumulativeReturn: number | null
   valuation: number
+  valuationDate: Date | null
   netAssetValue: number
   netRevenueInBaseCurrency: number | null
   netInvestedInBaseCurrency: number | null
   netAssetValueInBaseCurrency: number
+  irr: number | undefined
+  commitments: number
 }
 
 export type PortfolioReport = {
@@ -167,4 +183,9 @@ export type PortfolioReportRow = {
   netRevenueInBaseCurrency: number | null
   netInvestedInBaseCurrency: number | null
   netAssetValueInBaseCurrency: number
+  valuationDate: Date | null
+  irr: number | undefined
+  committed: number | null
+  totalInvested: number | null
+  openCommitment: number | null
 }

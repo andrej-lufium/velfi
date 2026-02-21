@@ -2,15 +2,30 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
+	goruntime "runtime"
+	"strings"
+	"unicode"
 
+	"github.com/adrg/xdg"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // Version can be set at build time via ldflags: -ldflags "-X main.Version=1.0.0"
 var Version = "0.1.0"
+
+// Config holds application configuration settings
+type Config struct {
+	Locale                string   `json:"locale"`                // UI language (en, de-ch, fr, it)
+	Autosave              bool     `json:"autosave"`              // Enable autosave
+	DefaultBaseCurrency   string   `json:"defaultBaseCurrency"`   // ISO code (e.g., "CHF")
+	DefaultCurrencies     []string `json:"defaultCurrencies"`     // List of ISO codes
+	TaxReportHiddenFields []string `json:"taxReportHiddenFields"` // Fields to hide in tax view
+}
 
 // App struct
 type App struct {
@@ -187,4 +202,240 @@ func (a *App) CopyFile(src string, dst string) error {
 
 	_, err = io.Copy(dstFile, srcFile)
 	return err
+}
+
+// OpenExternal opens a file or folder in the OS default application
+func (a *App) OpenExternal(path string) error {
+	switch goruntime.GOOS {
+	case "darwin":
+		return exec.Command("open", path).Start()
+	case "windows":
+		return exec.Command("cmd", "/c", "start", "", path).Start()
+	default:
+		return exec.Command("xdg-open", path).Start()
+	}
+}
+
+// SanitizeName converts a name to a filesystem-safe folder name
+func (a *App) SanitizeName(name string) string {
+	s := strings.ToLower(strings.TrimSpace(name))
+	var b strings.Builder
+	for _, r := range s {
+		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+			b.WriteRune(r)
+		} else {
+			b.WriteRune('-')
+		}
+	}
+	// Collapse multiple hyphens
+	result := b.String()
+	for strings.Contains(result, "--") {
+		result = strings.ReplaceAll(result, "--", "-")
+	}
+	return strings.Trim(result, "-")
+}
+
+// ChooseDocument opens a file dialog and handles copy-to-docfolder logic.
+// Returns the relative path from docfolder (or absolute if outside docroot).
+func (a *App) ChooseDocument(docroot string, docfolder string) (string, error) {
+	absDocfolder := docfolder
+	if absDocfolder != "" && !filepath.IsAbs(absDocfolder) {
+		absDocfolder = filepath.Join(docroot, absDocfolder)
+	}
+
+	startDir := absDocfolder
+	if startDir == "" {
+		startDir = docroot
+	}
+
+	path, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
+		Title:            "Select Document",
+		DefaultDirectory: startDir,
+	})
+	if err != nil || path == "" {
+		return "", err
+	}
+
+	// If we have a docfolder, check if file is inside it
+	if absDocfolder != "" {
+		rel, relErr := filepath.Rel(absDocfolder, path)
+		if relErr == nil && !strings.HasPrefix(rel, "..") {
+			return rel, nil
+		}
+
+		// File is outside docfolder — offer to copy
+		confirmed, err := a.ConfirmDialog("Copy Document", "Copy file to asset folder?")
+		if err != nil {
+			return "", err
+		}
+		if confirmed {
+			if err := os.MkdirAll(absDocfolder, 0755); err != nil {
+				return "", err
+			}
+			basename := filepath.Base(path)
+			dst := filepath.Join(absDocfolder, basename)
+			if err := a.CopyFile(path, dst); err != nil {
+				return "", err
+			}
+			return basename, nil
+		}
+
+		// User declined copy — return relative to docfolder if possible, else absolute
+		rel, relErr = filepath.Rel(absDocfolder, path)
+		if relErr == nil {
+			return rel, nil
+		}
+		return path, nil
+	}
+
+	// No docfolder — return relative to docroot if possible
+	if docroot != "" {
+		rel, relErr := filepath.Rel(docroot, path)
+		if relErr == nil {
+			return rel, nil
+		}
+	}
+	return path, nil
+}
+
+// ChooseOrCreateFolder handles folder selection/creation for entity docfolders.
+// Returns a relative path to docroot.
+func (a *App) ChooseOrCreateFolder(docroot string, currentValue string, suggestedName string) (string, error) {
+	if currentValue != "" {
+		// Already has a folder — let user change it via directory dialog
+		startDir := currentValue
+		if !filepath.IsAbs(startDir) {
+			startDir = filepath.Join(docroot, startDir)
+		}
+		path, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
+			Title:            "Select Document Folder",
+			DefaultDirectory: startDir,
+		})
+		if err != nil || path == "" {
+			return currentValue, err
+		}
+		rel, relErr := filepath.Rel(docroot, path)
+		if relErr == nil && !strings.HasPrefix(rel, "..") {
+			return rel, nil
+		}
+		return path, nil
+	}
+
+	// No current value — try to create from suggested name
+	sanitized := a.SanitizeName(suggestedName)
+	if sanitized == "" {
+		// No valid name, just open directory dialog
+		path, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
+			Title:            "Select Document Folder",
+			DefaultDirectory: docroot,
+		})
+		if err != nil || path == "" {
+			return "", err
+		}
+		rel, relErr := filepath.Rel(docroot, path)
+		if relErr == nil && !strings.HasPrefix(rel, "..") {
+			return rel, nil
+		}
+		return path, nil
+	}
+
+	candidatePath := filepath.Join(docroot, sanitized)
+	exists, _ := a.FileExists(candidatePath)
+	if exists {
+		// Folder already exists — open dialog starting there
+		path, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
+			Title:            "Select Document Folder",
+			DefaultDirectory: candidatePath,
+		})
+		if err != nil || path == "" {
+			return "", err
+		}
+		rel, relErr := filepath.Rel(docroot, path)
+		if relErr == nil && !strings.HasPrefix(rel, "..") {
+			return rel, nil
+		}
+		return path, nil
+	}
+
+	// Folder doesn't exist — offer to create it
+	confirmed, err := a.ConfirmDialog("Create Folder", "Create folder '"+sanitized+"'?")
+	if err != nil {
+		return "", err
+	}
+	if confirmed {
+		if err := os.MkdirAll(candidatePath, 0755); err != nil {
+			return "", err
+		}
+		return sanitized, nil
+	}
+
+	// User declined — open directory dialog
+	path, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
+		Title:            "Select Document Folder",
+		DefaultDirectory: docroot,
+	})
+	if err != nil || path == "" {
+		return "", err
+	}
+	rel, relErr := filepath.Rel(docroot, path)
+	if relErr == nil && !strings.HasPrefix(rel, "..") {
+		return rel, nil
+	}
+	return path, nil
+}
+
+// LoadConfig reads the application config from the XDG config directory
+func (a *App) LoadConfig() (*Config, error) {
+	configPath, err := xdg.ConfigFile("velfi/config.json")
+	if err != nil {
+		return nil, err
+	}
+
+	// If config file doesn't exist, return defaults
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		return &Config{
+			Locale:                "de-ch",
+			Autosave:              true,
+			DefaultBaseCurrency:   "CHF",
+			DefaultCurrencies:     []string{"CHF", "USD", "EUR"},
+			TaxReportHiddenFields: []string{"irr", "committed", "totalInvested", "openCommitment", "invested", "divested"},
+		}, nil
+	}
+
+	data, err := os.ReadFile(configPath)
+	if err != nil {
+		return nil, err
+	}
+
+	var config Config
+	if err := json.Unmarshal(data, &config); err != nil {
+		return nil, err
+	}
+
+	return &config, nil
+}
+
+// SaveConfig writes the application config to the XDG config directory
+func (a *App) SaveConfig(config *Config) error {
+	configPath, err := xdg.ConfigFile("velfi/config.json")
+	if err != nil {
+		return err
+	}
+
+	// Ensure the directory exists
+	if err := os.MkdirAll(filepath.Dir(configPath), 0755); err != nil {
+		return err
+	}
+
+	data, err := json.MarshalIndent(config, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile(configPath, data, 0644)
+}
+
+// GetConfigPath returns the path to the config file for display purposes
+func (a *App) GetConfigPath() (string, error) {
+	return xdg.ConfigFile("velfi/config.json")
 }

@@ -21,6 +21,9 @@ Older versions are available on the [Releases](https://github.com/andrej-lufium/
 
 1. Download the `.dmg` file from the link above
 2. Open the DMG and drag Velfi into your Applications folder
+As long as we haven't signed the app, you have to manually un-quarantine it:
+`xattr -cr /Applications/velfi.app`or wherever it is
+
 3. On first launch, right-click the app and select **Open** to bypass Gatekeeper
 4. `.velfi` files will be associated with the app automatically
 

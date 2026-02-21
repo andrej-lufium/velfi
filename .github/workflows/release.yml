@@ -34,6 +34,9 @@ jobs:
           VERSION=${GITHUB_REF_NAME#v}
           wails build -ldflags "-X main.Version=$VERSION"
 
+      - name: Ad-hoc sign
+        run: codesign --force --deep --sign - build/bin/velfi.app
+
       - name: Create DMG
         run: hdiutil create -volname Velfi -srcfolder build/bin/velfi.app -ov -format UDZO velfi-mac.dmg
 

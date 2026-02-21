@@ -1,3 +1,4 @@
+import { xirr, type CashFlow } from "./irr"
 import type { Asset, AssetReport, AssetReportRow, Entity, Portfolio, PortfolioReport, PortfolioReportRow } from "./portfolio"
 import type { AggregateBy } from "./portfolio"
 
@@ -11,8 +12,20 @@ function roundDate(date: Date, aggregateBy: keyof typeof AggregateBy): string {
 	return `${y}-Q${quarter(date.getMonth() + 1)}`
 }
 
+/** Returns the first day of the period as a Date */
+export function periodStartDate(dateKey: string, aggregateBy: keyof typeof AggregateBy): Date {
+	if (aggregateBy === 'year') {
+		return new Date(Number(dateKey), 0, 1)
+	}
+	const [yStr, qStr] = dateKey.split('-Q')
+	const q = Number(qStr)
+	const y = Number(yStr)
+	const startMonth = (q - 1) * 3
+	return new Date(y, startMonth, 1)
+}
+
 /** Returns the last day of the period as a Date */
-function periodEndDate(dateKey: string, aggregateBy: keyof typeof AggregateBy): Date {
+export function periodEndDate(dateKey: string, aggregateBy: keyof typeof AggregateBy): Date {
 	if (aggregateBy === 'year') {
 		return new Date(Number(dateKey), 11, 31)
 	}
@@ -36,10 +49,13 @@ function emptyRow(date: string): AssetReportRow {
 		return: null,
 		cumulativeReturn: null,
 		valuation: 0,
+		valuationDate: null,
 		netAssetValue: 0,
 		netRevenueInBaseCurrency: null,
 		netInvestedInBaseCurrency: null,
 		netAssetValueInBaseCurrency: 0,
+		irr: undefined,
+		commitments: 0,
 	}
 }
 
@@ -81,11 +97,11 @@ function buildValuationSeries(asset: Asset): ValuationPoint[] {
 }
 
 /** Find most recent valuation with date <= endDate */
-function findValuation(series: ValuationPoint[], endDate: Date): number | null {
-	let result: number | null = null
+function findValuation(series: ValuationPoint[], endDate: Date): { unitPrice: number; date: Date } | null {
+	let result: { unitPrice: number; date: Date } | null = null
 	for (const p of series) {
 		if (p.date.getTime() <= endDate.getTime()) {
-			result = p.unitPrice
+			result = { unitPrice: p.unitPrice, date: p.date }
 		} else {
 			break
 		}
@@ -104,8 +120,15 @@ export function createReport(asset: Asset, aggregateBy: keyof typeof AggregateBy
 
 	const valuationSeries = buildValuationSeries(asset)
 
+	// Sort commitments by date for cumulative calculation
+	const commitmentEntries = [...asset.commitments]
+		.sort((a, b) => a.valuta.getTime() - b.valuta.getTime())
+
 	// Build a map of dateKey -> aggregated row from actual entries
 	const rowMap = new Map<string, AssetReportRow>()
+
+	// Collect all cashflows (in base currency) sorted by date for per-row IRR
+	const allCashflows: CashFlow[] = []
 
 	for (const entry of entries) {
 		const dateKey = roundDate(entry.date, aggregateBy)
@@ -117,6 +140,8 @@ export function createReport(asset: Asset, aggregateBy: keyof typeof AggregateBy
 
 		const fxrate = entry.fxrate || 1
 		const valueInBase = entry.value * fxrate
+
+		allCashflows.push({ date: entry.date, amount: valueInBase })
 
 		if (entry.kind === 'investment') {
 			if (entry.value >= 0) {
@@ -147,10 +172,11 @@ export function createReport(asset: Asset, aggregateBy: keyof typeof AggregateBy
 		row.startUnits = prevEndUnits
 		row.endUnits = Number(dataEndUnits ?? 0) + Number(prevEndUnits)
 		const endDate = periodEndDate(row.date, aggregateBy)
-		const unitPrice = findValuation(valuationSeries, endDate)
-		if (unitPrice != null && row.endUnits != null) {
-			row.valuation = unitPrice
-			row.netAssetValue = unitPrice * row.endUnits
+		const val = findValuation(valuationSeries, endDate)
+		if (val != null && row.endUnits != null) {
+			row.valuation = val.unitPrice
+			row.valuationDate = val.date
+			row.netAssetValue = val.unitPrice * row.endUnits
 		}
 		return row.endUnits ?? 0
 	}
@@ -195,6 +221,44 @@ export function createReport(asset: Asset, aggregateBy: keyof typeof AggregateBy
 		totalRow.endUnits = rows[rows.length - 1].endUnits
 		totalRow.netAssetValue = rows[rows.length - 1].netAssetValue
 		totalRow.valuation = rows[rows.length - 1].valuation
+	}
+
+	// Compute per-row IRR and cumulative commitments
+	for (const row of rows) {
+		const endDate = periodEndDate(row.date, aggregateBy)
+
+		// Cumulative commitments up to period end
+		let cumCommitments = 0
+		for (const c of commitmentEntries) {
+			if (c.valuta.getTime() <= endDate.getTime()) {
+				cumCommitments += c.value > 0 ? c.value : 0
+			}
+		}
+		row.commitments = cumCommitments
+
+		// IRR: all cashflows up to period end + NAV as terminal cashflow
+		const periodCashflows = allCashflows.filter(cf => cf.date.getTime() <= endDate.getTime())
+		if (periodCashflows.length > 0 && row.netAssetValue !== 0) {
+			const cfWithNav = [...periodCashflows, { date: endDate, amount: -row.netAssetValue }]
+			try {
+				row.irr = xirr(cfWithNav)
+			} catch {
+				row.irr = undefined
+			}
+		}
+	}
+
+	// Total row: use last row's commitments and compute overall IRR
+	if (rows.length > 0) {
+		totalRow.commitments = rows[rows.length - 1].commitments
+		const finalCashflows = [...allCashflows, { date: new Date(), amount: -totalRow.netAssetValue }]
+		if (finalCashflows.length >= 2) {
+			try {
+				totalRow.irr = xirr(finalCashflows)
+			} catch {
+				totalRow.irr = undefined
+			}
+		}
 	}
 
 	return {
@@ -248,6 +312,11 @@ export function createPortfolioReport(portfolio: Portfolio, year: number): Portf
 		netRevenueInBaseCurrency: null,
 		netInvestedInBaseCurrency: null,
 		netAssetValueInBaseCurrency: 0,
+		valuationDate: null,
+		irr: undefined,
+		committed: null,
+		totalInvested: null,
+		openCommitment: null,
 	})
 
 	const rows: PortfolioReportRow[] = []
@@ -257,6 +326,15 @@ export function createPortfolioReport(portfolio: Portfolio, year: number): Portf
 		for (const asset of entity.assets) {
 			const assetReport = createReport(asset, 'year')
 			const yearRow = assetReport.rows.find(r => r.date === yearKey)
+			const totalInvested = assetReport.totalRow.invested ?? 0
+			const committed = assetReport.totalRow.commitments || null
+
+			const base = {
+				irr: assetReport.totalRow.irr,
+				committed,
+				totalInvested: totalInvested || null,
+				openCommitment: committed ? committed - totalInvested : null,
+			}
 
 			if (yearRow) {
 				rows.push({
@@ -272,9 +350,11 @@ export function createPortfolioReport(portfolio: Portfolio, year: number): Portf
 					netRevenueInBaseCurrency: yearRow.netRevenueInBaseCurrency,
 					netInvestedInBaseCurrency: yearRow.netInvestedInBaseCurrency,
 					netAssetValueInBaseCurrency: yearRow.netAssetValueInBaseCurrency,
+					valuationDate: yearRow.valuationDate,
+					...base,
 				})
 			} else {
-				rows.push(emptyPfRow(entity, asset))
+				rows.push({ ...emptyPfRow(entity, asset), ...base })
 			}
 		}
 	}
@@ -292,15 +372,23 @@ export function createPortfolioReport(portfolio: Portfolio, year: number): Portf
 		netRevenueInBaseCurrency: null,
 		netInvestedInBaseCurrency: null,
 		netAssetValueInBaseCurrency: 0,
+		valuationDate: null,
+		irr: undefined,
+		committed: null,
+		totalInvested: null,
+		openCommitment: null,
 	}
 	for (const row of rows) {
 		totalRow.netInvestedInBaseCurrency = add(totalRow.netInvestedInBaseCurrency, row.netInvestedInBaseCurrency ?? 0)
 		totalRow.netRevenueInBaseCurrency = add(totalRow.netRevenueInBaseCurrency, row.netRevenueInBaseCurrency ?? 0)
 		totalRow.netAssetValueInBaseCurrency = add(totalRow.netAssetValueInBaseCurrency, row.netAssetValueInBaseCurrency)
+		totalRow.committed = add(totalRow.committed, row.committed ?? 0)
+		totalRow.totalInvested = add(totalRow.totalInvested, row.totalInvested ?? 0)
+		totalRow.openCommitment = add(totalRow.openCommitment, row.openCommitment ?? 0)
 	}
 
 	return {
-		name: 'Portfolio',
+		name: portfolio.name || 'Portfolio',
 		year,
 		totalRow,
 		rows,

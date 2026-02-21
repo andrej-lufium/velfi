@@ -22,6 +22,7 @@ function makeEmptyPortfolio(): Portfolio {
   const baseCurrency: Currency = { iso: "EUR", rates: [] };
   return {
     docroot: '/tmp/test',
+    name: 'Test Portfolio',
     entities: [],
     baseCurrency,
     currencies: [baseCurrency],
@@ -33,6 +34,7 @@ function makeEntity(overrides: Partial<Entity> = {}): Entity {
     name: "Test Entity",
     address: "123 Test St",
     country: "CH",
+    docfolder: '',
     assets: [],
     currency: { iso: "EUR", rates: [] },
     ...overrides,
@@ -297,6 +299,7 @@ function createSamplePortfolio(): Portfolio {
       name: entityNames[e],
       address: `${e + 1} Main St`,
       country: ["CH", "US", "GB"][e],
+      docfolder: '',
       assets: [],
       currency: currencies[e],
     };
@@ -360,5 +363,5 @@ function createSamplePortfolio(): Portfolio {
     entities.push(entity);
   }
 
-  return { docroot: '/tmp/sample', entities, baseCurrency: eur, currencies };
+  return { docroot: '/tmp/sample', name: 'Sample Portfolio', entities, baseCurrency: eur, currencies };
 }

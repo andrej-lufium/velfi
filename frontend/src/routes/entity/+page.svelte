@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state'
 	import { goto } from '$app/navigation'
+	import Doc from '$lib/components/doc.svelte'
 	import Editable from '$lib/components/editable.svelte'
 	import CurrencySelect from '$lib/components/currencyselect.svelte'
 	import CountrySelect from '$lib/components/countryselect.svelte'
@@ -42,6 +43,12 @@
 				<CountrySelect bind:value={entity.country} />
 			</div>
 		</label>
+		<div class="text-sm">
+			<span class="font-medium text-gray-700">Document Folder</span>
+			<div class="mt-1">
+				<Doc bind:value={entity.docfolder} folder={true} docroot={pf.docroot} entityName={entity.name} />
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -62,4 +69,10 @@ displayColumns={['name', 'type', 'unit', 'investments', 'revenues', 'valuations'
 narrowColumns={['investments', 'revenues', 'valuations', 'commitments']}
 wideColumns={['type', 'unit']}
 columnLabels={{ investments: 'Inv', revenues: 'Rev', valuations: 'Val', commitments: 'Com' }}
+deleteAllowed={(asset) => {
+	if (asset.investments.length > 0 || asset.revenues.length > 0 || asset.valuations.length > 0 || asset.commitments.length > 0) {
+		return { allowed: false, reason: 'Cannot delete asset with associated data' }
+	}
+	return { allowed: true }
+}}
 />

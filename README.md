@@ -45,6 +45,16 @@ cd frontend
 npx vitest run
 ```
 
+## Sample Portfolio
+
+Generate a sample `.velfi` file with 10 entities, 19 assets and data from 2020-2025:
+
+```sh
+pnpm generate-sample
+```
+
+This creates `examples/sample.velfi` which you can open in the app.
+
 ## License
 
 Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.

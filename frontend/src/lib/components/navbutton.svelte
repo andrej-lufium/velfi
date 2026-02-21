@@ -4,11 +4,13 @@ let {
   name,
   tooltip,
   variant = 'default',
+  disabled = false,
 }: {
   action: () => void
   name: string
   tooltip: string
   variant?: 'default' | 'danger' | 'primary'
+  disabled?: boolean
 } = $props()
 
 const styles = {
@@ -18,6 +20,11 @@ const styles = {
 }
 </script>
 
-<button onclick={action} title={tooltip} class="rounded px-3 py-1 text-xs font-medium transition-colors cursor-pointer {styles[variant]}">
+<button 
+  onclick={action} 
+  title={tooltip} 
+  class="rounded px-3 py-1 text-xs font-medium transition-colors {disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} {styles[variant]}" 
+  disabled={disabled}
+>
   {name}
 </button>

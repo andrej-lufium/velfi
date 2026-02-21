@@ -1,4 +1,7 @@
 {
+	"scripts": {
+		"generate-sample": "mkdir -p examples && cd frontend && npx tsx generate-sample.ts > ../examples/sample.velfi"
+	},
 	"dependencies": {
 		"vitest": "^4.0.18"
 	}

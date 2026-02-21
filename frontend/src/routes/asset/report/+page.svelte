@@ -2,7 +2,7 @@
 	import { page } from '$app/state'
 	import { goto } from '$app/navigation'
 	import {getPortfolio} from '$lib/current.svelte'
-	import { AggregateBy, type AssetReportRow } from '$lib/portfolio'
+	import { AggregateBy, assetUnitTitle, type AssetReportRow } from '$lib/portfolio'
 	import { createReport } from '$lib/report'
 	import { exportCsv } from '$lib/csv'
 	import NavButton from '$lib/components/navbutton.svelte'
@@ -17,23 +17,42 @@
   let aggregatedBy: keyof typeof AggregateBy = $state('year')
   const report = $derived(createReport(asset, aggregatedBy))
 
-  const columns: { key: keyof AssetReportRow; label: string }[] = [
-    { key: 'date', label: 'Date' },
-    { key: 'invested', label: 'Invested' },
-    { key: 'divested', label: 'Divested' },
-    { key: 'revenue', label: 'Revenue' },
-    { key: 'cost', label: 'Cost' },
-    { key: 'startUnits', label: 'Start Units' },
-    { key: 'endUnits', label: 'End Units' },
-    { key: 'valuation', label: 'Valuation' },
-    { key: 'netAssetValue', label: 'Net Asset Value' },
-    { key: 'netAssetValueInBaseCurrency', label: 'NAV (Base)' },
-  ]
+  function unitLabels(agg: keyof typeof AggregateBy): { start: string; end: string } {
+    if (agg === 'year') {
+      return { start: `${assetUnitTitle} 01.01`, end: `${assetUnitTitle} 31.12` }
+    }
+    // For quarterly, dates vary per row so just use generic labels
+    return { start: `${assetUnitTitle} start`, end: `${assetUnitTitle} end` }
+  }
 
-  function fmt(v: number | null | string): string {
-    if (v === null) return ''
+  const columns = $derived.by((): { key: keyof AssetReportRow; label: string }[] => {
+    const ul = unitLabels(aggregatedBy)
+    return [
+      { key: 'date', label: 'Date' },
+      { key: 'invested', label: 'Invested' },
+      { key: 'divested', label: 'Divested' },
+      { key: 'revenue', label: 'Revenue' },
+      { key: 'cost', label: 'Cost' },
+      { key: 'startUnits', label: ul.start },
+      { key: 'endUnits', label: ul.end },
+      { key: 'valuation', label: 'Valuation' },
+      { key: 'netAssetValue', label: 'Net Asset Value' },
+      { key: 'netAssetValueInBaseCurrency', label: 'NAV (Base)' },
+      { key: 'irr', label: 'IRR' },
+      { key: 'commitments', label: 'Commitments' },
+    ]
+  })
+
+  const pctCols = new Set(['irr'])
+
+  function fmt(v: unknown, col?: string): string {
+    if (v === null || v === undefined) return ''
     if (typeof v === 'string') return v
-    return v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    if (typeof v === 'number') {
+      if (col && pctCols.has(col)) return (v * 100).toFixed(1) + '%'
+      return v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    }
+    return String(v)
   }
 </script>
 
@@ -66,13 +85,13 @@
       {#each report.rows as row}
         <tr class="hover:bg-gray-50 transition-colors">
           {#each columns as col}
-            <td class="px-3 py-1.5 {col.key === 'date' ? '' : 'text-right'}">{fmt(row[col.key])}</td>
+            <td class="px-3 py-1.5 {col.key === 'date' ? '' : 'text-right'}">{fmt(row[col.key], col.key)}</td>
           {/each}
         </tr>
       {/each}
       <tr class="border-t-2 border-gray-300 bg-gray-50 font-semibold">
         {#each columns as col}
-          <td class="px-3 py-1.5 {col.key === 'date' ? '' : 'text-right'}">{fmt(report.totalRow[col.key])}</td>
+          <td class="px-3 py-1.5 {col.key === 'date' ? '' : 'text-right'}">{fmt(report.totalRow[col.key], col.key)}</td>
         {/each}
       </tr>
     </tbody>
