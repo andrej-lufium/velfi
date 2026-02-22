@@ -210,6 +210,8 @@
 								>
 							{:else if col === 'fxrate' && currency && baseCurrency && row['valuta']}
 								<FxRateInput bind:value={row[col]} date={row['valuta']} {currency} {baseCurrency} />
+							{:else if col === 'rate' && currency && baseCurrency && row['date']}
+								<FxRateInput bind:value={row[col]} date={row['date']} {currency} {baseCurrency} />
 							{:else if typeof row[col] === 'number'}
 								<input
 									type="number"

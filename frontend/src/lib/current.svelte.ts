@@ -5,7 +5,8 @@ import { deserializePortfolio, serializePortfolio, type Portfolio } from "./port
 import { ReadFile, WriteFile, OpenFileDialog, SaveFileDialog, ConfirmDialog, DirOfFile, ResetQuit, LoadConfig, SaveConfig } from "./wailsjs/go/main/App"
 import { main } from "./wailsjs/go/models"
 import { EventsOn, LogInfo, Quit, WindowSetTitle } from "./wailsjs/runtime/runtime"
-import { setLocale, locales } from "$lib/paraglide/runtime"
+import { setLocale, locales, getLocale } from "$lib/paraglide/runtime"
+
 //import { tick } from "svelte"
 
 type Locale = typeof locales[number]
@@ -23,7 +24,6 @@ let currentPortfolio: Portfolio = $state(defaultPortfolio)
 let currentFile: string | undefined = $state()
 let lastSavedJson: string = $state(serializePortfolio(defaultPortfolio))
 let autosave: boolean = $state(true)
-let currentLocale: Locale = $state("de-ch")
 
 export function getPortfolio(): Portfolio  {
   return currentPortfolio
@@ -41,15 +41,14 @@ export function setAutosave(value: boolean) {
   autosave = value
 }
 
-export function getLocale(): Locale {
-  return currentLocale
-}
-
+let currentLocale: Locale = $state(getLocale() as Locale)
 export function setCurrentLocale(value: Locale) {
-  LogInfo(`Setting locale to ${value}`)
+  //LogInfo(`A Setting locale to ${value}`)
+  console.log(`A Setting locale to ${value}`)
   currentLocale = value
-  setLocale(value)
+  setLocale(value,{reload: false})
 }
+export const currentLocaleState = () => currentLocale
 
 export async function saveSettings() {
   const config = new main.Config({

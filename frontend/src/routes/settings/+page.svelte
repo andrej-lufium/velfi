@@ -2,17 +2,17 @@
 	import { getAutosave, getFile, getPortfolio, setAutosave, setCurrentLocale, saveSettings } from '$lib/current.svelte'
 	import Editable from '$lib/components/editable.svelte'
 	import type { Portfolio } from '$lib/portfolio'
-	import {  locales, getLocale, setLocale } from '$lib/paraglide/runtime'
+	import {  locales, getLocale, setLocale, type Locale } from '$lib/paraglide/runtime'
 	import * as m from '$lib/paraglide/messages'
-	import { goto, invalidateAll } from '$app/navigation'
+	import { invalidateAll } from '$app/navigation'
 	import { LogInfo } from '$lib/wailsjs/runtime/runtime'
-	import { page } from '$app/state'
 	import { tick } from 'svelte'
 
 	let pf: Portfolio = $state(getPortfolio())
 	let locale = $state(getLocale())
 	//let locale = $state('')
 	let autosave = $state(getAutosave())
+  let localeChanged = $state(false)
 
 	async function handleSaveSettings() {
 		setAutosave(autosave)
@@ -20,17 +20,16 @@
 		await saveSettings()
 	}
 
-  $effect( () => {
-    
-   locale
-    LogInfo(`Locale changed to ${locale}`)
-    setLocale(locale)
- /*   tick().then(() => {
-    })
-*/  })
+  async function changeLocale(loc: Locale) {
+    setCurrentLocale(loc)
+    await tick() // Wait for Svelte to process the change
+/*    await invalidateAll() // Force SvelteKit to re-run load functions
+    localeChanged = !localeChanged
+    LogInfo(`Locale changed to ${getLocale()} ${localeChanged ? '(c)' : 'c'}`)
+ */ }
+
 </script>
 
-{#key locale}
 <div>
 	<label for="portfolioName" class="text-sm font-medium text-gray-700">{m.settingsPortfolioName()}</label>
 	<input id="portfolioName" type="text" bind:value={pf.name} class="ml-2 rounded border border-gray-300 bg-white px-2 py-1 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
@@ -46,10 +45,10 @@
 </div>
 
 <div class="mt-3">
-  Current: {locale}
+  Current: A{locale} {getLocale()}
 
 	<label for="locale" class="text-sm font-medium text-gray-700">Language:</label>
-  <select bind:value={locale} class="ml-2 rounded border border-gray-300 bg-white px-2 py-1 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none">
+  <select onchange={()=>changeLocale(locale)} bind:value={locale} class="ml-2 rounded border border-gray-300 bg-white px-2 py-1 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none">
 		{#each locales as loc}
 			<option value={loc}>{loc}</option>
 		{/each}
@@ -98,4 +97,3 @@
   }}
 />
 
-{/key}
