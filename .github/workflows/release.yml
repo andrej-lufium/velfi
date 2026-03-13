@@ -32,7 +32,7 @@ jobs:
       - name: Build
         run: |
           VERSION=${GITHUB_REF_NAME#v}
-          wails build -ldflags "-X main.Version=$VERSION"
+          wails build -ldflags "-X main.versionOverride=$VERSION"
 
       - name: Ad-hoc sign
         run: codesign --force --deep --sign - build/bin/velfi.app
@@ -71,7 +71,7 @@ jobs:
       - name: Build
         run: |
           $version = "${{ github.ref_name }}".TrimStart("v")
-          wails build -nsis -ldflags "-X main.Version=$version"
+          wails build -nsis -ldflags "-X main.versionOverride=$version"
 
       - name: Find and rename installer
         run: |

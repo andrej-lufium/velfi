@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	_ "embed"
 	"encoding/json"
 	"io"
 	"os"
@@ -15,8 +16,25 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-// Version can be set at build time via ldflags: -ldflags "-X main.Version=1.0.0"
-var Version = "0.1.0"
+//go:embed frontend/package.json
+var packageJSON []byte
+
+// ldflags can override: -ldflags "-X main.versionOverride=1.0.0"
+var versionOverride string
+
+// Version is read from frontend/package.json; overridden at build time via ldflags.
+var Version = func() string {
+	if versionOverride != "" {
+		return versionOverride
+	}
+	var pkg struct {
+		Version string `json:"version"`
+	}
+	if err := json.Unmarshal(packageJSON, &pkg); err == nil && pkg.Version != "" {
+		return pkg.Version
+	}
+	return "dev"
+}()
 
 // Config holds application configuration settings
 type Config struct {
