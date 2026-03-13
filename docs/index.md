@@ -58,10 +58,26 @@ Inside an entity, you manage its assets. Each asset represents an individual inv
 
 Each asset has:
 - **Name** -- descriptive name of the asset
-- **Type** -- debt, equity, convertible, or other
+- **Type** -- one of the supported asset types (see below)
 - **Unit** -- shares, percent, or amount
 
+#### Supported Asset Types
+
+| Type | Description | Key Fields |
+|------|-------------|------------|
+| Equity | Non-listed private company stock | Sector, Ownership (%), Founding Year |
+| Preferred Stock | Preferred shares with liquidation preference | Series, Liquidation Preference, Dividend Rate, Valuation Cap |
+| SAFE | Simple Agreement for Future Equity | Valuation Cap, Discount Rate, Pro-rata Rights |
+| Warrant | Right to purchase shares at a fixed price | Strike Price, Expiry Date |
+| Convertible | Convertible note or loan | Valuation Cap, Discount Rate, Interest Rate, Maturity Date |
+| Private Debt | Direct lending / private loan | Interest Rate, Maturity Date, Seniority |
+| Bond | Fixed-income security | ISIN, Coupon, Maturity Date |
+| Listed Equity | Publicly traded stock | ISIN, Ticker, Exchange |
+| Fund | LP interest in a private fund | Vintage Year, Strategy, Manager |
+| Other | Any other asset type | — |
+
 Click **Details** on an asset to manage its transactions:
+
 - **Investments** -- capital deployed (positive) or returned (negative values for divestments)
 - **Revenues** -- distributions, dividends, interest received
 - **Commitments** -- future obligations
