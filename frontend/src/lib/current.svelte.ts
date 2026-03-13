@@ -147,12 +147,11 @@ async function quit() {
 
 async function about() {
 //  LogPrint("About dialog would go here")
-  // eslint-disable-next-line svelte/no-navigation-without-resolve
   await goto("/about")
 }
 
 // Listen for menu events from the Go backend
-if (false && browser) {
+if (browser) {
   // Load settings at startup - defer to avoid initialization order issues
   //tick().then(() => loadSettings())
 console.log("Setting up event listeners...")

@@ -52,6 +52,7 @@ function makeAsset(entity: Entity, overrides: Partial<Asset> = {}): Asset {
     revenues: [],
     valuations: [],
     commitments: [],
+    metadata: {},
     ...overrides,
   };
   entity.assets.push(asset);

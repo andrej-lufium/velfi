@@ -1,5 +1,5 @@
 import { xirr, type CashFlow } from "./irr"
-import type { Asset, AssetReport, AssetReportRow, Entity, Portfolio, PortfolioReport, PortfolioReportRow } from "./portfolio"
+import type { Asset, AssetReport, AssetReportRow, Currency, Entity, Portfolio, PortfolioReport, PortfolioReportRow } from "./portfolio"
 import type { AggregateBy } from "./portfolio"
 
 function quarter(month: number): number {
@@ -277,6 +277,61 @@ function allAssets(portfolio: Portfolio): Asset[] {
 	return portfolio.entities.flatMap(e => e.assets)
 }
 
+type FxRatePoint = { date: Date; rate: number }
+
+/**
+ * Build a unified FX rate series for a currency by merging:
+ *  a) explicit rates from currency.rates
+ *  b) implicit rates from investments/revenues on assets denominated in that currency
+ * Result is sorted by date ascending.
+ */
+function buildFxRateSeries(currency: Currency, assets: Asset[]): FxRatePoint[] {
+	const points: FxRatePoint[] = []
+
+	for (const r of currency.rates) {
+		points.push({ date: r.date, rate: r.rate })
+	}
+
+	for (const asset of assets) {
+		if (asset.entity.currency.iso !== currency.iso) continue
+		for (const inv of asset.investments) {
+			if (inv.fxrate != null && inv.fxrate !== 0) {
+				points.push({ date: inv.valuta, rate: inv.fxrate })
+			}
+		}
+		for (const rev of asset.revenues) {
+			if (rev.fxrate != null && rev.fxrate !== 0) {
+				points.push({ date: rev.valuta, rate: rev.fxrate })
+			}
+		}
+	}
+
+	points.sort((a, b) => a.date.getTime() - b.date.getTime())
+	return points
+}
+
+/**
+ * Find the most recent FX rate (currency → baseCurrency) on or before 31 Dec of `year`.
+ * Returns 1 if currencies match or no rate data is available.
+ */
+function findEndOfYearFxRate(currency: Currency, baseCurrency: Currency, assets: Asset[], year: number): number {
+	if (currency.iso === baseCurrency.iso) return 1
+
+	const endOfYear = new Date(year, 11, 31)
+	const series = buildFxRateSeries(currency, assets)
+
+	let rate: number | null = null
+	for (const point of series) {
+		if (point.date.getTime() <= endOfYear.getTime()) {
+			rate = point.rate
+		} else {
+			break
+		}
+	}
+
+	return rate ?? 1
+}
+
 /** Get the range of years covered by any asset investment/revenue in the portfolio */
 export function getYearRange(portfolio: Portfolio): number[] {
 	let min = new Date().getFullYear()
@@ -336,7 +391,10 @@ export function createPortfolioReport(portfolio: Portfolio, year: number): Portf
 				openCommitment: committed ? committed - totalInvested : null,
 			}
 
+			const fxRate = findEndOfYearFxRate(entity.currency, portfolio.baseCurrency, allAssets(portfolio), year)
 			if (yearRow) {
+				const netRevenue = (yearRow.revenue ?? 0) - (yearRow.cost ?? 0)
+				const netInvested = (yearRow.invested ?? 0) - (yearRow.divested ?? 0)
 				rows.push({
 					entityName: entity.name,
 					country: entity.country,
@@ -347,9 +405,9 @@ export function createPortfolioReport(portfolio: Portfolio, year: number): Portf
 					divested: yearRow.divested,
 					startUnits: yearRow.startUnits,
 					endUnits: yearRow.endUnits,
-					netRevenueInBaseCurrency: yearRow.netRevenueInBaseCurrency,
-					netInvestedInBaseCurrency: yearRow.netInvestedInBaseCurrency,
-					netAssetValueInBaseCurrency: yearRow.netAssetValueInBaseCurrency,
+					netRevenueInBaseCurrency: netRevenue * fxRate,
+					netInvestedInBaseCurrency: netInvested * fxRate,
+					netAssetValueInBaseCurrency: yearRow.netAssetValue * fxRate,
 					valuationDate: yearRow.valuationDate,
 					...base,
 				})

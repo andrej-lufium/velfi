@@ -7,6 +7,8 @@
 	import AssetTypeSelect from '$lib/components/assettypeselect.svelte'
 	import AssetUnitSelect from '$lib/components/assetunitselect.svelte'
 	import {getPortfolio} from '$lib/current.svelte'
+	import { AssetMetadataFieldDefs, AssetTypeMetadataFields } from '$lib/portfolio'
+	import * as m from '$lib/paraglide/messages'
 
 	import { getCountryData, getCountryDataList, getEmojiFlag } from 'countries-list'
 
@@ -56,6 +58,40 @@
 		</div>
 	</div>
 </div>
+
+{#if AssetTypeMetadataFields[asset.type]?.length > 0}
+<details class="mb-6 rounded-lg border border-gray-200">
+	<summary class="cursor-pointer px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 select-none">{m.assetDetailsTitle()}</summary>
+	<div class="grid grid-cols-2 gap-3 px-4 pb-4 pt-2">
+		{#each AssetTypeMetadataFields[asset.type] as fieldKey (fieldKey)}
+			{@const def = AssetMetadataFieldDefs[fieldKey]}
+			{#if def}
+				<label class="block text-sm">
+					<span class="font-medium text-gray-700">{def.label}</span>
+					{#if def.type === 'boolean'}
+						<div class="mt-1">
+							<input type="checkbox" bind:checked={asset.metadata[fieldKey] as boolean} class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+						</div>
+					{:else if def.type === 'date'}
+						<input type="date"
+							value={asset.metadata[fieldKey] ? String(asset.metadata[fieldKey]).slice(0, 10) : ''}
+							oninput={(e) => { asset.metadata[fieldKey] = e.currentTarget.value }}
+							class="mt-1 block w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
+					{:else if def.type === 'number' || def.type === 'percent' || def.type === 'currency'}
+						<input type="number" step="any"
+							bind:value={asset.metadata[fieldKey]}
+							class="mt-1 block w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
+					{:else}
+						<input type="text"
+							bind:value={asset.metadata[fieldKey]}
+							class="mt-1 block w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none" />
+					{/if}
+				</label>
+			{/if}
+		{/each}
+	</div>
+</details>
+{/if}
 
 <h2 class="text-lg font-semibold mt-6 mb-1">Investments</h2>
 <p class="text-xs text-gray-500 mb-2 max-w-2xl">

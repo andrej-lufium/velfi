@@ -61,7 +61,8 @@
 	investments: [],
 	revenues: [],
 	valuations: [],
-	commitments: []
+	commitments: [],
+	metadata: {},
 })}
 chooser={{ type: AssetTypes, unit: AssetUnits }}
 portfolioDir={pf.docroot}

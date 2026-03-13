@@ -38,21 +38,87 @@ export type Revenue = {
 
 export const AssetTypes = {
 	equity: 'non-listed stock',
+	preferred: 'preferred stock',
+	safe: 'SAFE',
+	warrant: 'warrant',
 	convertible: 'convertible',
 	debt: 'debt',
+	bond: 'bond',
 	listedequity: 'listed stock',
+	fund: 'fund (LP interest)',
 	other: 'other'
 } as const
 
 export const AssetTypeNames: Record<keyof typeof AssetTypes, string> = {
-	debt: 'Debt',
 	equity: 'Equity',
+	preferred: 'Preferred Stock',
+	safe: 'SAFE',
+	warrant: 'Warrant',
 	convertible: 'Convertible',
+	debt: 'Debt',
+	bond: 'Bond',
 	listedequity: 'Listed Equity',
+	fund: 'Fund',
 	other: 'Other'
 }
 
 export const defaultAssetType: keyof typeof AssetTypes = 'equity'
+
+// --- Asset metadata ---
+
+export type MetadataFieldType = 'text' | 'number' | 'percent' | 'currency' | 'date' | 'boolean'
+
+export type MetadataFieldDef = {
+	type: MetadataFieldType
+	label: string
+}
+
+/** All possible metadata fields across all asset types. */
+export const AssetMetadataFieldDefs: Record<string, MetadataFieldDef> = {
+	// equity / preferred
+	sector:           { type: 'text',     label: 'Sector' },
+	foundingYear:     { type: 'number',   label: 'Founding Year' },
+	ownership:        { type: 'percent',  label: 'Ownership (%)' },
+	series:           { type: 'text',     label: 'Series' },
+	liquidationPref:  { type: 'number',   label: 'Liquidation Preference (x)' },
+	dividendRate:     { type: 'percent',  label: 'Dividend Rate (%)' },
+	// safe / convertible
+	valuationCap:     { type: 'currency', label: 'Valuation Cap' },
+	discountRate:     { type: 'percent',  label: 'Discount Rate (%)' },
+	proRataRights:    { type: 'boolean',  label: 'Pro-rata Rights' },
+	// warrant
+	strikePrice:      { type: 'currency', label: 'Strike Price' },
+	expiryDate:       { type: 'date',     label: 'Expiry Date' },
+	// convertible / debt / bond
+	interestRate:     { type: 'percent',  label: 'Interest Rate (%)' },
+	maturityDate:     { type: 'date',     label: 'Maturity Date' },
+	seniority:        { type: 'text',     label: 'Seniority' },
+	// bond / listed equity
+	isin:             { type: 'text',     label: 'ISIN' },
+	coupon:           { type: 'percent',  label: 'Coupon (%)' },
+	ticker:           { type: 'text',     label: 'Ticker' },
+	exchange:         { type: 'text',     label: 'Exchange' },
+	// fund
+	vintageYear:      { type: 'number',   label: 'Vintage Year' },
+	strategy:         { type: 'text',     label: 'Strategy' },
+	manager:          { type: 'text',     label: 'Manager' },
+} as const satisfies Record<string, MetadataFieldDef>
+
+/** Which metadata fields are relevant for each asset type (in display order). */
+export const AssetTypeMetadataFields = {
+	equity:      ['sector', 'ownership', 'foundingYear'],
+	preferred:   ['series', 'liquidationPref', 'dividendRate', 'valuationCap'],
+	safe:        ['valuationCap', 'discountRate', 'proRataRights'],
+	warrant:     ['strikePrice', 'expiryDate'],
+	convertible: ['valuationCap', 'discountRate', 'interestRate', 'maturityDate'],
+	debt:        ['interestRate', 'maturityDate', 'seniority'],
+	bond:        ['isin', 'coupon', 'maturityDate'],
+	listedequity: ['isin', 'ticker', 'exchange'],
+	fund:        ['vintageYear', 'strategy', 'manager'],
+	other:       [],
+} as const satisfies Record<keyof typeof AssetTypes, readonly string[]>
+
+export type AssetMetadata = Partial<Record<string, string | number | boolean | null>>
 
 export const AssetUnits = {
 	shares: 'shares',
@@ -80,6 +146,7 @@ export type Asset = {
 	revenues: Revenue[]
 	valuations: Valuation[]
 	commitments: Investment[]
+	metadata: AssetMetadata
   entity: Entity
 }
 
@@ -123,6 +190,7 @@ export function deserializePortfolio(json: string): Portfolio {
 		entity.currency = findCurrency(entity.currency as unknown as string)
 		for (const asset of entity.assets) {
 			asset.entity = entity
+			asset.metadata ??= {}
 		}
 	}
 	return pf

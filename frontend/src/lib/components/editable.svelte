@@ -68,6 +68,30 @@
 
 	if (table === undefined) table = []
 
+	let sortCol: string | null = $state(null)
+	let sortDir: 'asc' | 'desc' = $state('asc')
+
+	function compareValues(a: T, b: T, col: string): number {
+		const av = a[col], bv = b[col]
+		if (av instanceof Date && bv instanceof Date) return av.getTime() - bv.getTime()
+		if (typeof av === 'number' && typeof bv === 'number') return av - bv
+		if (Array.isArray(av) && Array.isArray(bv)) return av.length - bv.length
+		const as = av && typeof av === 'object' && 'name' in av ? av.name : String(av ?? '')
+		const bs = bv && typeof bv === 'object' && 'name' in bv ? bv.name : String(bv ?? '')
+		return as.localeCompare(bs)
+	}
+
+	function sortByCol(col: string) {
+		if (sortCol === col) {
+			sortDir = sortDir === 'asc' ? 'desc' : 'asc'
+		} else {
+			sortCol = col
+			sortDir = 'asc'
+		}
+		const dir = sortDir === 'asc' ? 1 : -1
+		table = [...table].sort((a, b) => dir * compareValues(a, b, col))
+	}
+
 	function addRow() {
 		table = [...table, maker()]
 	}
@@ -163,11 +187,17 @@
 				class="border-b border-gray-200 bg-gray-50 text-left text-xs font-medium tracking-wide text-gray-500 uppercase"
 			>
 				{#each columns as col}
-					<th class="px-3 py-2 {colWidth(col)}"
-						>{columnLabels[col] ?? col}{#if currency && valueColumns.includes(col)}<br /><span
-								class="font-normal text-gray-400 normal-case">{currency.iso}</span
-							>{/if}</th
-					>
+					<th class="px-3 py-2 {colWidth(col)}">
+						<button onclick={() => sortByCol(col)} class="inline-flex items-center gap-1 hover:text-gray-700 cursor-pointer">
+							{columnLabels[col] ?? col}
+							{#if sortCol === col}
+								{sortDir === 'asc' ? '↑' : '↓'}
+							{:else}
+								<span class="text-gray-300">↕</span>
+							{/if}
+						</button>
+						{#if currency && valueColumns.includes(col)}<br /><span class="font-normal text-gray-400 normal-case">{currency.iso}</span>{/if}
+					</th>
 				{/each}
 				<th class="w-0 px-3 py-2"></th>
 			</tr>
