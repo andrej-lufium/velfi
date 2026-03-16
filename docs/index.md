@@ -1,19 +1,34 @@
 ---
-title: Velfi - Simple Portfolio Management
+title: Velfi - Simple Tracker for Private Investments
 ---
 
 ![Velfi](logo.svg)
+A local-first tracker for private investments and other off-custodian assets.
 
-/Velfi/ is a small desktop application for managing investment portfolios. It tracks issuers, assets, investments, revenues, commitments, valuations and currency exchange rates. Reports can be generated per asset or across the entire portfolio. All data are saved locally in a file.
+## What Velfi Is For
+
+/Velfi/ is a small desktop application for tracking investments
+that are **not managed by a bank or custodian**.
+
+It is designed for portfolios that contain private or unlisted assets such as
+private equity, fund interests, private debt or other investments that need to
+be recorded manually.
+
+Velfi tracks issuers, assets, investments, revenues, commitments, valuations
+and currency exchange rates. Reports can be generated per asset or across the
+entire portfolio.
+
+All portfolio data are stored locally in a single file.
 
 ## Download
 
 | Platform | Link |
-|----------|------|
-| macOS    | [Download for Mac](https://github.com/andrej-lufium/velfi/releases/latest/download/velfi-mac.dmg) |
-| Windows  | [Download for Windows](https://github.com/andrej-lufium/velfi/releases/latest/download/velfi-windows.exe) |
+| ---------- | ------ |
+| macOS | [Download for Mac](https://github.com/andrej-lufium/velfi/releases/latest/download/velfi-mac.dmg) |
+| Windows | [Download for Windows](https://github.com/andrej-lufium/velfi/releases/latest/download/velfi-windows.exe) |
 
-Older versions are available on the [Releases](https://github.com/andrej-lufium/velfi/releases) page.
+Older versions are available on
+the [Releases](https://github.com/andrej-lufium/velfi/releases) page.
 
 ## Installation
 
@@ -37,7 +52,8 @@ As long as we haven't signed the app, you have to manually un-quarantine it:
 
 ### Create a Portfolio
 
-When you launch Velfi you start with an empty portfolio. Use **File > Save As** (Cmd+Shift+S / Ctrl+Shift+S) to save it as a `.velfi` file.
+When you launch Velfi you start with an empty portfolio.
+Use **File > Save As** (Cmd+Shift+S / Ctrl+Shift+S) to save it as a `.velfi` file.
 
 ### Issuers
 
@@ -66,9 +82,9 @@ Each asset has:
 #### Supported Asset Types
 
 | Type | Description | Key Fields |
-|------|-------------|------------|
+| ---- | ----------- | ---------- |
 | Equity | Non-listed private company stock | Sector, Ownership (%), Founding Year |
-| Preferred Stock | Preferred shares with liquidation preference | Series, Liquidation Preference, Dividend Rate, Valuation Cap |
+| Preferred Stock | Preferred shares w./ liquidation preference | Series, Liquidation Preference, Dividend Rate, Valuation Cap |
 | SAFE | Simple Agreement for Future Equity | Valuation Cap, Discount Rate, Pro-rata Rights |
 | Warrant | Right to purchase shares at a fixed price | Strike Price, Expiry Date |
 | Convertible | Convertible note or loan | Valuation Cap, Discount Rate, Interest Rate, Maturity Date |
@@ -87,15 +103,18 @@ Click **Details** on an asset to manage its transactions:
 
 ### Currencies
 
-Go to **Settings** to manage currencies. Velfi supports multiple currencies with historical exchange rates. The base currency is used for consolidated reporting.
+Go to **Settings** to manage currencies. Velfi supports multiple currencies with historical exchange rates.
+The base currency is used for consolidated reporting.
 
-Exchange rates can be fetched automatically from the [Frankfurter API](https://frankfurter.dev) via the rate settings page. Select monthly or quarterly frequency and click **Fetch Rates**.
+Exchange rates can be fetched automatically from the [Frankfurter API](https://frankfurter.dev) via the
+rate settings page. Select monthly or quarterly frequency and click **Fetch Rates**.
 
 ### Reports
 
 #### Asset Report
 
-From any asset detail page, click **View Report** to see a periodic breakdown (yearly or quarterly) of investments, revenues, units, valuations, and net asset value.
+From any asset detail page, click **View Report** to see a periodic breakdown (yearly or quarterly) of
+investments, revenues, units, valuations, and net asset value.
 
 #### Portfolio Report
 
@@ -108,20 +127,24 @@ Both reports can be:
 
 ## File Format
 
-Portfolios are saved as `.velfi` files (JSON format). They contain all issuers, assets, transactions, currencies and exchange rates in a single file. Document references (investment confirmations, contracts, etc.) are stored as relative paths to a configurable document folder.
+Portfolios are saved as `.velfi` files (JSON format). They contain all
+issuers, assets, transactions, currencies and exchange rates in a single
+file. Document references (investment confirmations, contracts, etc.) are
+stored as relative paths to a configurable document folder.
 
 ## Keyboard Shortcuts
 
-| Action       | macOS        | Windows       |
-|--------------|--------------|---------------|
-| Open         | Cmd+O        | Ctrl+O        |
-| Save         | Cmd+S        | Ctrl+S        |
-| Save As      | Cmd+Shift+S  | Ctrl+Shift+S  |
-| Quit         | Cmd+Q        | Ctrl+Q        |
+| Action | macOS | Windows |
+| -------------- | -------------- | --------------- |
+| Open | Cmd+O | Ctrl+O |
+| Save | Cmd+S | Ctrl+S |
+| Save As | Cmd+Shift+S | Ctrl+Shift+S |
+| Quit | Cmd+Q | Ctrl+Q |
 
 ## Building from Source
 
-Velfi is built with [Wails v2](https://wails.io), using Go for the backend and SvelteKit for the frontend.
+Velfi is built with [Wails v2](https://wails.io), using Go for the backend and
+SvelteKit for the frontend.
 
 ### Prerequisites
 
