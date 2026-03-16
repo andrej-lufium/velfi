@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"os"
 	"strings"
@@ -66,6 +67,12 @@ func main() {
 			DisableWebViewDrop: false,
 		},
 		OnStartup:     app.startup,
+		OnDomReady: func(ctx context.Context) {
+			if app.initialFile != "" {
+				runtime.EventsEmit(ctx, "file:open", app.initialFile)
+				app.initialFile = ""
+			}
+		},
 		OnBeforeClose: app.beforeClose,
 		Bind: []interface{}{
 			app,

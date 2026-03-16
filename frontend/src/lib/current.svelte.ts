@@ -2,7 +2,7 @@ import { browser } from "$app/environment"
 import { goto } from "$app/navigation"
 //import { goto } from "$app/navigation"
 import { deserializePortfolio, serializePortfolio, defaultTaxHiddenColumns, type Portfolio } from "./portfolio"
-import { ReadFile, WriteFile, OpenFileDialog, SaveFileDialog, ConfirmDialog, DirOfFile, ResetQuit, LoadConfig, SaveConfig, GetInitialFile } from "./wailsjs/go/main/App"
+import { ReadFile, WriteFile, OpenFileDialog, SaveFileDialog, ConfirmDialog, DirOfFile, ResetQuit, LoadConfig, SaveConfig } from "./wailsjs/go/main/App"
 import { main } from "./wailsjs/go/models"
 import { EventsOn, LogInfo, Quit, WindowSetTitle } from "./wailsjs/runtime/runtime"
 import { setLocale, locales, getLocale } from "$lib/paraglide/runtime"
@@ -163,9 +163,6 @@ console.log("Setting up event listeners...")
   EventsOn("app:beforeclose", () => { quit() })
   EventsOn("menu:about", () => { about() })
   EventsOn("file:open", (path: string) => { open(path) })
-
-  // Open file passed via CLI arg or macOS file-open at launch
-  GetInitialFile().then(path => { if (path) open(path) })
 
   // Autosave: check every 10 seconds
   setInterval(() => {
