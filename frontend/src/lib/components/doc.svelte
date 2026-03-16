@@ -6,13 +6,13 @@
 		folder = false,
 		docroot = '',
 		docfolder = '',
-		entityName = '',
+		issuerName = '',
 	}: {
 		value: string
 		folder?: boolean
 		docroot: string
 		docfolder?: string
-		entityName?: string
+		issuerName?: string
 	} = $props()
 
 	let exists: boolean | null = $state(null)
@@ -48,7 +48,7 @@
 
 	async function handleChoose() {
 		if (folder) {
-			const result = await ChooseOrCreateFolder(docroot, value, entityName)
+			const result = await ChooseOrCreateFolder(docroot, value, issuerName)
 			if (result !== undefined) value = result
 		} else {
 			const result = await ChooseDocument(docroot, docfolder)

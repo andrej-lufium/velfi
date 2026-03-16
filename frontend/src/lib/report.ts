@@ -1,5 +1,5 @@
 import { xirr, type CashFlow } from "./irr"
-import type { Asset, AssetReport, AssetReportRow, Currency, Entity, Portfolio, PortfolioReport, PortfolioReportRow } from "./portfolio"
+import type { Asset, AssetReport, AssetReportRow, Currency, Issuer, Portfolio, PortfolioReport, PortfolioReportRow } from "./portfolio"
 import type { AggregateBy } from "./portfolio"
 
 function quarter(month: number): number {
@@ -43,6 +43,8 @@ function emptyRow(date: string): AssetReportRow {
 		invested: null,
 		divested: null,
 		revenue: null,
+		wht: null,
+		netRevenue: null,
 		cost: null,
 		startUnits: null,
 		endUnits: null,
@@ -110,11 +112,11 @@ function findValuation(series: ValuationPoint[], endDate: Date): { unitPrice: nu
 }
 
 export function createReport(asset: Asset, aggregateBy: keyof typeof AggregateBy, fillGaps = true): AssetReport {
-	type Entry = { date: Date; kind: 'investment' | 'revenue'; value: number; units: number; fxrate: number | undefined }
+	type Entry = { date: Date; kind: 'investment' | 'revenue'; value: number; wht: number; units: number; fxrate: number | undefined }
 
 	const entries: Entry[] = [
-		...asset.investments.map(inv => ({ date: inv.valuta, kind: 'investment' as const, value: inv.value, units: inv.units, fxrate: inv.fxrate })),
-		...asset.revenues.map(rev => ({ date: rev.valuta, kind: 'revenue' as const, value: rev.value, units: 0, fxrate: rev.fxrate })),
+		...asset.investments.map(inv => ({ date: inv.valuta, kind: 'investment' as const, value: inv.value, wht: 0, units: inv.units, fxrate: inv.fxrate })),
+		...asset.revenues.map(rev => ({ date: rev.valuta, kind: 'revenue' as const, value: rev.value, wht: rev.wht ?? 0, units: 0, fxrate: rev.fxrate })),
 	]
 	entries.sort((a, b) => a.date.getTime() - b.date.getTime())
 
@@ -154,13 +156,22 @@ export function createReport(asset: Asset, aggregateBy: keyof typeof AggregateBy
 				row.endUnits = add(row.endUnits, entry.units)
 			}
 		} else {
+			const whtInBase = entry.wht * fxrate
 			if (entry.value >= 0) {
 				row.revenue = add(row.revenue, entry.value)
-				row.netRevenueInBaseCurrency = add(row.netRevenueInBaseCurrency, valueInBase)
+				row.wht = add(row.wht, entry.wht)
+				row.netRevenueInBaseCurrency = add(row.netRevenueInBaseCurrency, valueInBase - whtInBase)
 			} else {
 				row.cost = add(row.cost, -entry.value)
 				row.netRevenueInBaseCurrency = add(row.netRevenueInBaseCurrency, valueInBase)
 			}
+		}
+	}
+
+	// Compute netRevenue for all aggregated rows
+	for (const row of rowMap.values()) {
+		if (row.revenue != null || row.wht != null) {
+			row.netRevenue = (row.revenue ?? 0) - (row.wht ?? 0)
 		}
 	}
 
@@ -212,9 +223,13 @@ export function createReport(asset: Asset, aggregateBy: keyof typeof AggregateBy
 		totalRow.invested = add(totalRow.invested, row.invested ?? 0)
 		totalRow.divested = add(totalRow.divested, row.divested ?? 0)
 		totalRow.revenue = add(totalRow.revenue, row.revenue ?? 0)
+		totalRow.wht = add(totalRow.wht, row.wht ?? 0)
 		totalRow.cost = add(totalRow.cost, row.cost ?? 0)
 		totalRow.netInvestedInBaseCurrency = add(totalRow.netInvestedInBaseCurrency, row.netInvestedInBaseCurrency ?? 0)
 		totalRow.netRevenueInBaseCurrency = add(totalRow.netRevenueInBaseCurrency, row.netRevenueInBaseCurrency ?? 0)
+	}
+	if (totalRow.revenue != null || totalRow.wht != null) {
+		totalRow.netRevenue = (totalRow.revenue ?? 0) - (totalRow.wht ?? 0)
 	}
 	if (rows.length > 0) {
 		totalRow.startUnits = rows[0].startUnits
@@ -266,15 +281,15 @@ export function createReport(asset: Asset, aggregateBy: keyof typeof AggregateBy
 		aggregatedBy: aggregateBy,
 		type: asset.type,
 		unit: asset.unit,
-		currency: asset.entity.currency,
+		currency: asset.issuer.currency,
 		totalRow,
 		rows,
 	}
 }
 
-/** Collect all assets from all entities in the portfolio */
+/** Collect all assets from all issuers in the portfolio */
 function allAssets(portfolio: Portfolio): Asset[] {
-	return portfolio.entities.flatMap(e => e.assets)
+	return portfolio.issuers.flatMap(e => e.assets)
 }
 
 type FxRatePoint = { date: Date; rate: number }
@@ -293,7 +308,7 @@ function buildFxRateSeries(currency: Currency, assets: Asset[]): FxRatePoint[] {
 	}
 
 	for (const asset of assets) {
-		if (asset.entity.currency.iso !== currency.iso) continue
+		if (asset.issuer.currency.iso !== currency.iso) continue
 		for (const inv of asset.investments) {
 			if (inv.fxrate != null && inv.fxrate !== 0) {
 				points.push({ date: inv.valuta, rate: inv.fxrate })
@@ -354,20 +369,23 @@ export function getYearRange(portfolio: Portfolio): number[] {
 }
 
 export function createPortfolioReport(portfolio: Portfolio, year: number): PortfolioReport {
-	const emptyPfRow = (entity: Entity, asset: Asset): PortfolioReportRow => ({
-		entityName: entity.name,
-		country: entity.country,
+	const emptyPfRow = (issuer: Issuer, asset: Asset): PortfolioReportRow => ({
+		issuerName: issuer.name,
+		country: issuer.country,
 		assetName: asset.name,
 		type: asset.type,
-		currency: entity.currency,
+		currency: issuer.currency,
 		invested: null,
 		divested: null,
 		startUnits: null,
 		endUnits: null,
 		netRevenueInBaseCurrency: null,
+		whtInBaseCurrency: null,
 		netInvestedInBaseCurrency: null,
 		netAssetValueInBaseCurrency: 0,
 		valuationDate: null,
+		valuationUnitPrice: null,
+		fxRate: null,
 		irr: undefined,
 		committed: null,
 		totalInvested: null,
@@ -377,8 +395,8 @@ export function createPortfolioReport(portfolio: Portfolio, year: number): Portf
 	const rows: PortfolioReportRow[] = []
 	const yearKey = String(year)
 
-	for (const entity of portfolio.entities) {
-		for (const asset of entity.assets) {
+	for (const issuer of portfolio.issuers) {
+		for (const asset of issuer.assets) {
 			const assetReport = createReport(asset, 'year')
 			const yearRow = assetReport.rows.find(r => r.date === yearKey)
 			const totalInvested = assetReport.totalRow.invested ?? 0
@@ -391,34 +409,37 @@ export function createPortfolioReport(portfolio: Portfolio, year: number): Portf
 				openCommitment: committed ? committed - totalInvested : null,
 			}
 
-			const fxRate = findEndOfYearFxRate(entity.currency, portfolio.baseCurrency, allAssets(portfolio), year)
+			const fxRate = findEndOfYearFxRate(issuer.currency, portfolio.baseCurrency, allAssets(portfolio), year)
 			if (yearRow) {
-				const netRevenue = (yearRow.revenue ?? 0) - (yearRow.cost ?? 0)
+				const netRevenue = (yearRow.revenue ?? 0) - (yearRow.cost ?? 0) - (yearRow.wht ?? 0)
 				const netInvested = (yearRow.invested ?? 0) - (yearRow.divested ?? 0)
 				rows.push({
-					entityName: entity.name,
-					country: entity.country,
+					issuerName: issuer.name,
+					country: issuer.country,
 					assetName: asset.name,
 					type: asset.type,
-					currency: entity.currency,
+					currency: issuer.currency,
 					invested: yearRow.invested,
 					divested: yearRow.divested,
 					startUnits: yearRow.startUnits,
 					endUnits: yearRow.endUnits,
 					netRevenueInBaseCurrency: netRevenue * fxRate,
+					whtInBaseCurrency: yearRow.wht ? yearRow.wht * fxRate : null,
 					netInvestedInBaseCurrency: netInvested * fxRate,
 					netAssetValueInBaseCurrency: yearRow.netAssetValue * fxRate,
 					valuationDate: yearRow.valuationDate,
+					valuationUnitPrice: yearRow.valuation || null,
+					fxRate: issuer.currency.iso !== portfolio.baseCurrency.iso ? fxRate : null,
 					...base,
 				})
 			} else {
-				rows.push({ ...emptyPfRow(entity, asset), ...base })
+				rows.push({ ...emptyPfRow(issuer, asset), ...base })
 			}
 		}
 	}
 
 	const totalRow: PortfolioReportRow = {
-		entityName: '',
+		issuerName: '',
 		country: '',
 		assetName: 'Total',
 		type: 'other',
@@ -428,9 +449,12 @@ export function createPortfolioReport(portfolio: Portfolio, year: number): Portf
 		startUnits: null,
 		endUnits: null,
 		netRevenueInBaseCurrency: null,
+		whtInBaseCurrency: null,
 		netInvestedInBaseCurrency: null,
 		netAssetValueInBaseCurrency: 0,
 		valuationDate: null,
+		valuationUnitPrice: null,
+		fxRate: null,
 		irr: undefined,
 		committed: null,
 		totalInvested: null,
@@ -439,6 +463,7 @@ export function createPortfolioReport(portfolio: Portfolio, year: number): Portf
 	for (const row of rows) {
 		totalRow.netInvestedInBaseCurrency = add(totalRow.netInvestedInBaseCurrency, row.netInvestedInBaseCurrency ?? 0)
 		totalRow.netRevenueInBaseCurrency = add(totalRow.netRevenueInBaseCurrency, row.netRevenueInBaseCurrency ?? 0)
+		totalRow.whtInBaseCurrency = add(totalRow.whtInBaseCurrency, row.whtInBaseCurrency ?? 0)
 		totalRow.netAssetValueInBaseCurrency = add(totalRow.netAssetValueInBaseCurrency, row.netAssetValueInBaseCurrency)
 		totalRow.committed = add(totalRow.committed, row.committed ?? 0)
 		totalRow.totalInvested = add(totalRow.totalInvested, row.totalInvested ?? 0)

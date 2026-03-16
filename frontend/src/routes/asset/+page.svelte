@@ -13,18 +13,18 @@
 	import { getCountryData, getCountryDataList, getEmojiFlag } from 'countries-list'
 
 	const pf = $derived(getPortfolio())
-	const entityIndex = $derived(Number(page.url.searchParams.get('entityIndex')))
+	const issuerIndex = $derived(Number(page.url.searchParams.get('issuerIndex')))
 	const assetIndex = $derived(Number(page.url.searchParams.get('assetIndex')))
-	const entity = $derived(pf?.entities[entityIndex])
-	const asset = $derived(entity?.assets[assetIndex])
-	const isForeignCurrency = $derived(asset && pf && entity.currency.iso !== pf.baseCurrency.iso)
+	const issuer = $derived(pf?.issuers[issuerIndex])
+	const asset = $derived(issuer?.assets[assetIndex])
+	const isForeignCurrency = $derived(asset && pf && issuer.currency.iso !== pf.baseCurrency.iso)
 	const fx = $derived(isForeignCurrency ? { fxrate: 0 as number | undefined } : {})
 </script>
 
 <div class="mb-4 flex items-center gap-3">
-	<NavButton action={() => goto(`/entity?index=${entityIndex}`)} name="Back to Entity" tooltip="Return to entity detail page" />
+	<NavButton action={() => goto(`/issuer?index=${issuerIndex}`)} name={m.navBackToIssuer()} tooltip={m.navBackToIssuerTooltip()} />
 	<h1 class="text-xl font-semibold">{asset.name}</h1>
-	<NavButton action={() => goto(`/asset/report?entityIndex=${entityIndex}&assetIndex=${assetIndex}`)} name="View Report" tooltip="View periodic report for this asset" />
+	<NavButton action={() => goto(`/asset/report?issuerIndex=${issuerIndex}&assetIndex=${assetIndex}`)} name={m.assetViewReport()} tooltip={m.assetViewReportTooltip()} />
 </div>
 
 <div class="mb-6 grid grid-cols-2 gap-6">
@@ -46,15 +46,15 @@
 	</div>
 	<div class="rounded-lg border border-gray-200 p-4 space-y-3">
 		<div class="flex items-center gap-2 text-sm">
-			<span class="font-medium text-gray-700">Entity:</span>
-			<span>{entity.name}</span>
-			<NavButton action={() => goto(`/entity?index=${entityIndex}`)} name="Go to Entity" tooltip="Open entity detail page" />
+			<span class="font-medium text-gray-700">{m.assetIssuerLabel()}</span>
+			<span>{issuer.name}</span>
+			<NavButton action={() => goto(`/issuer?index=${issuerIndex}`)} name={m.navGoToIssuer()} tooltip={m.navGoToIssuerTooltip()} />
 		</div>
 		<div class="text-sm text-gray-500">
-			<span class="font-medium text-gray-700">Currency:</span> {entity.currency.iso}
+			<span class="font-medium text-gray-700">Currency:</span> {issuer.currency.iso}
 		</div>
 		<div class="text-sm text-gray-500">
-			<span class="font-medium text-gray-700">Country:</span> {getCountryData(entity.country as keyof typeof getCountryDataList)?.name ?? entity.country} {getEmojiFlag(entity.country as keyof typeof getCountryDataList)}
+			<span class="font-medium text-gray-700">Country:</span> {getCountryData(issuer.country as keyof typeof getCountryDataList)?.name ?? issuer.country} {getEmojiFlag(issuer.country as keyof typeof getCountryDataList)}
 		</div>
 	</div>
 </div>
@@ -108,9 +108,9 @@
 	doc: ''
 })}
 chooser={{ doc: 'doc' }}
-docfolder={entity.docfolder}
+docfolder={issuer.docfolder}
 portfolioDir={pf.docroot}
-currency={entity.currency}
+currency={issuer.currency}
 baseCurrency={pf.baseCurrency}
 valueColumns={['value']}
 />
@@ -125,13 +125,14 @@ valueColumns={['value']}
 	valuta: new Date(),
 	description: 'new revenue',
 	value: 0,
+	wht: 0,
 	...fx,
 	doc: ''
 })}
 chooser={{ doc: 'doc' }}
-docfolder={entity.docfolder}
+docfolder={issuer.docfolder}
 portfolioDir={pf.docroot}
-currency={entity.currency}
+currency={issuer.currency}
 baseCurrency={pf.baseCurrency}
 valueColumns={['value']}
 />
@@ -150,9 +151,9 @@ valueColumns={['value']}
 	doc: ''
 })}
 chooser={{ doc: 'doc' }}
-docfolder={entity.docfolder}
+docfolder={issuer.docfolder}
 portfolioDir={pf.docroot}
-currency={entity.currency}
+currency={issuer.currency}
 baseCurrency={pf.baseCurrency}
 valueColumns={['value']}
 />
@@ -167,9 +168,9 @@ valueColumns={['value']}
 	doc: ''
 })}
 chooser={{ doc: 'doc' }}
-docfolder={entity.docfolder}
+docfolder={issuer.docfolder}
 portfolioDir={pf.docroot}
-currency={entity.currency}
+currency={issuer.currency}
 baseCurrency={pf.baseCurrency}
 valueColumns={['unitPrice']}
 />

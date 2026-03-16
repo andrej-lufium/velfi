@@ -47,8 +47,9 @@ type Config struct {
 
 // App struct
 type App struct {
-	ctx      context.Context
-	quitting bool
+	ctx         context.Context
+	quitting    bool
+	initialFile string // set from CLI arg or macOS file-open event before ctx is ready
 }
 
 // NewApp creates a new App application struct
@@ -60,6 +61,14 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+}
+
+// GetInitialFile returns the file path passed on the command line (or via macOS
+// file-open before the frontend was ready) and clears it so it is only consumed once.
+func (a *App) GetInitialFile() string {
+	f := a.initialFile
+	a.initialFile = ""
+	return f
 }
 
 // beforeClose delegates to the frontend which checks dirty state and confirms
@@ -316,7 +325,7 @@ func (a *App) ChooseDocument(docroot string, docfolder string) (string, error) {
 	return path, nil
 }
 
-// ChooseOrCreateFolder handles folder selection/creation for entity docfolders.
+// ChooseOrCreateFolder handles folder selection/creation for issuer docfolders.
 // Returns a relative path to docroot.
 func (a *App) ChooseOrCreateFolder(docroot string, currentValue string, suggestedName string) (string, error) {
 	if currentValue != "" {

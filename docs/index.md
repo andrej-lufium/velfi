@@ -4,7 +4,7 @@ title: Velfi - Simple Portfolio Management
 
 ![Velfi](logo.svg)
 
-/Velfi/ is a small desktop application for managing investment portfolios. It tracks entities, assets, investments, revenues, commitments, valuations and currency exchange rates. Reports can be generated per asset or across the entire portfolio. All data are saved locally in a file.
+/Velfi/ is a small desktop application for managing investment portfolios. It tracks issuers, assets, investments, revenues, commitments, valuations and currency exchange rates. Reports can be generated per asset or across the entire portfolio. All data are saved locally in a file.
 
 ## Download
 
@@ -39,24 +39,26 @@ As long as we haven't signed the app, you have to manually un-quarantine it:
 
 When you launch Velfi you start with an empty portfolio. Use **File > Save As** (Cmd+Shift+S / Ctrl+Shift+S) to save it as a `.velfi` file.
 
-### Entities
+### Issuers
 
-The home screen shows a list of entities. An entity represents a legal entity (company, fund, etc.) that holds assets.
+The home screen shows a list of issuers. An issuer represents a legal entity (company, fund, etc.) that holds assets.
 
-Each entity has:
-- **Name** -- the entity's name
+Each issuer has:
+
+- **Name** -- the issuer's name
 - **Address** -- registered address
 - **Country** -- country of incorporation
-- **Currency** -- the entity's operating currency
-- **Assets** -- the list of assets held by this entity
+- **Currency** -- the issuer's operating currency
+- **Assets** -- the list of assets held by this issuer
 
-Click **Add** to create a new entity, or **Details** to open an existing one.
+Click **Add** to create a new issuer, or **Details** to open an existing one.
 
 ### Assets
 
-Inside an entity, you manage its assets. Each asset represents an individual investment position.
+Inside an issuer, you manage its assets. Each asset represents an individual investment position.
 
 Each asset has:
+
 - **Name** -- descriptive name of the asset
 - **Type** -- one of the supported asset types (see below)
 - **Unit** -- shares, percent, or amount
@@ -97,7 +99,7 @@ From any asset detail page, click **View Report** to see a periodic breakdown (y
 
 #### Portfolio Report
 
-From the home screen, click **View Report** to see a consolidated annual report across all entities and assets, with values converted to the base currency.
+From the home screen, click **View Report** to see a consolidated annual report across all issuers and assets, with values converted to the base currency.
 
 Both reports can be:
 
@@ -106,7 +108,7 @@ Both reports can be:
 
 ## File Format
 
-Portfolios are saved as `.velfi` files (JSON format). They contain all entities, assets, transactions, currencies and exchange rates in a single file. Document references (investment confirmations, contracts, etc.) are stored as relative paths to a configurable document folder.
+Portfolios are saved as `.velfi` files (JSON format). They contain all issuers, assets, transactions, currencies and exchange rates in a single file. Document references (investment confirmations, contracts, etc.) are stored as relative paths to a configurable document folder.
 
 ## Keyboard Shortcuts
 

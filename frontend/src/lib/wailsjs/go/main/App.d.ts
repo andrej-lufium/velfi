@@ -18,6 +18,8 @@ export function FileExists(arg1:string):Promise<boolean>;
 
 export function GetConfigPath():Promise<string>;
 
+export function GetInitialFile():Promise<string>;
+
 export function GetVersion():Promise<string>;
 
 export function LoadConfig():Promise<main.Config>;

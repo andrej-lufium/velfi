@@ -13,11 +13,33 @@ export type Valuation = {
 
 export type Portfolio = {
 	docroot: string
-	entities: Entity[]
+	issuers: Issuer[]
 	baseCurrency: Currency
 	currencies: Currency[]
   name: string
+  taxHiddenColumns: string[]
 }
+
+export const reportColumnDefs: { key: keyof PortfolioReportRow; label: string }[] = [
+  { key: 'issuerName', label: 'Issuer' },
+  { key: 'country', label: 'Country' },
+  { key: 'assetName', label: 'Asset' },
+  { key: 'type', label: 'Type' },
+  { key: 'invested', label: 'Invested' },
+  { key: 'divested', label: 'Divested' },
+  { key: 'startUnits', label: 'Units (Start)' },
+  { key: 'endUnits', label: 'Units (End)' },
+  { key: 'netInvestedInBaseCurrency', label: 'Net Invested (Base)' },
+  { key: 'netRevenueInBaseCurrency', label: 'Net Revenue (Base)' },
+  { key: 'whtInBaseCurrency', label: 'WHT (Base)' },
+  { key: 'netAssetValueInBaseCurrency', label: 'NAV (Base)' },
+  { key: 'irr', label: 'IRR' },
+  { key: 'committed', label: 'Committed' },
+  { key: 'totalInvested', label: 'Total Invested' },
+  { key: 'openCommitment', label: 'Open Commitment' },
+]
+
+export const defaultTaxHiddenColumns: string[] = ['invested', 'divested', 'irr', 'committed', 'totalInvested', 'openCommitment']
 
 export type Investment = {
 	valuta: Date
@@ -32,6 +54,7 @@ export type Revenue = {
 	valuta: Date
 	description: string
 	value: number
+	wht: number
 	fxrate?: number
 	doc: DocumentReference
 }
@@ -130,7 +153,7 @@ export const defaultAssetUnit: keyof typeof AssetUnits = 'shares'
 
 export const assetUnitTitle = 'Quantity' // de: bestand, fr: quantité
 
-export type Entity = {
+export type Issuer = {
   name: string
   address: string
   country: string
@@ -147,7 +170,7 @@ export type Asset = {
 	valuations: Valuation[]
 	commitments: Investment[]
 	metadata: AssetMetadata
-  entity: Entity
+  issuer: Issuer
 }
 
 // --- Serialization ---
@@ -157,8 +180,8 @@ const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/
 export function serializePortfolio(portfolio: Portfolio): string {
 	return JSON.stringify(portfolio, (key, value) => {
 		if (key === 'docroot') return undefined
-		// Skip circular back-references: asset.entity and entity/asset currency (stored as iso)
-		if (key === 'entity' && value && typeof value === 'object' && 'assets' in value) return undefined
+		// Skip circular back-references: asset.issuer and issuer/asset currency (stored as iso)
+		if (key === 'issuer' && value && typeof value === 'object' && 'assets' in value) return undefined
 		if (key === 'currency' && value && typeof value === 'object' && 'iso' in value) return value.iso
 		return value
 	}, 2)
@@ -178,7 +201,13 @@ export function deserializePortfolio(json: string): Portfolio {
 	} else {
 		pf.currencies.push(pf.baseCurrency)
 	}
-	// Relink entity.currency from iso string to currency object, and asset.entity back-references
+	// Backward compat: support old files that used 'entities' instead of 'issuers'
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const pfAny = pf as any
+	if (pfAny.entities && (!pf.issuers || pf.issuers.length === 0)) {
+		pf.issuers = pfAny.entities
+	}
+	// Relink issuer.currency from iso string to currency object, and asset.issuer back-references
 	const findCurrency = (iso: string): Currency => {
 		const c = pf.currencies.find(c => c.iso === iso)
 		if (c) return c
@@ -186,10 +215,11 @@ export function deserializePortfolio(json: string): Portfolio {
 		pf.currencies.push(newC)
 		return newC
 	}
-	for (const entity of pf.entities) {
-		entity.currency = findCurrency(entity.currency as unknown as string)
-		for (const asset of entity.assets) {
-			asset.entity = entity
+	pf.taxHiddenColumns ??= defaultTaxHiddenColumns
+	for (const issuer of pf.issuers) {
+		issuer.currency = findCurrency(issuer.currency as unknown as string)
+		for (const asset of issuer.assets) {
+			asset.issuer = issuer
 			asset.metadata ??= {}
 		}
 	}
@@ -215,7 +245,9 @@ export type AssetReportRow = {
   date: string
   invested: number | null
   divested: number | null
-  revenue: number  | null
+  revenue: number | null
+  wht: number | null
+  netRevenue: number | null
   cost: number | null
   startUnits: number | null
   endUnits: number | null
@@ -239,7 +271,7 @@ export type PortfolioReport = {
 }
 
 export type PortfolioReportRow = {
-  entityName: string
+  issuerName: string
   country: string
   assetName: string
   type: keyof typeof AssetTypes
@@ -249,9 +281,12 @@ export type PortfolioReportRow = {
   startUnits: number | null
   endUnits: number | null
   netRevenueInBaseCurrency: number | null
+  whtInBaseCurrency: number | null
   netInvestedInBaseCurrency: number | null
   netAssetValueInBaseCurrency: number
   valuationDate: Date | null
+  valuationUnitPrice: number | null
+  fxRate: number | null
   irr: number | undefined
   committed: number | null
   totalInvested: number | null

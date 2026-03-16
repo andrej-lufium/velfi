@@ -2,20 +2,28 @@
 	import { page } from '$app/state'
 	import { goto } from '$app/navigation'
 	import {getPortfolio} from '$lib/current.svelte'
-	import { AggregateBy, assetUnitTitle, type AssetReportRow } from '$lib/portfolio'
+	import { AggregateBy, assetUnitTitle, AssetMetadataFieldDefs, AssetTypeMetadataFields, type AssetReportRow } from '$lib/portfolio'
 	import { createReport } from '$lib/report'
 	import { exportCsv } from '$lib/csv'
 	import NavButton from '$lib/components/navbutton.svelte'
 	import { Print } from '$lib/wailsjs/go/main/App'
 
 	const pf = $derived(getPortfolio())
-	const entityIndex = $derived(Number(page.url.searchParams.get('entityIndex')))
+	const issuerIndex = $derived(Number(page.url.searchParams.get('issuerIndex')))
 	const assetIndex = $derived(Number(page.url.searchParams.get('assetIndex')))
-	const entity = $derived(pf?.entities[entityIndex])
-	const asset = $derived(entity?.assets[assetIndex])
+	const issuer = $derived(pf?.issuers[issuerIndex])
+	const asset = $derived(issuer?.assets[assetIndex])
 
   let aggregatedBy: keyof typeof AggregateBy = $state('year')
   const report = $derived(createReport(asset, aggregatedBy))
+
+  const metadataFields = $derived.by(() => {
+    if (!asset) return []
+    const fields = AssetTypeMetadataFields[asset.type] ?? []
+    return fields
+      .map(key => ({ key, def: AssetMetadataFieldDefs[key], value: asset.metadata?.[key] }))
+      .filter(f => f.def && f.value !== undefined && f.value !== null && f.value !== '')
+  })
 
   function unitLabels(agg: keyof typeof AggregateBy): { start: string; end: string } {
     if (agg === 'year') {
@@ -32,6 +40,8 @@
       { key: 'invested', label: 'Invested' },
       { key: 'divested', label: 'Divested' },
       { key: 'revenue', label: 'Revenue' },
+      { key: 'wht', label: 'WHT' },
+      { key: 'netRevenue', label: 'Net Revenue' },
       { key: 'cost', label: 'Cost' },
       { key: 'startUnits', label: ul.start },
       { key: 'endUnits', label: ul.end },
@@ -54,16 +64,40 @@
     }
     return String(v)
   }
+
+  function fmtMeta(value: string | number | boolean | null | undefined, type: string): string {
+    if (value === null || value === undefined) return ''
+    if (typeof value === 'boolean') return value ? 'Yes' : 'No'
+    if (type === 'percent' && typeof value === 'number') return value.toFixed(2) + '%'
+    if ((type === 'number' || type === 'currency') && typeof value === 'number')
+      return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    if (type === 'date') return new Date(value as string).toLocaleDateString()
+    return String(value)
+  }
 </script>
 
 <div class="mb-4 flex items-center gap-3">
-  <NavButton action={() => goto(`/asset?entityIndex=${entityIndex}&assetIndex=${assetIndex}`)} name="Back to Asset" tooltip="Return to asset detail page" />
+  <NavButton action={() => goto(`/asset?issuerIndex=${issuerIndex}&assetIndex=${assetIndex}`)} name="Back to Asset" tooltip="Return to asset detail page" />
   <h1 class="text-xl font-semibold">Report: {asset.name}</h1>
 </div>
+
+{#if metadataFields.length > 0}
+<div class="mb-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+  <dl class="flex flex-wrap gap-x-6 gap-y-2">
+    {#each metadataFields as f (f.key)}
+      <div class="flex flex-col">
+        <dt class="text-xs font-medium text-gray-500 uppercase tracking-wide">{f.def.label}</dt>
+        <dd class="text-sm font-semibold text-gray-800">{fmtMeta(f.value, f.def.type)}</dd>
+      </div>
+    {/each}
+  </dl>
+</div>
+{/if}
+
 <div class="mb-4 flex items-center gap-2">
   <label class="text-sm font-medium text-gray-700">Aggregate by:
   <select bind:value={aggregatedBy} class="rounded border border-gray-300 bg-white px-2 py-1 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none">
-    {#each Object.entries(AggregateBy) as [key, label]}
+    {#each Object.entries(AggregateBy) as [key, label] (key)}
       <option value={key}>{label}</option>
     {/each}
   </select>
@@ -76,21 +110,21 @@
   <table class="w-full text-sm">
     <thead>
       <tr class="border-b border-gray-200 bg-gray-50 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">
-        {#each columns as col}
+        {#each columns as col (col.key)}
           <th class="px-3 py-2">{col.label}</th>
         {/each}
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-100">
-      {#each report.rows as row}
+      {#each report.rows as row (row.date)}
         <tr class="hover:bg-gray-50 transition-colors">
-          {#each columns as col}
+          {#each columns as col (col.key)}
             <td class="px-3 py-1.5 {col.key === 'date' ? '' : 'text-right'}">{fmt(row[col.key], col.key)}</td>
           {/each}
         </tr>
       {/each}
       <tr class="border-t-2 border-gray-300 bg-gray-50 font-semibold">
-        {#each columns as col}
+        {#each columns as col (col.key)}
           <td class="px-3 py-1.5 {col.key === 'date' ? '' : 'text-right'}">{fmt(report.totalRow[col.key], col.key)}</td>
         {/each}
       </tr>

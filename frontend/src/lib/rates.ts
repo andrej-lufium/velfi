@@ -24,9 +24,9 @@ function monthKey(dateStr: string): string {
 function findDateRange(currency: Currency, portfolio: Portfolio): { min: Date; max: Date } | null {
 	const dates: Date[] = []
 
-	for (const entity of portfolio.entities) {
-		if (entity.currency.iso !== currency.iso) continue
-		for (const asset of entity.assets) {
+	for (const issuer of portfolio.issuers) {
+		if (issuer.currency.iso !== currency.iso) continue
+		for (const asset of issuer.assets) {
 			for (const inv of asset.investments) dates.push(inv.valuta)
 			for (const rev of asset.revenues) dates.push(rev.valuta)
 		}

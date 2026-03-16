@@ -1,7 +1,7 @@
 {
 	"name": "frontend",
 	"private": true,
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -14,7 +14,9 @@
 		"format": "prettier --write .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
-		"new": "npm version $1 && git push && git push --tags"
+		"new:major": "npm version major && git push && git push --tags",
+		"new:minor": "npm version minor && git push && git push --tags",
+		"new:patch": "npm version patch && git push && git push --tags"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.0.1",

@@ -15,8 +15,8 @@
   <NavButton action={() => goto('/report')} name={m.homeViewReport()} tooltip={m.homeViewReportTooltip()} />
 </div>
 <div class="text-sm text-gray-500 mb-4">{getFile()??m.homeUnnamedFile()}</div>
-<h2 class="text-lg font-semibold mb-2">{m.homeEntitiesTitle()}</h2>
-<Editable detailPages={[{key:undefined,path:'/entity'}]} bind:table={pf.entities} maker={()=>({
+<h2 class="text-lg font-semibold mb-2">{m.homeIssuersTitle()}</h2>
+<Editable detailPages={[{key:undefined,path:'/issuer'}]} bind:table={pf.issuers} maker={()=>({
   name:m.homeUnnamedFile(),
   address: '',
   country: '',
@@ -30,9 +30,9 @@ displayColumns={['name', 'country', 'currency', 'assets']}
 narrowColumns={['assets']}
 wideColumns={['currency']}
 columnLabels={{}}
-deleteAllowed={(entity) => {
-  if (entity.assets.length > 0) {
-    return { allowed: false, reason: m.entityDeleteError() }
+deleteAllowed={(issuer) => {
+  if (issuer.assets.length > 0) {
+    return { allowed: false, reason: m.issuerDeleteError() }
   }
   return { allowed: true }
 }}

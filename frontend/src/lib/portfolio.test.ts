@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   type Portfolio,
   type Asset,
-  type Entity,
+  type Issuer,
   type Currency,
   type Investment,
   type Revenue,
@@ -23,15 +23,15 @@ function makeEmptyPortfolio(): Portfolio {
   return {
     docroot: '/tmp/test',
     name: 'Test Portfolio',
-    entities: [],
+    issuers: [],
     baseCurrency,
     currencies: [baseCurrency],
   };
 }
 
-function makeEntity(overrides: Partial<Entity> = {}): Entity {
-  const entity: Entity = {
-    name: "Test Entity",
+function makeIssuer(overrides: Partial<Issuer> = {}): Issuer {
+  const issuer: Issuer = {
+    name: "Test Issuer",
     address: "123 Test St",
     country: "CH",
     docfolder: '',
@@ -39,15 +39,15 @@ function makeEntity(overrides: Partial<Entity> = {}): Entity {
     currency: { iso: "EUR", rates: [] },
     ...overrides,
   };
-  return entity;
+  return issuer;
 }
 
-function makeAsset(entity: Entity, overrides: Partial<Asset> = {}): Asset {
+function makeAsset(issuer: Issuer, overrides: Partial<Asset> = {}): Asset {
   const asset: Asset = {
     name: "Test Asset",
     type: "equity",
     unit: "shares",
-    entity,
+    issuer,
     investments: [],
     revenues: [],
     valuations: [],
@@ -55,7 +55,7 @@ function makeAsset(entity: Entity, overrides: Partial<Asset> = {}): Asset {
     metadata: {},
     ...overrides,
   };
-  entity.assets.push(asset);
+  issuer.assets.push(asset);
   return asset;
 }
 
@@ -76,6 +76,7 @@ function makeRevenue(overrides: Partial<Revenue> = {}): Revenue {
     valuta: new Date("2023-06-01"),
     description: "Test revenue",
     value: 5000,
+    wht: 0,
     fxrate: 1,
     doc: "/docs/test/rev.pdf",
     ...overrides,
@@ -85,23 +86,23 @@ function makeRevenue(overrides: Partial<Revenue> = {}): Revenue {
 // --- Portfolio: basic operations ---
 
 describe("Portfolio: basic operations", () => {
-  it("adds an entity with assets", () => {
+  it("adds an issuer with assets", () => {
     const p = makeEmptyPortfolio();
-    const entity = makeEntity();
-    makeAsset(entity);
-    p.entities.push(entity);
-    expect(p.entities).toHaveLength(1);
-    expect(p.entities[0].assets).toHaveLength(1);
+    const issuer = makeIssuer();
+    makeAsset(issuer);
+    p.issuers.push(issuer);
+    expect(p.issuers).toHaveLength(1);
+    expect(p.issuers[0].assets).toHaveLength(1);
   });
 
-  it("deletes an entity by index via splice", () => {
+  it("deletes an issuer by index via splice", () => {
     const p = makeEmptyPortfolio();
-    const e1 = makeEntity({ name: "First" });
-    const e2 = makeEntity({ name: "Second" });
-    p.entities.push(e1, e2);
-    p.entities.splice(0, 1);
-    expect(p.entities).toHaveLength(1);
-    expect(p.entities[0].name).toBe("Second");
+    const e1 = makeIssuer({ name: "First" });
+    const e2 = makeIssuer({ name: "Second" });
+    p.issuers.push(e1, e2);
+    p.issuers.splice(0, 1);
+    expect(p.issuers).toHaveLength(1);
+    expect(p.issuers[0].name).toBe("Second");
   });
 
   it("adds a currency", () => {
@@ -120,8 +121,8 @@ describe("Portfolio: basic operations", () => {
   });
 
   it("adds and removes investments from an asset", () => {
-    const entity = makeEntity();
-    const asset = makeAsset(entity);
+    const issuer = makeIssuer();
+    const asset = makeAsset(issuer);
     asset.investments.push(makeInvestment());
     expect(asset.investments).toHaveLength(1);
     asset.investments.splice(0, 1);
@@ -129,8 +130,8 @@ describe("Portfolio: basic operations", () => {
   });
 
   it("adds and removes revenues from an asset", () => {
-    const entity = makeEntity();
-    const asset = makeAsset(entity);
+    const issuer = makeIssuer();
+    const asset = makeAsset(issuer);
     asset.revenues.push(makeRevenue());
     expect(asset.revenues).toHaveLength(1);
     asset.revenues.splice(0, 1);
@@ -138,8 +139,8 @@ describe("Portfolio: basic operations", () => {
   });
 
   it("adds and removes commitments from an asset", () => {
-    const entity = makeEntity();
-    const asset = makeAsset(entity);
+    const issuer = makeIssuer();
+    const asset = makeAsset(issuer);
     asset.commitments.push(makeInvestment({ description: "Commitment tranche 1" }));
     expect(asset.commitments).toHaveLength(1);
     asset.commitments.splice(0, 1);
@@ -157,10 +158,10 @@ describe("serializePortfolio / deserializePortfolio", () => {
 
     expect(restored.baseCurrency.iso).toBe("EUR");
     expect(restored.currencies).toHaveLength(3);
-    expect(restored.entities).toHaveLength(3);
+    expect(restored.issuers).toHaveLength(3);
 
-    const allOriginalAssets = portfolio.entities.flatMap(e => e.assets);
-    const allRestoredAssets = restored.entities.flatMap(e => e.assets);
+    const allOriginalAssets = portfolio.issuers.flatMap(e => e.assets);
+    const allRestoredAssets = restored.issuers.flatMap(e => e.assets);
     expect(allRestoredAssets).toHaveLength(allOriginalAssets.length);
 
     for (let i = 0; i < allOriginalAssets.length; i++) {
@@ -190,8 +191,8 @@ describe("serializePortfolio / deserializePortfolio", () => {
     const json = serializePortfolio(portfolio);
     const restored = deserializePortfolio(json);
 
-    const originalFirst = portfolio.entities[0].assets[0];
-    const firstAsset = restored.entities[0].assets[0];
+    const originalFirst = portfolio.issuers[0].assets[0];
+    const firstAsset = restored.issuers[0].assets[0];
 
     for (let i = 0; i < originalFirst.investments.length; i++) {
       expect(firstAsset.investments[i].units).toBe(originalFirst.investments[i].units);
@@ -206,7 +207,7 @@ describe("serializePortfolio / deserializePortfolio", () => {
     const restored = deserializePortfolio(json);
 
     expect(restored.currencies.find(c => c.iso === "USD")!.rates[0].date).toBeInstanceOf(Date);
-    expect(restored.entities[0].assets[0].investments[0].valuta).toBeInstanceOf(Date);
+    expect(restored.issuers[0].assets[0].investments[0].valuta).toBeInstanceOf(Date);
   });
 
   it("links baseCurrency to the same object in currencies[]", () => {
@@ -221,7 +222,7 @@ describe("serializePortfolio / deserializePortfolio", () => {
 
   it("adds baseCurrency to currencies[] if missing", () => {
     const json = JSON.stringify({
-      entities: [],
+      issuers: [],
       baseCurrency: { iso: "JPY", rates: [] },
       currencies: [{ iso: "EUR", rates: [] }],
     });
@@ -231,27 +232,38 @@ describe("serializePortfolio / deserializePortfolio", () => {
     expect(restored.currencies.find(c => c.iso === "JPY")).toBe(restored.baseCurrency);
   });
 
-  it("relinks entity.currency to currencies[] after round-trip", () => {
+  it("relinks issuer.currency to currencies[] after round-trip", () => {
     const portfolio = createSamplePortfolio();
     const json = serializePortfolio(portfolio);
     const restored = deserializePortfolio(json);
 
-    for (const entity of restored.entities) {
-      const match = restored.currencies.find(c => c.iso === entity.currency.iso);
-      expect(entity.currency).toBe(match);
+    for (const issuer of restored.issuers) {
+      const match = restored.currencies.find(c => c.iso === issuer.currency.iso);
+      expect(issuer.currency).toBe(match);
     }
   });
 
-  it("relinks asset.entity back-reference after round-trip", () => {
+  it("relinks asset.issuer back-reference after round-trip", () => {
     const portfolio = createSamplePortfolio();
     const json = serializePortfolio(portfolio);
     const restored = deserializePortfolio(json);
 
-    for (const entity of restored.entities) {
-      for (const asset of entity.assets) {
-        expect(asset.entity).toBe(entity);
+    for (const issuer of restored.issuers) {
+      for (const asset of issuer.assets) {
+        expect(asset.issuer).toBe(issuer);
       }
     }
+  });
+
+  it("supports backward compat: old files with 'entities' field", () => {
+    const json = JSON.stringify({
+      entities: [{ name: "Old Issuer", address: "", country: "CH", docfolder: "", assets: [], currency: "EUR" }],
+      baseCurrency: { iso: "EUR", rates: [] },
+      currencies: [{ iso: "EUR", rates: [] }],
+    });
+    const restored = deserializePortfolio(json);
+    expect(restored.issuers).toHaveLength(1);
+    expect(restored.issuers[0].name).toBe("Old Issuer");
   });
 });
 
@@ -292,12 +304,12 @@ function createSamplePortfolio(): Portfolio {
     "FinTech Opportunities Fund",
   ];
 
-  const entityNames = ["Alpha Corp", "Beta Holdings", "Gamma Investments"];
-  const entities: Entity[] = [];
+  const issuerNames = ["Alpha Corp", "Beta Holdings", "Gamma Investments"];
+  const issuers: Issuer[] = [];
 
   for (let e = 0; e < 3; e++) {
-    const entity: Entity = {
-      name: entityNames[e],
+    const issuer: Issuer = {
+      name: issuerNames[e],
       address: `${e + 1} Main St`,
       country: ["CH", "US", "GB"][e],
       docfolder: '',
@@ -307,7 +319,7 @@ function createSamplePortfolio(): Portfolio {
 
     const assetCount = e === 0 ? 4 : e === 1 ? 3 : 3;
     for (let i = 0; i < assetCount; i++) {
-      const idx = entities.flatMap(en => en.assets).length + i;
+      const idx = issuers.flatMap(en => en.assets).length + i;
       const investmentCount = 1 + Math.floor(Math.random() * 10);
       const investments: Investment[] = [];
       for (let j = 0; j < investmentCount; j++) {
@@ -329,6 +341,7 @@ function createSamplePortfolio(): Portfolio {
           valuta: randomDate(2021, 2025),
           description: `Distribution ${j + 1}`,
           value: Math.round((500 + Math.random() * 20000) * 100) / 100,
+          wht: 0,
           fxrate: 1,
           doc: `/docs/${assetNames[idx].toLowerCase().replace(/\s+/g, "-")}/rev-${j + 1}.pdf`,
         });
@@ -352,17 +365,17 @@ function createSamplePortfolio(): Portfolio {
         name: assetNames[idx],
         type: assetTypes[idx % assetTypes.length],
         unit: assetUnits[idx % assetUnits.length],
-        entity,
+        issuer,
         investments,
         revenues,
         valuations: [],
         commitments,
       };
-      entity.assets.push(asset);
+      issuer.assets.push(asset);
     }
 
-    entities.push(entity);
+    issuers.push(issuer);
   }
 
-  return { docroot: '/tmp/sample', name: 'Sample Portfolio', entities, baseCurrency: eur, currencies };
+  return { docroot: '/tmp/sample', name: 'Sample Portfolio', issuers, baseCurrency: eur, currencies };
 }

@@ -209,7 +209,7 @@
 					{#each columns as col}
 						<td class="px-3 py-1.5">
 							{#if chooser[col] === 'docfolder'}
-								<Doc bind:value={row[col]} folder={true} docroot={portfolioDir} entityName={row['name'] ?? ''} />
+								<Doc bind:value={row[col]} folder={true} docroot={portfolioDir} issuerName={row['name'] ?? ''} />
 							{:else if chooser[col] === 'doc'}
 								<Doc bind:value={row[col]} docroot={portfolioDir} docfolder={resolveDocfolderPath(docfolder)} />
 							{:else if chooser[col] === 'currency'}

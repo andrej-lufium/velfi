@@ -2,12 +2,15 @@ package main
 
 import (
 	"embed"
+	"os"
+	"strings"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/options/mac"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -17,6 +20,14 @@ var assets embed.FS
 func main() {
 	// Create an instance of the app structure
 	app := NewApp()
+
+	// Check CLI args for a .velfi file (e.g. `velfi myportfolio.velfi`)
+	for _, arg := range os.Args[1:] {
+		if strings.HasSuffix(arg, ".velfi") {
+			app.initialFile = arg
+			break
+		}
+	}
 
 	appMenu := menu.NewMenu()
 	fileMenu := appMenu.AddSubmenu("File")
@@ -58,6 +69,15 @@ func main() {
 		OnBeforeClose: app.beforeClose,
 		Bind: []interface{}{
 			app,
+		},
+		Mac: &mac.Options{
+			OnFileOpen: func(filePath string) {
+				if app.ctx != nil {
+					runtime.EventsEmit(app.ctx, "file:open", filePath)
+				} else {
+					app.initialFile = filePath
+				}
+			},
 		},
 	})
 

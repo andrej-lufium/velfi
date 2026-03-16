@@ -34,6 +34,10 @@ export function GetConfigPath() {
   return window['go']['main']['App']['GetConfigPath']();
 }
 
+export function GetInitialFile() {
+  return window['go']['main']['App']['GetInitialFile']();
+}
+
 export function GetVersion() {
   return window['go']['main']['App']['GetVersion']();
 }
