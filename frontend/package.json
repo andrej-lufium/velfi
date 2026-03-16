@@ -1,7 +1,7 @@
 {
 	"name": "frontend",
 	"private": true,
-	"version": "0.4.0",
+	"version": "0.4.2",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -14,9 +14,9 @@
 		"format": "prettier --write .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
-		"new:major": "npm version major && git push && git push --tags",
-		"new:minor": "npm version minor && git push && git push --tags",
-		"new:patch": "npm version patch && git push && git push --tags"
+		"new:major": "npm version major --no-git-tag-version && VER=$(node -p \"require('./package.json').version\") && git -C .. add frontend/package.json && git -C .. commit -m \"v$VER\" && git -C .. tag \"v$VER\" && git -C .. push && git -C .. push --tags",
+		"new:minor": "npm version minor --no-git-tag-version && VER=$(node -p \"require('./package.json').version\") && git -C .. add frontend/package.json && git -C .. commit -m \"v$VER\" && git -C .. tag \"v$VER\" && git -C .. push && git -C .. push --tags",
+		"new:patch": "npm version patch --no-git-tag-version && VER=$(node -p \"require('./package.json').version\") && git -C .. add frontend/package.json && git -C .. commit -m \"v$VER\" && git -C .. tag \"v$VER\" && git -C .. push && git -C .. push --tags"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.0.1",
