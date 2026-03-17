@@ -1,14 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
-	import { getLocale, locales, localizeHref } from '$lib/paraglide/runtime';
+	import { locales, localizeHref } from '$lib/paraglide/runtime';
 	import * as m from '$lib/paraglide/messages';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import { currentLocaleState, getPortfolio, loadSettings } from '$lib/current.svelte'
+	import { currentLocaleState,  } from '$lib/current.svelte'
 	import NavButton from '$lib/components/navbutton.svelte'
-	import { browser } from '$app/environment'
-	import { GetVersion } from '$lib/wailsjs/go/main/App'
 	import { onMount } from 'svelte'
 
 	let { children } = $props();
@@ -41,13 +39,14 @@
 	{@render children()}
 </div>
 <div style="display:none">
-	{#each locales as locale}
+	{#each locales as locale (locale)}
 		<a href={localizeHref(page.url.pathname, { locale })}>
 			{locale}
 		</a>
 	{/each}
 </div>
 <footer class="fixed inset-x-0 bottom-0 px-4 py-1 text-xs text-gray-400 text-center">
+  
 	<a href="/about" class="hover:text-gray-600 hover:underline">{m.appName()}</a> {version} &mdash; {m.appCopyright()}
 </footer>
 {/key}
