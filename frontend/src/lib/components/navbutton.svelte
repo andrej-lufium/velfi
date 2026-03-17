@@ -21,7 +21,7 @@ const styles = {
 </script>
 
 <button 
-  onclick={action} 
+  onclick={() => { console.log("nav action "+name); action() }} 
   title={tooltip} 
   class="rounded px-3 py-1 text-xs font-medium transition-colors {disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} {styles[variant]}" 
   disabled={disabled}

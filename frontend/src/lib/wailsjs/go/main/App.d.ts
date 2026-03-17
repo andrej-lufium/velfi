@@ -20,6 +20,8 @@ export function GetConfigPath():Promise<string>;
 
 export function GetInitialFile():Promise<string>;
 
+export function GetInitialFileName():Promise<string>;
+
 export function GetVersion():Promise<string>;
 
 export function LoadConfig():Promise<main.Config>;

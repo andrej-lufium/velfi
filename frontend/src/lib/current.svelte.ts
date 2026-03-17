@@ -1,23 +1,39 @@
-import { browser } from "$app/environment"
-import { goto } from "$app/navigation"
+import { browser } from '$app/environment'
+import { goto } from '$app/navigation'
 //import { goto } from "$app/navigation"
-import { deserializePortfolio, serializePortfolio, defaultTaxHiddenColumns, type Portfolio } from "./portfolio"
-import { ReadFile, WriteFile, OpenFileDialog, SaveFileDialog, ConfirmDialog, DirOfFile, ResetQuit, LoadConfig, SaveConfig } from "./wailsjs/go/main/App"
-import { main } from "./wailsjs/go/models"
-import { EventsOn, LogInfo, Quit, WindowSetTitle } from "./wailsjs/runtime/runtime"
-import { setLocale, locales, getLocale } from "$lib/paraglide/runtime"
+import {
+	deserializePortfolio,
+	serializePortfolio,
+	defaultTaxHiddenColumns,
+	type Portfolio
+} from './portfolio'
+import {
+	ReadFile,
+	WriteFile,
+	OpenFileDialog,
+	SaveFileDialog,
+	ConfirmDialog,
+	DirOfFile,
+	ResetQuit,
+	LoadConfig,
+	SaveConfig,
+	GetInitialFileName
+} from './wailsjs/go/main/App'
+import { main } from './wailsjs/go/models'
+import { EventsOn, LogError, LogInfo, Quit, WindowSetTitle } from './wailsjs/runtime/runtime'
+import { setLocale, locales, getLocale } from '$lib/paraglide/runtime'
 
 //import { tick } from "svelte"
 
-type Locale = typeof locales[number]
+type Locale = (typeof locales)[number]
 
 const defaultPortfolio: Portfolio = {
-  docroot: '',
-  name: 'My Portfolio',
-  issuers: [],
-  baseCurrency: { iso: "CHF", rates: [] },
-  currencies: [{ iso: "CHF", rates: [] }],
-  taxHiddenColumns: [...defaultTaxHiddenColumns],
+	docroot: '',
+	name: 'My Portfolio',
+	issuers: [],
+	baseCurrency: { iso: 'CHF', rates: [] },
+	currencies: [{ iso: 'CHF', rates: [] }],
+	taxHiddenColumns: [...defaultTaxHiddenColumns]
 }
 defaultPortfolio.baseCurrency = defaultPortfolio.currencies[0]
 
@@ -26,149 +42,177 @@ let currentFile: string | undefined = $state()
 let lastSavedJson: string = $state(serializePortfolio(defaultPortfolio))
 let autosave: boolean = $state(true)
 
-export function getPortfolio(): Portfolio  {
-  return currentPortfolio
+export function getPortfolio(): Portfolio {
+	return currentPortfolio
 }
 
-export function getFile(): string|undefined {
-  return currentFile
+export function getFile(): string | undefined {
+	return currentFile
 }
 
 export function getAutosave(): boolean {
-  return autosave
+	return autosave
 }
 
 export function setAutosave(value: boolean) {
-  autosave = value
+	autosave = value
 }
 
 let currentLocale: Locale = $state(getLocale() as Locale)
 export function setCurrentLocale(value: Locale) {
-  //LogInfo(`A Setting locale to ${value}`)
-  console.log(`A Setting locale to ${value}`)
-  currentLocale = value
-  setLocale(value,{reload: false})
+	//LogInfo(`A Setting locale to ${value}`)
+	console.log(`A Setting locale to ${value}`)
+	currentLocale = value
+	setLocale(value, { reload: false })
 }
 export const currentLocaleState = () => currentLocale
 
 export async function saveSettings() {
-  const config = new main.Config({
-    locale: currentLocale,
-    autosave,
-    defaultBaseCurrency: "CHF",
-    defaultCurrencies: ["CHF", "USD", "EUR"],
-    taxReportHiddenFields: ["irr", "committed", "totalInvested", "openCommitment", "invested", "divested"],
-  })
-  await SaveConfig(config)
+	const config = new main.Config({
+		locale: currentLocale,
+		autosave,
+		defaultBaseCurrency: 'CHF',
+		defaultCurrencies: ['CHF', 'USD', 'EUR'],
+		taxReportHiddenFields: [
+			'irr',
+			'committed',
+			'totalInvested',
+			'openCommitment',
+			'invested',
+			'divested'
+		]
+	})
+	await SaveConfig(config)
 }
 
 export async function loadSettings() {
-  try {
-    const config = await LoadConfig()
-    autosave = config.autosave ?? true
-    currentLocale = (config.locale as Locale) || "de-ch"
-    //setLocale(currentLocale)
-  } catch (error) {
-    console.error("Failed to load config:", error)
-  }
+	try {
+		const config = await LoadConfig()
+		autosave = config.autosave ?? true
+		currentLocale = (config.locale as Locale) || 'de-ch'
+		//setLocale(currentLocale)
+	} catch (error) {
+		console.error('Failed to load config:', error)
+	}
 }
 
 export function isDirty(): boolean {
-  return serializePortfolio(currentPortfolio) !== lastSavedJson
+	return serializePortfolio(currentPortfolio) !== lastSavedJson
 }
 
 function markClean() {
-  lastSavedJson = serializePortfolio(currentPortfolio)
+	lastSavedJson = serializePortfolio(currentPortfolio)
 }
 
 function updateTitle(suffix?: string) {
-  const name = currentFile ? currentFile.split("/").pop() : "untitled"
-  WindowSetTitle(suffix ? `velfi - ${name} (${suffix})` : `velfi - ${name}`)
+	const name = currentFile ? currentFile.split('/').pop() : 'untitled'
+	WindowSetTitle(suffix ? `velfi - ${name} (${suffix})` : `velfi - ${name}`)
 }
 
 export async function open(filename: string) {
-  const json = await ReadFile(filename)
-  console.log("Read file:", filename, json)
-  currentPortfolio = deserializePortfolio(json)
-  currentPortfolio.docroot = await DirOfFile(filename)
-  currentFile = filename
-  markClean()
-  updateTitle()
+	const json = await ReadFile(filename)
+	console.log('Read file:', filename, json)
+	currentPortfolio = deserializePortfolio(json)
+	currentPortfolio.docroot = await DirOfFile(filename)
+	currentFile = filename
+	markClean()
+	updateTitle()
 }
 
 export async function openWithDialog() {
-  const path = await OpenFileDialog()
-  if (!path) return
-  await open(path)
+	const path = await OpenFileDialog()
+	if (!path) return
+	await open(path)
 }
 
 export async function saveAs(filename: string) {
-  if (!currentPortfolio) return
-  currentPortfolio.docroot = await DirOfFile(filename)
-  const json = serializePortfolio(currentPortfolio)
-  await WriteFile(filename, json)
-  currentFile = filename
-  markClean()
-  updateTitle()
+	if (!currentPortfolio) return
+	currentPortfolio.docroot = await DirOfFile(filename)
+	const json = serializePortfolio(currentPortfolio)
+	await WriteFile(filename, json)
+	currentFile = filename
+	markClean()
+	updateTitle()
 }
 
 export async function saveAsWithDialog() {
-  const path = await SaveFileDialog()
-  if (!path) return
-  await saveAs(path)
+	const path = await SaveFileDialog()
+	if (!path) return
+	await saveAs(path)
 }
 
 export async function save() {
-  if (!currentFile) {
-    await saveAsWithDialog()
-    return
-  }
-  updateTitle('saving')
-  const json = serializePortfolio(currentPortfolio)
-  await WriteFile(currentFile, json)
-  markClean()
-  updateTitle()
+	if (!currentFile) {
+		await saveAsWithDialog()
+		return
+	}
+	updateTitle('saving')
+	const json = serializePortfolio(currentPortfolio)
+	await WriteFile(currentFile, json)
+	markClean()
+	updateTitle()
 }
 
 async function quit() {
-  if (isDirty()) {
-    const confirmed = await ConfirmDialog(
-      "Unsaved Changes",
-      "You have unsaved changes. Are you sure you want to quit?"
-    )
-    if (!confirmed) {
-      await ResetQuit()
-      return
-    }
-  }
-  Quit()
+	if (isDirty()) {
+		const confirmed = await ConfirmDialog(
+			'Unsaved Changes',
+			'You have unsaved changes. Are you sure you want to quit?'
+		)
+		if (!confirmed) {
+			await ResetQuit()
+			return
+		}
+	}
+	Quit()
 }
 
 // import { LogPrint } from "./wailsjs/runtime/runtime"
 
 async function about() {
-//  LogPrint("About dialog would go here")
-  await goto("/about")
+	//  LogPrint("About dialog would go here")
+	await goto('/about')
 }
 
-// Listen for menu events from the Go backend
-if (browser) {
-  // Load settings at startup - defer to avoid initialization order issues
-  //tick().then(() => loadSettings())
-console.log("Setting up event listeners...")
-  EventsOn("menu:open", () => { openWithDialog() })
-  EventsOn("menu:save", () => { save() })
-  EventsOn("menu:saveas", () => { saveAsWithDialog() })
-  EventsOn("menu:quit", () => { quit() })
-  EventsOn("app:beforeclose", () => { quit() })
-  EventsOn("menu:about", () => { about() })
-  EventsOn("file:open", (path: string) => { open(path) })
+export function initialize() {
+	// Listen for menu events from the Go backend
+	if (browser) {
+		GetInitialFileName().then((filename) => {
+			if (filename && filename !== '') {
+				open(filename).catch((err) => {
+					LogError(`Failed to open initial file: ${err}`)
+				})
+			}
+		})
+		EventsOn('menu:open', () => {
+			openWithDialog()
+		})
 
-  // Autosave: check every 10 seconds
-  setInterval(() => {
-    if (autosave && currentFile && isDirty()) {
-      LogInfo("Autosaving portfolio...")
-      save()
-    }
-  }, 10_000)
+		EventsOn('menu:save', () => {
+			save()
+		})
+		EventsOn('menu:saveas', () => {
+			saveAsWithDialog()
+		})
+		EventsOn('menu:quit', () => {
+			quit()
+		})
+		EventsOn('app:beforeclose', () => {
+			quit()
+		})
+		EventsOn('menu:about', () => {
+			about()
+		})
+
+		setInterval(() => {
+			if (autosave && currentFile && isDirty()) {
+				LogInfo('Autosaving portfolio...')
+				save()
+			}
+		}, 10_000)
+		console.log('Event listeners set up.')
+
+		// Load settings at startup - defer to avoid initialization order issues
+		loadSettings()
+	}
 }

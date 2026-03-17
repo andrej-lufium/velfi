@@ -38,6 +38,10 @@ export function GetInitialFile() {
   return window['go']['main']['App']['GetInitialFile']();
 }
 
+export function GetInitialFileName() {
+  return window['go']['main']['App']['GetInitialFileName']();
+}
+
 export function GetVersion() {
   return window['go']['main']['App']['GetVersion']();
 }

@@ -1,4 +1,4 @@
-<script lang="ts" generics="T extends Record<string, any>">
+<script lang="ts" generics="T extends Record<string, unknown>">
 	import { goto } from '$app/navigation'
 	import AssetTypeSelect from '$lib/components/assettypeselect.svelte'
 	import AssetUnitSelect from '$lib/components/assetunitselect.svelte'
@@ -47,7 +47,8 @@
 		narrowColumns = [] as string[],
 		wideColumns = [] as string[],
 		columnLabels = {} as Record<string, string>,
-		deleteAllowed = (row: T) => ({ allowed: true })
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		deleteAllowed = (_row: T) => ({ allowed: true })
 	}: {
 		table: T[] | undefined
 		maker: () => T
@@ -78,7 +79,9 @@
 		if (Array.isArray(av) && Array.isArray(bv)) return av.length - bv.length
 		const as = av && typeof av === 'object' && 'name' in av ? av.name : String(av ?? '')
 		const bs = bv && typeof bv === 'object' && 'name' in bv ? bv.name : String(bv ?? '')
-		return as.localeCompare(bs)
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		return (as as any).localeCompare(bs)
 	}
 
 	function sortByCol(col: string) {
@@ -128,12 +131,13 @@
 		return ''
 	}
 
+	/*
 	function displayValue(row: T, col: string): string {
 		const v = row[col]
 		if (v && typeof v === 'object' && 'name' in v) return (v as { name: string }).name
 		if (Array.isArray(v)) return ''
 		return ''
-	}
+	}*/
 
 	// Resolve a relative path against portfolioDir
 	function resolve(...parts: string[]): string {
@@ -148,6 +152,7 @@
 	}
 
 	// File drop support
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const docCol = $derived(Object.entries(chooser).find(([_, v]) => v === 'doc')?.[0])
 
 	$effect(() => {
@@ -156,6 +161,7 @@
 		OnFileDrop(async (_x: number, _y: number, paths: string[]) => {
 			const absDocfolder = resolveDocfolderPath(docfolder)
 			for (const path of paths) {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const newRow = maker() as any
 				if (absDocfolder) {
 					await CreateDirectory(absDocfolder)
@@ -186,7 +192,7 @@
 			<tr
 				class="border-b border-gray-200 bg-gray-50 text-left text-xs font-medium tracking-wide text-gray-500 uppercase"
 			>
-				{#each columns as col}
+				{#each columns as col (col)}
 					<th class="px-3 py-2 {colWidth(col)}">
 						<button onclick={() => sortByCol(col)} class="inline-flex items-center gap-1 hover:text-gray-700 cursor-pointer">
 							{columnLabels[col] ?? col}
@@ -203,29 +209,29 @@
 			</tr>
 		</thead>
 		<tbody class="divide-y divide-gray-100">
-			{#each table as row, i}
+			{#each table as row, i (i)}
       {@const deleteAllowedResult = deleteAllowed(row)}
 				<tr class="transition-colors hover:bg-gray-50">
-					{#each columns as col}
+					{#each columns as col (col)}
 						<td class="px-3 py-1.5">
 							{#if chooser[col] === 'docfolder'}
-								<Doc bind:value={row[col]} folder={true} docroot={portfolioDir} issuerName={row['name'] ?? ''} />
+								<Doc bind:value={row[col] as string} folder={true} docroot={portfolioDir} issuerName={row['name'] as string ?? ''} />
 							{:else if chooser[col] === 'doc'}
-								<Doc bind:value={row[col]} docroot={portfolioDir} docfolder={resolveDocfolderPath(docfolder)} />
+								<Doc bind:value={row[col] as string} docroot={portfolioDir} docfolder={resolveDocfolderPath(docfolder)} />
 							{:else if chooser[col] === 'currency'}
-								<CurrencySelect bind:value={row[col]} {currencies} />
+								<CurrencySelect bind:value={row[col] as Currency	} {currencies} />
 							{:else if chooser[col] === 'country'}
-								<CountrySelect bind:value={row[col]} />
+								<CountrySelect bind:value={row[col] as string} />
 							{:else if chooser[col] === 'assettype'}
-								<AssetTypeSelect bind:value={row[col]} />
+								<AssetTypeSelect bind:value={row[col] as string} />
 							{:else if chooser[col] === 'assetunit'}
-								<AssetUnitSelect bind:value={row[col]} />
+								<AssetUnitSelect bind:value={row[col] as string} />
 							{:else if chooser[col]}
 								<select
-									bind:value={row[col]}
+									bind:value={row[col] as string}
 									class="w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
 								>
-									{#each Object.entries(chooser[col]!) as [key, label]}
+									{#each Object.entries(chooser[col]!) as [key, label] (key)}
 										<option value={key}>{label}</option>
 									{/each}
 								</select>
@@ -239,9 +245,9 @@
 									>{row[col].length}</span
 								>
 							{:else if col === 'fxrate' && currency && baseCurrency && row['valuta']}
-								<FxRateInput bind:value={row[col]} date={row['valuta']} {currency} {baseCurrency} />
+								<FxRateInput bind:value={row[col] as number} date={row['valuta'] as Date} {currency} {baseCurrency} />
 							{:else if col === 'rate' && currency && baseCurrency && row['date']}
-								<FxRateInput bind:value={row[col]} date={row['date']} {currency} {baseCurrency} />
+								<FxRateInput bind:value={row[col] as number} date={row['date'] as Date} {currency} {baseCurrency} />
 							{:else if typeof row[col] === 'number'}
 								<input
 									type="number"
@@ -267,7 +273,7 @@
 						</td>
 					{/each}
 					<td class="px-3 py-1.5">
-						{#each detailPages as dp}
+						{#each detailPages as dp (dp.key)}
 							{#if dp.key == undefined}
 								{@render details(dp, i)}
 							{/if}

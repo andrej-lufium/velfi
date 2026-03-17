@@ -1,11 +1,10 @@
 package main
 
 import (
-	"context"
 	"embed"
 	"os"
 	"strings"
-
+  "log"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
@@ -29,7 +28,7 @@ func main() {
 			break
 		}
 	}
-
+  log.Printf( "starting velfi: %s", app.initialFile)
 	appMenu := menu.NewMenu()
 	fileMenu := appMenu.AddSubmenu("File")
 	fileMenu.AddText("Open...", keys.CmdOrCtrl("o"), func(_ *menu.CallbackData) {
@@ -67,23 +66,24 @@ func main() {
 			DisableWebViewDrop: false,
 		},
 		OnStartup:     app.startup,
-		OnDomReady: func(ctx context.Context) {
+		Debug: options.Debug{
+        OpenInspectorOnStartup: true,
+    },
+		/*OnDomReady: func(ctx context.Context) {
 			if app.initialFile != "" {
+				log.Printf("file:open emit: %#v %s", ctx,app.initialFile)
 				runtime.EventsEmit(ctx, "file:open", app.initialFile)
 				app.initialFile = ""
 			}
-		},
+		},*/
 		OnBeforeClose: app.beforeClose,
 		Bind: []interface{}{
 			app,
 		},
 		Mac: &mac.Options{
 			OnFileOpen: func(filePath string) {
-				if app.ctx != nil {
-					runtime.EventsEmit(app.ctx, "file:open", filePath)
-				} else {
 					app.initialFile = filePath
-				}
+
 			},
 		},
 	})
@@ -91,4 +91,9 @@ func main() {
 	if err != nil {
 		println("Error:", err.Error())
 	}
+}
+
+func (b *App) GetInitialFileName() string {
+	log.Printf("GetInitialFileName called, initialFile: %s", b.initialFile)
+	return b.initialFile
 }
