@@ -26,6 +26,7 @@ function makeEmptyPortfolio(): Portfolio {
     issuers: [],
     baseCurrency,
     currencies: [baseCurrency],
+    taxHiddenColumns: [],
   };
 }
 
@@ -53,6 +54,7 @@ function makeAsset(issuer: Issuer, overrides: Partial<Asset> = {}): Asset {
     valuations: [],
     commitments: [],
     metadata: {},
+    doc: '',
     ...overrides,
   };
   issuer.assets.push(asset);
@@ -370,6 +372,8 @@ function createSamplePortfolio(): Portfolio {
         revenues,
         valuations: [],
         commitments,
+        metadata: {},
+        doc: '',
       };
       issuer.assets.push(asset);
     }
@@ -377,5 +381,5 @@ function createSamplePortfolio(): Portfolio {
     issuers.push(issuer);
   }
 
-  return { docroot: '/tmp/sample', name: 'Sample Portfolio', issuers, baseCurrency: eur, currencies };
+  return { docroot: '/tmp/sample', name: 'Sample Portfolio', issuers, baseCurrency: eur, currencies, taxHiddenColumns: [] };
 }

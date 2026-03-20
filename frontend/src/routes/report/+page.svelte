@@ -15,16 +15,19 @@
 
   let taxView = $state(false)
   let groupByType = $state(false)
+  let showZeroRows = $state(false)
 
   const allColumns = $derived.by((): { key: keyof PortfolioReportRow; label: string }[] => [
     { key: 'issuerName', label: m.reportPortfolioColumnsIssuer() },
     { key: 'country', label: 'Country' },
     { key: 'assetName', label: 'Asset' },
     { key: 'type', label: 'Type' },
+    { key: 'currency', label: 'Currency' },
     { key: 'invested', label: 'Invested' },
     { key: 'divested', label: 'Divested' },
     { key: 'startUnits', label: `${assetUnitTitle} 01.01.${selectedYear}` },
     { key: 'endUnits', label: `${assetUnitTitle} 31.12.${selectedYear}` },
+    { key: 'nav', label: 'NAV' },
     { key: 'netInvestedInBaseCurrency', label: 'Net Invested (Base)' },
     { key: 'netRevenueInBaseCurrency', label: 'Net Revenue (Base)' },
     { key: 'whtInBaseCurrency', label: 'WHT (Base)' },
@@ -40,8 +43,15 @@
     (!groupByType || c.key !== 'type')
   ))
 
-  const textCols = new Set(['issuerName', 'country', 'assetName', 'type'])
+  const textCols = new Set(['issuerName', 'country', 'assetName', 'type', 'currency'])
   const pctCols = new Set(['irr'])
+
+  // Filter rows where both start and end quantities are zero
+  const filteredRows = $derived(
+    showZeroRows
+      ? (report?.rows ?? [])
+      : (report?.rows ?? []).filter(r => !((r.startUnits ?? 0) === 0 && (r.endUnits ?? 0) === 0))
+  )
 
   type Footnote = { index: number; assetName: string; currency: string; date: string; unitPrice: string; fxRate: string | null }
 
@@ -50,7 +60,7 @@
     if (!report) return { map: new SvelteMap<PortfolioReportRow, number>(), list: [] as Footnote[] }
     const list: Footnote[] = []
     const map = new SvelteMap<PortfolioReportRow, number>()
-    for (const row of report.rows) {
+    for (const row of filteredRows) {
       if (row.valuationDate && row.valuationUnitPrice != null) {
         const idx = list.length + 1
         map.set(row, idx)
@@ -67,27 +77,57 @@
     return { map, list }
   })
 
+  // Currency subtotals (only meaningful when 2+ currencies present)
+  const currencySubtotals = $derived.by(() => {
+    if (!report) return []
+    const map = new Map<string, PortfolioReportRow>()
+    for (const row of filteredRows) {
+      const iso = row.currency.iso
+      let sub = map.get(iso)
+      if (!sub) {
+        sub = {
+          issuerName: '', country: '', assetName: `Subtotal ${iso}`, type: 'other',
+          currency: row.currency, invested: null, divested: null, startUnits: null, endUnits: null,
+          nav: null, netRevenueInBaseCurrency: null, whtInBaseCurrency: null,
+          netInvestedInBaseCurrency: null, netAssetValueInBaseCurrency: 0,
+          valuationDate: null, valuationUnitPrice: null, fxRate: null,
+          irr: undefined, committed: null, totalInvested: null, openCommitment: null,
+        }
+        map.set(iso, sub)
+      }
+      sub.netInvestedInBaseCurrency = add(sub.netInvestedInBaseCurrency, row.netInvestedInBaseCurrency ?? 0)
+      sub.netRevenueInBaseCurrency = add(sub.netRevenueInBaseCurrency, row.netRevenueInBaseCurrency ?? 0)
+      sub.whtInBaseCurrency = add(sub.whtInBaseCurrency, row.whtInBaseCurrency ?? 0)
+      sub.netAssetValueInBaseCurrency = add(sub.netAssetValueInBaseCurrency, row.netAssetValueInBaseCurrency)
+      sub.committed = add(sub.committed, row.committed ?? 0)
+      sub.totalInvested = add(sub.totalInvested, row.totalInvested ?? 0)
+      sub.openCommitment = add(sub.openCommitment, row.openCommitment ?? 0)
+    }
+    return [...map.values()]
+  })
+
+  const showCurrencySubtotals = $derived(currencySubtotals.length > 1)
+
   // Group rows by asset type
   const groupedRows = $derived.by(() => {
     if (!report || !groupByType) return null
     const groups = new SvelteMap<string, { label: string; rows: PortfolioReportRow[]; subtotal: PortfolioReportRow }>()
-    for (const row of report.rows) {
-      let group = groups.get(row.type)
-      if (!group) {
-        group = {
+    for (const row of filteredRows) {
+      if (!groups.has(row.type)) {
+        groups.set(row.type, {
           label: AssetTypeNames[row.type] || row.type,
           rows: [],
           subtotal: {
             issuerName: '', country: '', assetName: `Subtotal ${AssetTypeNames[row.type] || row.type}`,
             type: row.type, currency: report.totalRow.currency,
             invested: null, divested: null, startUnits: null, endUnits: null,
-            netRevenueInBaseCurrency: null, whtInBaseCurrency: null, netInvestedInBaseCurrency: null,
+            nav: null, netRevenueInBaseCurrency: null, whtInBaseCurrency: null, netInvestedInBaseCurrency: null,
             netAssetValueInBaseCurrency: 0, valuationDate: null, valuationUnitPrice: null, fxRate: null,
             irr: undefined, committed: null, totalInvested: null, openCommitment: null,
           },
-        }
-        groups.set(row.type, group)
+        })
       }
+      const group = groups.get(row.type)!
       group.rows.push(row)
       group.subtotal.netInvestedInBaseCurrency = add(group.subtotal.netInvestedInBaseCurrency, row.netInvestedInBaseCurrency ?? 0)
       group.subtotal.netRevenueInBaseCurrency = add(group.subtotal.netRevenueInBaseCurrency, row.netRevenueInBaseCurrency ?? 0)
@@ -131,7 +171,7 @@
     {#each columns as col (col.key)}
       {@const v = row[col.key]}
       <td class="px-3 py-1.5 {textCols.has(col.key) ? '' : 'text-right'}">
-        {fmt(v, col.key)}{#if col.key === 'netAssetValueInBaseCurrency' && footnotes.map.has(row)}<sup class="text-xs text-gray-400 ml-0.5">{footnotes.map.get(row)}</sup>{/if}
+        {fmt(v, col.key)}{#if col.key === 'nav' && footnotes.map.has(row)}<sup class="text-xs text-gray-400 ml-0.5">{footnotes.map.get(row)}</sup>{/if}
       </td>
     {/each}
   </tr>
@@ -156,7 +196,11 @@
       <input type="checkbox" bind:checked={groupByType} class="rounded border-gray-300" />
       Group by asset type
     </label>
-    <NavButton action={() => exportCsv(`Portfolio-Report-${selectedYear}`, columns.map(c => c.label), [...report.rows, report.totalRow], columns.map(c => c.key))} name="Export CSV" tooltip="Export portfolio report as CSV file" />
+    <label class="inline-flex items-center gap-1 text-sm">
+      <input type="checkbox" bind:checked={showZeroRows} class="rounded border-gray-300" />
+      Show zero-quantity positions
+    </label>
+    <NavButton action={() => exportCsv(`Portfolio-Report-${selectedYear}`, columns.map(c => c.label), [...filteredRows, report.totalRow], columns.map(c => c.key))} name="Export CSV" tooltip="Export portfolio report as CSV file" />
     <NavButton action={() => Print()} name="Print" tooltip="Print this report" />
   </div>
 
@@ -175,6 +219,19 @@
         </table>
       </div>
     {/each}
+    {#if showCurrencySubtotals}
+      <h2 class="text-base font-semibold mt-6 mb-2">By Currency</h2>
+      <div class="overflow-x-auto rounded-lg border border-gray-200 mb-4">
+        <table class="w-full text-sm">
+          {@render tableHeader()}
+          <tbody>
+            {#each currencySubtotals as sub (sub.assetName)}
+              {@render tableRow(sub, true)}
+            {/each}
+          </tbody>
+        </table>
+      </div>
+    {/if}
     <h2 class="text-base font-semibold mt-6 mb-2">Total</h2>
     <div class="overflow-x-auto rounded-lg border border-gray-200">
       <table class="w-full text-sm">
@@ -189,9 +246,14 @@
       <table class="w-full text-sm">
         {@render tableHeader()}
         <tbody class="divide-y divide-gray-100">
-          {#each report.rows as row (row.assetName)}
+          {#each filteredRows as row (row.assetName)}
             {@render tableRow(row)}
           {/each}
+          {#if showCurrencySubtotals}
+            {#each currencySubtotals as sub (sub.assetName)}
+              {@render tableRow(sub, true)}
+            {/each}
+          {/if}
           {@render tableRow(report.totalRow, true)}
         </tbody>
       </table>

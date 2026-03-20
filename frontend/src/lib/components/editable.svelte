@@ -1,4 +1,5 @@
 <script lang="ts" generics="T extends Record<string, unknown>">
+	import { tick } from 'svelte'
 	import { goto } from '$app/navigation'
 	import AssetTypeSelect from '$lib/components/assettypeselect.svelte'
 	import AssetUnitSelect from '$lib/components/assetunitselect.svelte'
@@ -13,6 +14,9 @@
 		CreateDirectory
 	} from '$lib/wailsjs/go/main/App'
 	import { OnFileDrop, OnFileDropOff } from '$lib/wailsjs/runtime/runtime'
+
+	import { flip } from 'svelte/animate';
+  import { fly } from 'svelte/transition';
 
 	type DetailPage = {
 		key: keyof T | undefined
@@ -95,8 +99,17 @@
 		table = [...table].sort((a, b) => dir * compareValues(a, b, col))
 	}
 
-	function addRow() {
+	let tbody: HTMLTableSectionElement
+
+	async function addRow() {
 		table = [...table, maker()]
+		await tick()
+		const lastRow = tbody?.querySelector('tr:last-child')
+		const firstInput = lastRow?.querySelector<HTMLElement>('input, select')
+		firstInput?.focus()
+		if (firstInput instanceof HTMLInputElement && firstInput.type === 'text') {
+			firstInput.select()
+		}
 	}
 
 	function deleteRow(index: number) {
@@ -208,10 +221,13 @@
 				<th class="w-0 px-3 py-2"></th>
 			</tr>
 		</thead>
-		<tbody class="divide-y divide-gray-100">
+		<tbody bind:this={tbody} class="divide-y divide-gray-100">
 			{#each table as row, i (i)}
       {@const deleteAllowedResult = deleteAllowed(row)}
-				<tr class="transition-colors hover:bg-gray-50">
+				<tr class="transition-colors hover:bg-gray-50" 
+    animate:flip={{ duration: 300 }}
+    transition:fly={{ x: -20, duration: 300 }}
+>
 					{#each columns as col (col)}
 						<td class="px-3 py-1.5">
 							{#if chooser[col] === 'docfolder'}

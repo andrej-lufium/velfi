@@ -170,6 +170,7 @@ export type Asset = {
 	valuations: Valuation[]
 	commitments: Investment[]
 	metadata: AssetMetadata
+	doc: DocumentReference
   issuer: Issuer
 }
 
@@ -221,6 +222,7 @@ export function deserializePortfolio(json: string): Portfolio {
 		for (const asset of issuer.assets) {
 			asset.issuer = issuer
 			asset.metadata ??= {}
+			asset.doc ??= ''
 		}
 	}
 	return pf
@@ -280,6 +282,7 @@ export type PortfolioReportRow = {
   divested: number | null
   startUnits: number | null
   endUnits: number | null
+  nav: number | null
   netRevenueInBaseCurrency: number | null
   whtInBaseCurrency: number | null
   netInvestedInBaseCurrency: number | null

@@ -64,10 +64,11 @@
 	valuations: [],
 	commitments: [],
 	metadata: {},
+	doc: '',
 })}
-chooser={{ type: AssetTypes, unit: AssetUnits }}
+chooser={{ type: AssetTypes, unit: AssetUnits, doc: 'doc' }}
 portfolioDir={pf.docroot}
-displayColumns={['name', 'type', 'unit', 'investments', 'revenues', 'valuations', 'commitments']}
+displayColumns={['name', 'type', 'unit', 'doc', 'investments', 'revenues', 'valuations', 'commitments']}
 narrowColumns={['investments', 'revenues', 'valuations', 'commitments']}
 wideColumns={['type', 'unit']}
 columnLabels={{ investments: 'Inv', revenues: 'Rev', valuations: 'Val', commitments: 'Com' }}

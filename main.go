@@ -2,16 +2,17 @@ package main
 
 import (
 	"embed"
-	"os"
-	"strings"
-  "log"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/options/mac"
+	 "github.com/wailsapp/wails/v2/pkg/options/windows"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+	"log"
+	"os"
+	"strings"
 )
 
 //go:embed all:frontend/build
@@ -28,7 +29,7 @@ func main() {
 			break
 		}
 	}
-  log.Printf( "starting velfi: %s", app.initialFile)
+	log.Printf("starting velfi: %s", app.initialFile)
 	appMenu := menu.NewMenu()
 	fileMenu := appMenu.AddSubmenu("File")
 	fileMenu.AddText("Open...", keys.CmdOrCtrl("o"), func(_ *menu.CallbackData) {
@@ -46,10 +47,38 @@ func main() {
 		runtime.EventsEmit(app.ctx, "menu:quit")
 	})
 
+	editMenu := menu.EditMenu()
+	appMenu.Append(editMenu)
+		/*
+	    editMenu.AddText("Cut", keys.CmdOrCtrl("x"), func(_ *menu.CallbackData) {
+        runtime.WindowExecJS(app.ctx, "document.execCommand('cut')")
+    })
+    editMenu.AddText("Copy", keys.CmdOrCtrl("c"), func(_ *menu.CallbackData) {
+        runtime.WindowExecJS(app.ctx, "document.execCommand('copy')")
+    })
+    editMenu.AddText("Paste", keys.CmdOrCtrl("v"), func(_ *menu.CallbackData) {
+        runtime.WindowExecJS(app.ctx, "document.execCommand('paste')")
+    })
+    editMenu.AddText("Select All", keys.CmdOrCtrl("a"), func(_ *menu.CallbackData) {
+        runtime.WindowExecJS(app.ctx, "document.execCommand('selectAll')")
+    })
+    editMenu.AddText("Undo", keys.CmdOrCtrl("z"), func(_ *menu.CallbackData) {
+        runtime.WindowExecJS(app.ctx, "document.execCommand('undo')")
+    })
+    editMenu.AddText("Redo", keys.CmdOrCtrl("y"), func(_ *menu.CallbackData) {
+        runtime.WindowExecJS(app.ctx, "document.execCommand('redo')")
+    })
+		
+	editMenu.AddText("Cut", keys.CmdOrCtrl("x"), func(_ *menu.CallbackData) {})
+	editMenu.AddText("Copy", keys.CmdOrCtrl("c"), func(_ *menu.CallbackData) {})
+	editMenu.AddText("Paste", keys.CmdOrCtrl("v"), func(_ *menu.CallbackData) {})
+	editMenu.AddText("Select All", keys.CmdOrCtrl("a"), func(_ *menu.CallbackData) {})
+*/
 	helpMenu := appMenu.AddSubmenu("Help")
 	helpMenu.AddText("About Velfi", nil, func(_ *menu.CallbackData) {
 		runtime.EventsEmit(app.ctx, "menu:about")
 	})
+		
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -60,15 +89,16 @@ func main() {
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
+		//EnableDefaultContextMenu: getContextMenuOption(),
+		BackgroundColour:         &options.RGBA{R: 27, G: 38, B: 54, A: 1},
 		DragAndDrop: &options.DragAndDrop{
 			EnableFileDrop:     true,
 			DisableWebViewDrop: false,
 		},
-		OnStartup:     app.startup,
+		OnStartup: app.startup,
 		Debug: options.Debug{
-        OpenInspectorOnStartup: true,
-    },
+			OpenInspectorOnStartup: true,
+		},
 		/*OnDomReady: func(ctx context.Context) {
 			if app.initialFile != "" {
 				log.Printf("file:open emit: %#v %s", ctx,app.initialFile)
@@ -80,9 +110,15 @@ func main() {
 		Bind: []interface{}{
 			app,
 		},
+		Windows: &windows.Options{
+			// enables Ctrl+C/V etc on Windows WebView2
+			//WebviewIsTransparent: false,
+		},
 		Mac: &mac.Options{
+			//WebviewIsTransparent: false,
+
 			OnFileOpen: func(filePath string) {
-					app.initialFile = filePath
+				app.initialFile = filePath
 
 			},
 		},

@@ -195,7 +195,7 @@ export function initialize() {
 			saveAsWithDialog()
 		})
 		EventsOn('menu:quit', () => {
-			quit()
+			Quit()
 		})
 		EventsOn('app:beforeclose', () => {
 			quit()

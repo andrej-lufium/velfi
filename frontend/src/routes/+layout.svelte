@@ -20,6 +20,8 @@
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
+<!-- does not seem to work on macOS -->
+<svelte:window oncontextmenu={(e) => e.preventDefault()}  />
 <!-- to re-render when locale changes -->
 {#key currentLocaleState()}
 <nav class="border-b border-gray-200 bg-white px-4 py-2">
