@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { browser } from '$app/environment'
-	import { goto } from '$app/navigation'
 	import { GetVersion } from '$lib/wailsjs/go/main/App'
 	import { BrowserOpenURL, Environment } from '$lib/wailsjs/runtime/runtime'
 	import favicon from '$lib/assets/favicon.svg'
@@ -21,7 +20,7 @@
 		if (isWailsEnv()) {
 			BrowserOpenURL(url)
 		} else {
-			goto(url)
+			window.open(url, '_blank')
 		}
 	}
 </script>
