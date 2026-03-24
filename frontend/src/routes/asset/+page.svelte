@@ -10,7 +10,7 @@
 	import { AssetMetadataFieldDefs, AssetTypeMetadataFields } from '$lib/portfolio'
 	import * as m from '$lib/paraglide/messages'
 
-	import { getCountryData, getCountryDataList, getEmojiFlag } from 'countries-list'
+	import { getCountryData, type getCountryDataList, getEmojiFlag } from 'countries-list'
 
 	const pf = $derived(getPortfolio())
 	const issuerIndex = $derived(Number(page.url.searchParams.get('issuerIndex')))

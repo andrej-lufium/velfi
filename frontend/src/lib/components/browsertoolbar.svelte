@@ -109,13 +109,18 @@
 
 <!-- ── Load modal ────────────────────────────────────────────────────────────── -->
 {#if showLoadModal}
-	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+	<!-- svelte-ignore a11y_click_events_have_key_events  -->
 	<div
+		role="dialog"
+		tabindex="0"
 		class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
 		onclick={() => (showLoadModal = false)}
 	>
-		<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+		<!-- svelte-ignore a11y_click_events_have_key_events  -->
 		<div
+			role="dialog"
+			tabindex="0"
+
 			class="bg-white rounded-lg shadow-xl w-80 p-4"
 			onclick={(e) => e.stopPropagation()}
 		>
@@ -157,13 +162,17 @@
 
 <!-- ── Save As modal ─────────────────────────────────────────────────────────── -->
 {#if showSaveAsModal}
-	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+	<!-- svelte-ignore a11y_click_events_have_key_events  -->
 	<div
+		role="dialog"
+		tabindex="0"
 		class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
 		onclick={() => (showSaveAsModal = false)}
 	>
-		<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+		<!-- svelte-ignore a11y_click_events_have_key_events  -->
 		<div
+			role="dialog"
+		tabindex="0"
 			class="bg-white rounded-lg shadow-xl w-72 p-4"
 			onclick={(e) => e.stopPropagation()}
 		>

@@ -48,11 +48,6 @@ export function isWailsEnv(): boolean {
 	return browser && hasGo != undefined
 }
 export function getPortfolio(): Portfolio {	
-	console.log("Loading sample portfolio ...", browser, isWailsEnv(),import.meta.env.DEV)
-	if (import.meta.env.DEV && !isWailsEnv()) {
-		// In development mode, if not running in Wails, load the sample portfolio
-		}
-	//console.log('returning', currentPortfolio)
 	return currentPortfolio
 }
 
