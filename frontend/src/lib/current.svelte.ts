@@ -23,9 +23,7 @@ import { main } from './wailsjs/go/models'
 import { EventsOn, LogError, LogInfo, Quit, WindowSetTitle } from './wailsjs/runtime/runtime'
 import { setLocale, locales, getLocale } from '$lib/paraglide/runtime'
 
-// sample data
-//import samplePortfolio  from '../../../examples/sample.velfi?raw'
-//import { tick } from "svelte"
+import samplePortfolioRaw from '../../../examples/sample.velfi?raw'
 
 type Locale = (typeof locales)[number]
 
@@ -52,10 +50,7 @@ export function isWailsEnv(): boolean {
 export function getPortfolio(): Portfolio {	
 	console.log("Loading sample portfolio ...", browser, isWailsEnv(),import.meta.env.DEV)
 	if (import.meta.env.DEV && !isWailsEnv()) {
-			if (browser && window.location.search.includes('sample')) {
-				console.log("Loading sample portfolio in development mode...")
-	      //currentPortfolio = deserializePortfolio(samplePortfolio) as unknown as Portfolio
-	  	}
+		// In development mode, if not running in Wails, load the sample portfolio
 		}
 	//console.log('returning', currentPortfolio)
 	return currentPortfolio
@@ -210,6 +205,12 @@ export function lsSave(): boolean {
 export function lsDelete(name: string) {
 	localStorage.removeItem(LS_PREFIX + name)
 	if (browserPortfolioName === name) browserPortfolioName = undefined
+}
+
+export function loadSample() {
+	currentPortfolio = deserializePortfolio(samplePortfolioRaw)
+	browserPortfolioName = undefined
+	markClean()
 }
 
 export function downloadPortfolio() {

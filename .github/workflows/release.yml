@@ -88,6 +88,36 @@ jobs:
           name: velfi-windows
           path: velfi-windows.exe
 
+  deploy-vercel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Install Vercel CLI
+        run: pnpm add -g vercel
+
+      - name: Build & deploy to Vercel
+        working-directory: frontend
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          pnpm install
+          vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+          vercel build --prod --token=$VERCEL_TOKEN
+          vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN \
+            --build-env VITE_APP_VERSION=$VERSION
+
   release:
     needs: [build-mac, build-windows]
     runs-on: ubuntu-latest

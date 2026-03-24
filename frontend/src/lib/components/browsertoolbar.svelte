@@ -6,6 +6,7 @@
 		lsSave,
 		lsSaveAs,
 		lsDelete,
+		loadSample,
 		downloadPortfolio,
 		uploadPortfolio,
 		getBrowserPortfolioName,
@@ -27,6 +28,11 @@
 
 	function load(name: string) {
 		lsLoad(name)
+		showLoadModal = false
+	}
+
+	function loadSamplePortfolio() {
+		loadSample()
 		showLoadModal = false
 	}
 
@@ -135,6 +141,12 @@
 				</ul>
 			{/if}
 
+			<div class="border-t border-gray-100 pt-2 mb-2">
+				<button
+					onclick={loadSamplePortfolio}
+					class="text-sm text-left text-gray-500 hover:text-blue-600 hover:underline w-full truncate cursor-pointer italic"
+				>Sample Portfolio</button>
+			</div>
 			<button
 				onclick={() => (showLoadModal = false)}
 				class="w-full rounded px-3 py-1.5 text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"

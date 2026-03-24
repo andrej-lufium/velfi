@@ -3,7 +3,7 @@
 
 import {
   type Portfolio,
-  type Entity,
+  type Issuer,
   type Asset,
   type Currency,
   type Investment,
@@ -20,10 +20,6 @@ function d(year: number, month: number, day: number): Date {
 
 function rand(min: number, max: number): number {
   return Math.round((min + Math.random() * (max - min)) * 100) / 100
-}
-
-function pick<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)]
 }
 
 function randInt(min: number, max: number): number {
@@ -93,8 +89,8 @@ function makeInvestments(type: Asset['type'], currency: Currency, startYear: num
     investments.push({
       valuta: d(year, month, day),
       description: i === 0 ? 'Initial investment' : `Follow-on investment ${i}`,
-      units: -units,
-      value: -value,
+      units: units,
+      value: value,
       ...(isForeign ? { fxrate: fxRateForYear(currency, year) } : {}),
       doc: '',
     })
@@ -125,6 +121,7 @@ function makeRevenues(
       value: amount,
       ...(isForeign ? { fxrate: fxRateForYear(currency, year) } : {}),
       doc: '',
+      wht: type === 'debt' && (!isForeign) ? Math.round(amount * 0.30 * 100) / 100 : 0,
     })
   }
   return revenues
@@ -165,9 +162,9 @@ function makeCommitments(currency: Currency, startYear: number): Investment[] {
   ]
 }
 
-// --- Entity & Asset definitions ---
+// --- issuer & Asset definitions ---
 
-const entityDefs: { name: string; address: string; country: string; currencyIso: string }[] = [
+const issuerDefs: { name: string; address: string; country: string; currencyIso: string }[] = [
   { name: 'Alpine Ventures AG', address: 'Bahnhofstrasse 42\n8001 Zurich', country: 'CH', currencyIso: 'CHF' },
   { name: 'Rhine Capital GmbH', address: 'Friedrichstrasse 100\n10117 Berlin', country: 'DE', currencyIso: 'EUR' },
   { name: 'Lakeside Partners SA', address: 'Rue du Rhône 8\n1204 Geneva', country: 'CH', currencyIso: 'CHF' },
@@ -218,9 +215,9 @@ const assetDefs: { name: string; type: Asset['type']; unit: Asset['unit'] }[][] 
 
 // --- Build portfolio ---
 
-const entities: Entity[] = entityDefs.map((eDef, eIdx) => {
+const issuers: Issuer[] = issuerDefs.map((eDef, eIdx) => {
   const currency = currencyByIso(eDef.currencyIso)
-  const entity: Entity = {
+  const issuer: Issuer = {
     name: eDef.name,
     address: eDef.address,
     country: eDef.country,
@@ -240,24 +237,29 @@ const entities: Entity[] = entityDefs.map((eDef, eIdx) => {
       name: aDef.name,
       type: aDef.type,
       unit: aDef.unit,
-      entity,
+      issuer,
       investments,
       revenues,
       valuations,
       commitments,
+      metadata: {
+        description: `This is a sample ${aDef.type} asset called ${aDef.name} issued by ${eDef.name}.`,
+      },
+      doc: ''
     }
-    entity.assets.push(asset)
+    issuer.assets.push(asset)
   }
 
-  return entity
+  return issuer
 })
 
 const portfolio: Portfolio = {
   docroot: '',
   name: 'Sample Portfolio',
-  entities,
+  issuers,
   baseCurrency: chf,
   currencies,
+  taxHiddenColumns: [],
 }
 
 console.log(serializePortfolio(portfolio))
