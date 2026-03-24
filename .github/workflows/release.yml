@@ -114,9 +114,8 @@ jobs:
           VERSION=${GITHUB_REF_NAME#v}
           pnpm install
           vercel pull --yes --environment=production --token=$VERCEL_TOKEN
-          vercel build --prod --token=$VERCEL_TOKEN
-          vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN \
-            --build-env VITE_APP_VERSION=$VERSION
+          VITE_APP_VERSION=$VERSION pnpm run build
+          vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
 
   release:
     needs: [build-mac, build-windows]
