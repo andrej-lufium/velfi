@@ -1,3 +1,9 @@
+<script lang="ts" module>
+
+	declare const __APP_VERSION__: string
+
+
+</script>
 <script lang="ts">
 	import { browser } from '$app/environment'
 	import { goto } from '$app/navigation'
@@ -7,7 +13,6 @@
 	import { AssetTypeNames, AssetTypeMetadataFields, AssetMetadataFieldDefs } from '$lib/portfolio'
 	import { isWailsEnv } from '$lib/current.svelte'
 
-	declare const __APP_VERSION__: string
 
 	let version = $state('')
 	if (browser) {
@@ -81,12 +86,19 @@
 </div>
 
 <h2 class="text-lg font-semibold mt-8 mb-3">Environment</h2>
-{#await Environment() then env}
+{#if isWailsEnv()}
+	{#await Environment() then env}
+		<div class="max-w-md space-y-2 text-sm text-gray-700">
+			<p><span class="font-medium">Platform:</span> {env.platform}</p>
+			<p><span class="font-medium">Arch:</span> {env.arch}</p>
+			<p><span class="font-medium">Build type:</span> {env.buildType}</p>
+		</div>
+	{:catch error}
+		<p class="text-sm text-red-500">Failed to load environment info: {error.message}</p>
+	{/await}
+{:else}
 	<div class="max-w-md space-y-2 text-sm text-gray-700">
-		<p><span class="font-medium">Platform:</span> {env.platform}</p>
-		<p><span class="font-medium">Arch:</span> {env.arch}</p>
-		<p><span class="font-medium">Build type:</span> {env.buildType}</p>
+		<p><span class="font-medium">Platform:</span> Web</p>
+		<p><span class="font-medium">Build type:</span> {import.meta.env.MODE}</p>
 	</div>
-{:catch error}
-	<p class="text-sm text-red-500">Failed to load environment info: {error.message}</p>
-{/await}
+{/if}
