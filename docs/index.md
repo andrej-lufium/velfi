@@ -22,7 +22,7 @@ All portfolio data are stored locally in a single file or in the browser's local
 
 ## Use in browser
 
-Check out the [Browser version](velfi/index.html) of velfi.
+Check out the [Browser version](https://velfi.vercel.app) of velfi.
 
 ## Download binaries
 

@@ -43,6 +43,7 @@
 		"vitest": "^4.0.18"
 	},
 	"dependencies": {
+		"@sveltejs/adapter-vercel": "^6.3.3",
 		"countries-list": "^3.2.2"
 	}
 }
