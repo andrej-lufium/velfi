@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/state'
-	import { goto } from '$app/navigation'
 	import Doc from '$lib/components/doc.svelte'
 	import Editable from '$lib/components/editable.svelte'
 	import CurrencySelect from '$lib/components/currencyselect.svelte'
 	import CountrySelect from '$lib/components/countryselect.svelte'
-	import NavButton from '$lib/components/navbutton.svelte'
 	import * as m from '$lib/paraglide/messages'
 
 	import {getPortfolio} from '$lib/current.svelte'
@@ -19,7 +17,6 @@
 <div class="mb-4 flex items-center gap-3">
 	<h1 class="text-xl font-semibold">{issuer.name}</h1>
 </div>
-
 <div class="mb-6 grid grid-cols-2 gap-6">
 	<div class="rounded-lg border border-gray-200 p-4 space-y-3">
 		<label class="block text-sm">

@@ -18,17 +18,53 @@
             "foundingYear": 2020
           },
           "investments": [
-            { "valuta": "2021-05-15T22:00:00.000Z", "description": "Initial investment", "units": -500, "value": -50000, "doc": "" },
-            { "valuta": "2022-09-01T22:00:00.000Z", "description": "Follow-on round", "units": -300, "value": -45000, "doc": "" },
-            { "valuta": "2024-03-20T23:00:00.000Z", "description": "Secondary sale", "units": 200, "value": 40000, "doc": "" }
+            {
+              "valuta": "2021-05-15T22:00:00.000Z",
+              "description": "Initial investment",
+              "units": 500,
+              "value": 50000,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-09-01T22:00:00.000Z",
+              "description": "Follow-on round",
+              "units": 300,
+              "value": 45000,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-03-20T23:00:00.000Z",
+              "description": "Secondary sale",
+              "units": -200,
+              "value": -40000,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2023-12-31T23:00:00.000Z", "description": "Dividend", "value": 2500, "wht": 0, "doc": "" }
+            {
+              "valuta": "2023-12-31T23:00:00.000Z",
+              "description": "Dividend",
+              "value": 2500,
+              "wht": 0,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 110, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 145, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 175, "doc": "" }
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 110,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 145,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 175,
+              "doc": ""
+            }
           ],
           "commitments": []
         },
@@ -42,12 +78,26 @@
             "proRataRights": true
           },
           "investments": [
-            { "valuta": "2023-02-10T23:00:00.000Z", "description": "SAFE investment", "units": -1, "value": -75000, "doc": "" }
+            {
+              "valuta": "2023-02-10T23:00:00.000Z",
+              "description": "SAFE investment",
+              "units": 1,
+              "value": 75000,
+              "doc": ""
+            }
           ],
           "revenues": [],
           "valuations": [
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 75000, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 90000, "doc": "" }
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 75000,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 90000,
+              "doc": ""
+            }
           ],
           "commitments": []
         }
@@ -55,7 +105,7 @@
     },
     {
       "name": "Rhine Capital GmbH",
-      "address": "Königsallee 15\n40212 Düsseldorf",
+      "address": "K\u00f6nigsallee 15\n40212 D\u00fcsseldorf",
       "country": "DE",
       "docfolder": "",
       "currency": "EUR",
@@ -71,18 +121,65 @@
             "valuationCap": 25000000
           },
           "investments": [
-            { "valuta": "2021-11-01T23:00:00.000Z", "description": "Series B participation", "units": -2000, "value": -60000, "fxrate": 1.05, "doc": "" },
-            { "valuta": "2023-04-15T22:00:00.000Z", "description": "Series B top-up", "units": -500, "value": -20000, "fxrate": 1.03, "doc": "" }
+            {
+              "valuta": "2021-11-01T23:00:00.000Z",
+              "description": "Series B participation",
+              "units": 2000,
+              "value": 60000,
+              "fxrate": 1.05,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-04-15T22:00:00.000Z",
+              "description": "Series B top-up",
+              "units": 500,
+              "value": 20000,
+              "fxrate": 1.03,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2022-12-31T23:00:00.000Z", "description": "Preferred dividend", "value": 3600, "wht": 180, "fxrate": 1.04, "doc": "" },
-            { "valuta": "2023-12-31T23:00:00.000Z", "description": "Preferred dividend", "value": 3780, "wht": 189, "fxrate": 1.03, "doc": "" },
-            { "valuta": "2024-12-31T23:00:00.000Z", "description": "Preferred dividend", "value": 3969, "wht": 198, "fxrate": 1.05, "doc": "" }
+            {
+              "valuta": "2022-12-31T23:00:00.000Z",
+              "description": "Preferred dividend",
+              "value": 3600,
+              "wht": 180,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-12-31T23:00:00.000Z",
+              "description": "Preferred dividend",
+              "value": 3780,
+              "wht": 189,
+              "fxrate": 1.03,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-12-31T23:00:00.000Z",
+              "description": "Preferred dividend",
+              "value": 3969,
+              "wht": 198,
+              "fxrate": 1.05,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 32, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 38, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 45, "doc": "" }
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 32,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 38,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 45,
+              "doc": ""
+            }
           ],
           "commitments": []
         },
@@ -95,12 +192,27 @@
             "expiryDate": "2027-06-30T00:00:00.000Z"
           },
           "investments": [
-            { "valuta": "2022-06-01T22:00:00.000Z", "description": "Warrant purchase", "units": -5000, "value": -5000, "fxrate": 1.04, "doc": "" }
+            {
+              "valuta": "2022-06-01T22:00:00.000Z",
+              "description": "Warrant purchase",
+              "units": 5000,
+              "value": 5000,
+              "fxrate": 1.04,
+              "doc": ""
+            }
           ],
           "revenues": [],
           "valuations": [
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 2.5, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 4.8, "doc": "" }
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 2.5,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 4.8,
+              "doc": ""
+            }
           ],
           "commitments": []
         },
@@ -115,15 +227,44 @@
             "maturityDate": "2026-12-31T00:00:00.000Z"
           },
           "investments": [
-            { "valuta": "2023-01-15T23:00:00.000Z", "description": "Convertible note", "units": -1, "value": -50000, "fxrate": 1.03, "doc": "" }
+            {
+              "valuta": "2023-01-15T23:00:00.000Z",
+              "description": "Convertible note",
+              "units": 1,
+              "value": 50000,
+              "fxrate": 1.03,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2023-12-31T23:00:00.000Z", "description": "Accrued interest", "value": 3250, "wht": 0, "fxrate": 1.03, "doc": "" },
-            { "valuta": "2024-12-31T23:00:00.000Z", "description": "Accrued interest", "value": 3250, "wht": 0, "fxrate": 1.05, "doc": "" }
+            {
+              "valuta": "2023-12-31T23:00:00.000Z",
+              "description": "Accrued interest",
+              "value": 3250,
+              "wht": 0,
+              "fxrate": 1.03,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-12-31T23:00:00.000Z",
+              "description": "Accrued interest",
+              "value": 3250,
+              "wht": 0,
+              "fxrate": 1.05,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 53250, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 58000, "doc": "" }
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 53250,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 58000,
+              "doc": ""
+            }
           ],
           "commitments": []
         }
@@ -131,7 +272,7 @@
     },
     {
       "name": "Lakeside Partners SA",
-      "address": "Rue du Rhône 80\n1204 Geneva",
+      "address": "Rue du Rh\u00f4ne 80\n1204 Geneva",
       "country": "CH",
       "docfolder": "",
       "currency": "CHF",
@@ -146,19 +287,65 @@
             "foundingYear": 2018
           },
           "investments": [
-            { "valuta": "2020-07-01T22:00:00.000Z", "description": "Initial investment", "units": -1200, "value": -48000, "doc": "" },
-            { "valuta": "2021-11-15T23:00:00.000Z", "description": "Follow-on", "units": -400, "value": -22000, "doc": "" },
-            { "valuta": "2023-08-01T22:00:00.000Z", "description": "Partial exit", "units": 600, "value": 54000, "doc": "" }
+            {
+              "valuta": "2020-07-01T22:00:00.000Z",
+              "description": "Initial investment",
+              "units": 1200,
+              "value": 48000,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-11-15T23:00:00.000Z",
+              "description": "Follow-on",
+              "units": 400,
+              "value": 22000,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-08-01T22:00:00.000Z",
+              "description": "Partial exit",
+              "units": -600,
+              "value": -54000,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2022-06-30T22:00:00.000Z", "description": "Special dividend", "value": 4800, "wht": 720, "doc": "" },
-            { "valuta": "2024-06-30T22:00:00.000Z", "description": "Annual dividend", "value": 6000, "wht": 900, "doc": "" }
+            {
+              "valuta": "2022-06-30T22:00:00.000Z",
+              "description": "Special dividend",
+              "value": 4800,
+              "wht": 720,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-06-30T22:00:00.000Z",
+              "description": "Annual dividend",
+              "value": 6000,
+              "wht": 900,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2021-12-31T23:00:00.000Z", "unitPrice": 48, "doc": "" },
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 62, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 78, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 95, "doc": "" }
+            {
+              "date": "2021-12-31T23:00:00.000Z",
+              "unitPrice": 48,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 62,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 78,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 95,
+              "doc": ""
+            }
           ],
           "commitments": []
         },
@@ -172,17 +359,53 @@
             "maturityDate": "2027-09-30T00:00:00.000Z"
           },
           "investments": [
-            { "valuta": "2021-10-01T22:00:00.000Z", "description": "Bond purchase at par", "units": -100000, "value": -100000, "doc": "" }
+            {
+              "valuta": "2021-10-01T22:00:00.000Z",
+              "description": "Bond purchase at par",
+              "units": 100000,
+              "value": 100000,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2022-09-30T22:00:00.000Z", "description": "Coupon payment", "value": 3500, "wht": 525, "doc": "" },
-            { "valuta": "2023-09-30T22:00:00.000Z", "description": "Coupon payment", "value": 3500, "wht": 525, "doc": "" },
-            { "valuta": "2024-09-30T22:00:00.000Z", "description": "Coupon payment", "value": 3500, "wht": 525, "doc": "" }
+            {
+              "valuta": "2022-09-30T22:00:00.000Z",
+              "description": "Coupon payment",
+              "value": 3500,
+              "wht": 525,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-09-30T22:00:00.000Z",
+              "description": "Coupon payment",
+              "value": 3500,
+              "wht": 525,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-09-30T22:00:00.000Z",
+              "description": "Coupon payment",
+              "value": 3500,
+              "wht": 525,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 0.96, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 0.975, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 0.99, "doc": "" }
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 0.96,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 0.975,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 0.99,
+              "doc": ""
+            }
           ],
           "commitments": []
         }
@@ -205,22 +428,83 @@
             "manager": "Atlantic Capital LP"
           },
           "investments": [
-            { "valuta": "2021-03-31T23:00:00.000Z", "description": "Capital call 1", "units": -1, "value": -100000, "fxrate": 0.9, "doc": "" },
-            { "valuta": "2022-06-30T22:00:00.000Z", "description": "Capital call 2", "units": -1, "value": -80000, "fxrate": 0.96, "doc": "" },
-            { "valuta": "2023-09-30T22:00:00.000Z", "description": "Capital call 3", "units": -1, "value": -60000, "fxrate": 0.91, "doc": "" },
-            { "valuta": "2024-06-30T22:00:00.000Z", "description": "Distribution", "units": 1, "value": 45000, "fxrate": 0.89, "doc": "" }
+            {
+              "valuta": "2021-03-31T23:00:00.000Z",
+              "description": "Capital call 1",
+              "units": 1,
+              "value": 100000,
+              "fxrate": 0.9,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-06-30T22:00:00.000Z",
+              "description": "Capital call 2",
+              "units": 1,
+              "value": 80000,
+              "fxrate": 0.96,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-09-30T22:00:00.000Z",
+              "description": "Capital call 3",
+              "units": 1,
+              "value": 60000,
+              "fxrate": 0.91,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-06-30T22:00:00.000Z",
+              "description": "Distribution",
+              "units": -1,
+              "value": -45000,
+              "fxrate": 0.89,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2023-12-31T23:00:00.000Z", "description": "Income distribution", "value": 8000, "wht": 0, "fxrate": 0.91, "doc": "" },
-            { "valuta": "2024-12-31T23:00:00.000Z", "description": "Income distribution", "value": 12000, "wht": 0, "fxrate": 0.89, "doc": "" }
+            {
+              "valuta": "2023-12-31T23:00:00.000Z",
+              "description": "Income distribution",
+              "value": 8000,
+              "wht": 0,
+              "fxrate": 0.91,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-12-31T23:00:00.000Z",
+              "description": "Income distribution",
+              "value": 12000,
+              "wht": 0,
+              "fxrate": 0.89,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 195000, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 268000, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 310000, "doc": "" }
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 195000,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 268000,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 310000,
+              "doc": ""
+            }
           ],
           "commitments": [
-            { "valuta": "2021-01-15T23:00:00.000Z", "description": "Total commitment", "units": -1, "value": -300000, "fxrate": 0.9, "doc": "" }
+            {
+              "valuta": "2021-01-15T23:00:00.000Z",
+              "description": "Total commitment",
+              "units": -1,
+              "value": -300000,
+              "fxrate": 0.9,
+              "doc": ""
+            }
           ]
         },
         {
@@ -234,16 +518,52 @@
             "maturityDate": "2026-06-30T00:00:00.000Z"
           },
           "investments": [
-            { "valuta": "2022-04-01T22:00:00.000Z", "description": "Convertible note", "units": -1, "value": -30000, "fxrate": 0.96, "doc": "" }
+            {
+              "valuta": "2022-04-01T22:00:00.000Z",
+              "description": "Convertible note",
+              "units": 1,
+              "value": 30000,
+              "fxrate": 0.96,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2022-12-31T23:00:00.000Z", "description": "Interest", "value": 1125, "wht": 0, "fxrate": 0.96, "doc": "" },
-            { "valuta": "2023-12-31T23:00:00.000Z", "description": "Interest", "value": 1500, "wht": 0, "fxrate": 0.91, "doc": "" },
-            { "valuta": "2024-12-31T23:00:00.000Z", "description": "Interest", "value": 1500, "wht": 0, "fxrate": 0.89, "doc": "" }
+            {
+              "valuta": "2022-12-31T23:00:00.000Z",
+              "description": "Interest",
+              "value": 1125,
+              "wht": 0,
+              "fxrate": 0.96,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-12-31T23:00:00.000Z",
+              "description": "Interest",
+              "value": 1500,
+              "wht": 0,
+              "fxrate": 0.91,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-12-31T23:00:00.000Z",
+              "description": "Interest",
+              "value": 1500,
+              "wht": 0,
+              "fxrate": 0.89,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 33000, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 36500, "doc": "" }
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 33000,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 36500,
+              "doc": ""
+            }
           ],
           "commitments": []
         },
@@ -257,17 +577,57 @@
             "seniority": "Junior"
           },
           "investments": [
-            { "valuta": "2021-09-15T22:00:00.000Z", "description": "Debt investment", "units": -1, "value": -50000, "fxrate": 0.92, "doc": "" }
+            {
+              "valuta": "2021-09-15T22:00:00.000Z",
+              "description": "Debt investment",
+              "units": 1,
+              "value": 50000,
+              "fxrate": 0.92,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2022-09-15T22:00:00.000Z", "description": "Interest payment", "value": 4250, "wht": 638, "fxrate": 0.96, "doc": "" },
-            { "valuta": "2023-09-15T22:00:00.000Z", "description": "Interest payment", "value": 4250, "wht": 638, "fxrate": 0.91, "doc": "" },
-            { "valuta": "2024-09-15T22:00:00.000Z", "description": "Interest payment", "value": 4250, "wht": 638, "fxrate": 0.89, "doc": "" }
+            {
+              "valuta": "2022-09-15T22:00:00.000Z",
+              "description": "Interest payment",
+              "value": 4250,
+              "wht": 638,
+              "fxrate": 0.96,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-09-15T22:00:00.000Z",
+              "description": "Interest payment",
+              "value": 4250,
+              "wht": 638,
+              "fxrate": 0.91,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-09-15T22:00:00.000Z",
+              "description": "Interest payment",
+              "value": 4250,
+              "wht": 638,
+              "fxrate": 0.89,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 48500, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 50000, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 50000, "doc": "" }
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 48500,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 50000,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 50000,
+              "doc": ""
+            }
           ],
           "commitments": []
         }
@@ -290,19 +650,73 @@
             "exchange": "NASDAQ OMX Stockholm"
           },
           "investments": [
-            { "valuta": "2022-02-14T23:00:00.000Z", "description": "Market purchase", "units": -5000, "value": -265000, "fxrate": 0.085, "doc": "" },
-            { "valuta": "2023-07-10T22:00:00.000Z", "description": "Additional purchase", "units": -3000, "value": -144000, "fxrate": 0.082, "doc": "" },
-            { "valuta": "2024-04-22T22:00:00.000Z", "description": "Partial sale", "units": 2000, "value": 111000, "fxrate": 0.084, "doc": "" }
+            {
+              "valuta": "2022-02-14T23:00:00.000Z",
+              "description": "Market purchase",
+              "units": 5000,
+              "value": 265000,
+              "fxrate": 0.085,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-07-10T22:00:00.000Z",
+              "description": "Additional purchase",
+              "units": 3000,
+              "value": 144000,
+              "fxrate": 0.082,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-04-22T22:00:00.000Z",
+              "description": "Partial sale",
+              "units": -2000,
+              "value": -111000,
+              "fxrate": 0.084,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2022-09-01T22:00:00.000Z", "description": "Dividend", "value": 12500, "wht": 3750, "fxrate": 0.085, "doc": "" },
-            { "valuta": "2023-09-01T22:00:00.000Z", "description": "Dividend", "value": 14000, "wht": 4200, "fxrate": 0.082, "doc": "" },
-            { "valuta": "2024-09-01T22:00:00.000Z", "description": "Dividend", "value": 14000, "wht": 4200, "fxrate": 0.084, "doc": "" }
+            {
+              "valuta": "2022-09-01T22:00:00.000Z",
+              "description": "Dividend",
+              "value": 12500,
+              "wht": 3750,
+              "fxrate": 0.085,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-09-01T22:00:00.000Z",
+              "description": "Dividend",
+              "value": 14000,
+              "wht": 4200,
+              "fxrate": 0.082,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-09-01T22:00:00.000Z",
+              "description": "Dividend",
+              "value": 14000,
+              "wht": 4200,
+              "fxrate": 0.084,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 47, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 52, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 58, "doc": "" }
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 47,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 52,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 58,
+              "doc": ""
+            }
           ],
           "commitments": []
         }
@@ -325,27 +739,107 @@
             "manager": "Helvetia Asset Management AG"
           },
           "investments": [
-            { "valuta": "2019-06-30T22:00:00.000Z", "description": "Capital call 1", "units": -1, "value": -150000, "doc": "" },
-            { "valuta": "2020-12-31T23:00:00.000Z", "description": "Capital call 2", "units": -1, "value": -100000, "doc": "" },
-            { "valuta": "2022-06-30T22:00:00.000Z", "description": "Distribution", "units": 1, "value": 40000, "doc": "" },
-            { "valuta": "2024-06-30T22:00:00.000Z", "description": "Distribution", "units": 1, "value": 60000, "doc": "" }
+            {
+              "valuta": "2019-06-30T22:00:00.000Z",
+              "description": "Capital call 1",
+              "units": 1,
+              "value": 150000,
+              "doc": ""
+            },
+            {
+              "valuta": "2020-12-31T23:00:00.000Z",
+              "description": "Capital call 2",
+              "units": 1,
+              "value": 100000,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-06-30T22:00:00.000Z",
+              "description": "Distribution",
+              "units": -1,
+              "value": -40000,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-06-30T22:00:00.000Z",
+              "description": "Distribution",
+              "units": -1,
+              "value": -60000,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2020-12-31T23:00:00.000Z", "description": "Income", "value": 9000, "wht": 0, "doc": "" },
-            { "valuta": "2021-12-31T23:00:00.000Z", "description": "Income", "value": 11000, "wht": 0, "doc": "" },
-            { "valuta": "2022-12-31T23:00:00.000Z", "description": "Income", "value": 10000, "wht": 0, "doc": "" },
-            { "valuta": "2023-12-31T23:00:00.000Z", "description": "Income", "value": 13000, "wht": 0, "doc": "" },
-            { "valuta": "2024-12-31T23:00:00.000Z", "description": "Income", "value": 15000, "wht": 0, "doc": "" }
+            {
+              "valuta": "2020-12-31T23:00:00.000Z",
+              "description": "Income",
+              "value": 9000,
+              "wht": 0,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-12-31T23:00:00.000Z",
+              "description": "Income",
+              "value": 11000,
+              "wht": 0,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-12-31T23:00:00.000Z",
+              "description": "Income",
+              "value": 10000,
+              "wht": 0,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-12-31T23:00:00.000Z",
+              "description": "Income",
+              "value": 13000,
+              "wht": 0,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-12-31T23:00:00.000Z",
+              "description": "Income",
+              "value": 15000,
+              "wht": 0,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2020-12-31T23:00:00.000Z", "unitPrice": 260000, "doc": "" },
-            { "date": "2021-12-31T23:00:00.000Z", "unitPrice": 275000, "doc": "" },
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 248000, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 265000, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 288000, "doc": "" }
+            {
+              "date": "2020-12-31T23:00:00.000Z",
+              "unitPrice": 260000,
+              "doc": ""
+            },
+            {
+              "date": "2021-12-31T23:00:00.000Z",
+              "unitPrice": 275000,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 248000,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 265000,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 288000,
+              "doc": ""
+            }
           ],
           "commitments": [
-            { "valuta": "2019-01-15T23:00:00.000Z", "description": "Total commitment", "units": -1, "value": -300000, "doc": "" }
+            {
+              "valuta": "2019-01-15T23:00:00.000Z",
+              "description": "Total commitment",
+              "units": -1,
+              "value": -300000,
+              "doc": ""
+            }
           ]
         },
         {
@@ -359,16 +853,48 @@
             "maturityDate": "2026-06-30T00:00:00.000Z"
           },
           "investments": [
-            { "valuta": "2022-03-01T23:00:00.000Z", "description": "Convertible note", "units": -1, "value": -40000, "doc": "" }
+            {
+              "valuta": "2022-03-01T23:00:00.000Z",
+              "description": "Convertible note",
+              "units": 1,
+              "value": 40000,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2022-12-31T23:00:00.000Z", "description": "Interest", "value": 1333, "wht": 0, "doc": "" },
-            { "valuta": "2023-12-31T23:00:00.000Z", "description": "Interest", "value": 1600, "wht": 0, "doc": "" },
-            { "valuta": "2024-12-31T23:00:00.000Z", "description": "Interest", "value": 1600, "wht": 0, "doc": "" }
+            {
+              "valuta": "2022-12-31T23:00:00.000Z",
+              "description": "Interest",
+              "value": 1333,
+              "wht": 0,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-12-31T23:00:00.000Z",
+              "description": "Interest",
+              "value": 1600,
+              "wht": 0,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-12-31T23:00:00.000Z",
+              "description": "Interest",
+              "value": 1600,
+              "wht": 0,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 43200, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 46500, "doc": "" }
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 43200,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 46500,
+              "doc": ""
+            }
           ],
           "commitments": []
         }
@@ -391,18 +917,62 @@
             "foundingYear": 2017
           },
           "investments": [
-            { "valuta": "2020-11-01T23:00:00.000Z", "description": "Initial investment", "units": -800, "value": -32000, "fxrate": 0.9, "doc": "" },
-            { "valuta": "2022-05-20T22:00:00.000Z", "description": "Follow-on", "units": -400, "value": -24000, "fxrate": 0.96, "doc": "" }
+            {
+              "valuta": "2020-11-01T23:00:00.000Z",
+              "description": "Initial investment",
+              "units": 800,
+              "value": 32000,
+              "fxrate": 0.9,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-05-20T22:00:00.000Z",
+              "description": "Follow-on",
+              "units": 400,
+              "value": 24000,
+              "fxrate": 0.96,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2023-12-31T23:00:00.000Z", "description": "Dividend", "value": 3000, "wht": 450, "fxrate": 0.91, "doc": "" },
-            { "valuta": "2024-12-31T23:00:00.000Z", "description": "Dividend", "value": 3200, "wht": 480, "fxrate": 0.89, "doc": "" }
+            {
+              "valuta": "2023-12-31T23:00:00.000Z",
+              "description": "Dividend",
+              "value": 3000,
+              "wht": 450,
+              "fxrate": 0.91,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-12-31T23:00:00.000Z",
+              "description": "Dividend",
+              "value": 3200,
+              "wht": 480,
+              "fxrate": 0.89,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2021-12-31T23:00:00.000Z", "unitPrice": 42, "doc": "" },
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 55, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 68, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 82, "doc": "" }
+            {
+              "date": "2021-12-31T23:00:00.000Z",
+              "unitPrice": 42,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 55,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 68,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 82,
+              "doc": ""
+            }
           ],
           "commitments": []
         }
@@ -425,19 +995,70 @@
             "seniority": "Senior Secured"
           },
           "investments": [
-            { "valuta": "2020-06-15T22:00:00.000Z", "description": "Debt tranche", "units": -1, "value": -80000, "fxrate": 1.06, "doc": "" }
+            {
+              "valuta": "2020-06-15T22:00:00.000Z",
+              "description": "Debt tranche",
+              "units": 1,
+              "value": 80000,
+              "fxrate": 1.06,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2021-06-15T22:00:00.000Z", "description": "Interest", "value": 5600, "wht": 0, "fxrate": 1.07, "doc": "" },
-            { "valuta": "2022-06-15T22:00:00.000Z", "description": "Interest", "value": 5600, "wht": 0, "fxrate": 1.04, "doc": "" },
-            { "valuta": "2023-06-15T22:00:00.000Z", "description": "Interest", "value": 5600, "wht": 0, "fxrate": 1.03, "doc": "" },
-            { "valuta": "2024-06-15T22:00:00.000Z", "description": "Interest", "value": 5600, "wht": 0, "fxrate": 1.05, "doc": "" }
+            {
+              "valuta": "2021-06-15T22:00:00.000Z",
+              "description": "Interest",
+              "value": 5600,
+              "wht": 0,
+              "fxrate": 1.07,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-06-15T22:00:00.000Z",
+              "description": "Interest",
+              "value": 5600,
+              "wht": 0,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-06-15T22:00:00.000Z",
+              "description": "Interest",
+              "value": 5600,
+              "wht": 0,
+              "fxrate": 1.03,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-06-15T22:00:00.000Z",
+              "description": "Interest",
+              "value": 5600,
+              "wht": 0,
+              "fxrate": 1.05,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2021-12-31T23:00:00.000Z", "unitPrice": 80000, "doc": "" },
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 80000, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 80000, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 80000, "doc": "" }
+            {
+              "date": "2021-12-31T23:00:00.000Z",
+              "unitPrice": 80000,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 80000,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 80000,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 80000,
+              "doc": ""
+            }
           ],
           "commitments": []
         },
@@ -451,21 +1072,83 @@
             "foundingYear": 2016
           },
           "investments": [
-            { "valuta": "2019-09-30T22:00:00.000Z", "description": "Initial investment", "units": -3000, "value": -90000, "fxrate": 1.08, "doc": "" },
-            { "valuta": "2021-03-15T23:00:00.000Z", "description": "Follow-on", "units": -1000, "value": -40000, "fxrate": 1.07, "doc": "" },
-            { "valuta": "2023-11-01T23:00:00.000Z", "description": "Partial exit", "units": 1500, "value": 97500, "fxrate": 1.03, "doc": "" }
+            {
+              "valuta": "2019-09-30T22:00:00.000Z",
+              "description": "Initial investment",
+              "units": 3000,
+              "value": 90000,
+              "fxrate": 1.08,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-03-15T23:00:00.000Z",
+              "description": "Follow-on",
+              "units": 1000,
+              "value": 40000,
+              "fxrate": 1.07,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-11-01T23:00:00.000Z",
+              "description": "Partial exit",
+              "units": -1500,
+              "value": -97500,
+              "fxrate": 1.03,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2020-12-31T23:00:00.000Z", "description": "Dividend", "value": 4500, "wht": 675, "fxrate": 1.06, "doc": "" },
-            { "valuta": "2022-12-31T23:00:00.000Z", "description": "Dividend", "value": 5200, "wht": 780, "fxrate": 1.04, "doc": "" },
-            { "valuta": "2024-12-31T23:00:00.000Z", "description": "Dividend", "value": 5800, "wht": 870, "fxrate": 1.05, "doc": "" }
+            {
+              "valuta": "2020-12-31T23:00:00.000Z",
+              "description": "Dividend",
+              "value": 4500,
+              "wht": 675,
+              "fxrate": 1.06,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-12-31T23:00:00.000Z",
+              "description": "Dividend",
+              "value": 5200,
+              "wht": 780,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-12-31T23:00:00.000Z",
+              "description": "Dividend",
+              "value": 5800,
+              "wht": 870,
+              "fxrate": 1.05,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2020-12-31T23:00:00.000Z", "unitPrice": 35, "doc": "" },
-            { "date": "2021-12-31T23:00:00.000Z", "unitPrice": 45, "doc": "" },
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 56, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 65, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 72, "doc": "" }
+            {
+              "date": "2020-12-31T23:00:00.000Z",
+              "unitPrice": 35,
+              "doc": ""
+            },
+            {
+              "date": "2021-12-31T23:00:00.000Z",
+              "unitPrice": 45,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 56,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 65,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 72,
+              "doc": ""
+            }
           ],
           "commitments": []
         }
@@ -488,23 +1171,99 @@
             "foundingYear": 2015
           },
           "investments": [
-            { "valuta": "2019-04-01T22:00:00.000Z", "description": "Initial investment", "units": -2000, "value": -80000, "fxrate": 1.12, "doc": "" },
-            { "valuta": "2021-07-01T22:00:00.000Z", "description": "Follow-on round", "units": -500, "value": -27500, "fxrate": 1.09, "doc": "" },
-            { "valuta": "2024-03-01T23:00:00.000Z", "description": "Partial sale", "units": 1000, "value": 68000, "fxrate": 1.05, "doc": "" }
+            {
+              "valuta": "2019-04-01T22:00:00.000Z",
+              "description": "Initial investment",
+              "units": 2000,
+              "value": 80000,
+              "fxrate": 1.12,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-07-01T22:00:00.000Z",
+              "description": "Follow-on round",
+              "units": 500,
+              "value": 27500,
+              "fxrate": 1.09,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-03-01T23:00:00.000Z",
+              "description": "Partial sale",
+              "units": -1000,
+              "value": -68000,
+              "fxrate": 1.05,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2020-12-31T23:00:00.000Z", "description": "Dividend", "value": 3200, "wht": 480, "fxrate": 1.06, "doc": "" },
-            { "valuta": "2021-12-31T23:00:00.000Z", "description": "Dividend", "value": 3200, "wht": 480, "fxrate": 1.09, "doc": "" },
-            { "valuta": "2022-12-31T23:00:00.000Z", "description": "Dividend", "value": 3500, "wht": 525, "fxrate": 1.04, "doc": "" },
-            { "valuta": "2023-12-31T23:00:00.000Z", "description": "Dividend", "value": 3800, "wht": 570, "fxrate": 1.03, "doc": "" },
-            { "valuta": "2024-12-31T23:00:00.000Z", "description": "Dividend", "value": 3800, "wht": 570, "fxrate": 1.05, "doc": "" }
+            {
+              "valuta": "2020-12-31T23:00:00.000Z",
+              "description": "Dividend",
+              "value": 3200,
+              "wht": 480,
+              "fxrate": 1.06,
+              "doc": ""
+            },
+            {
+              "valuta": "2021-12-31T23:00:00.000Z",
+              "description": "Dividend",
+              "value": 3200,
+              "wht": 480,
+              "fxrate": 1.09,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-12-31T23:00:00.000Z",
+              "description": "Dividend",
+              "value": 3500,
+              "wht": 525,
+              "fxrate": 1.04,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-12-31T23:00:00.000Z",
+              "description": "Dividend",
+              "value": 3800,
+              "wht": 570,
+              "fxrate": 1.03,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-12-31T23:00:00.000Z",
+              "description": "Dividend",
+              "value": 3800,
+              "wht": 570,
+              "fxrate": 1.05,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2020-12-31T23:00:00.000Z", "unitPrice": 46, "doc": "" },
-            { "date": "2021-12-31T23:00:00.000Z", "unitPrice": 55, "doc": "" },
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 61, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 68, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 74, "doc": "" }
+            {
+              "date": "2020-12-31T23:00:00.000Z",
+              "unitPrice": 46,
+              "doc": ""
+            },
+            {
+              "date": "2021-12-31T23:00:00.000Z",
+              "unitPrice": 55,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 61,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 68,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 74,
+              "doc": ""
+            }
           ],
           "commitments": []
         },
@@ -518,15 +1277,44 @@
             "maturityDate": "2029-11-15T00:00:00.000Z"
           },
           "investments": [
-            { "valuta": "2022-11-15T23:00:00.000Z", "description": "Bond purchase at 98", "units": -100000, "value": -98000, "fxrate": 1.04, "doc": "" }
+            {
+              "valuta": "2022-11-15T23:00:00.000Z",
+              "description": "Bond purchase at 98",
+              "units": 100000,
+              "value": 98000,
+              "fxrate": 1.04,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2023-11-15T23:00:00.000Z", "description": "Coupon", "value": 4250, "wht": 638, "fxrate": 1.03, "doc": "" },
-            { "valuta": "2024-11-15T23:00:00.000Z", "description": "Coupon", "value": 4250, "wht": 638, "fxrate": 1.05, "doc": "" }
+            {
+              "valuta": "2023-11-15T23:00:00.000Z",
+              "description": "Coupon",
+              "value": 4250,
+              "wht": 638,
+              "fxrate": 1.03,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-11-15T23:00:00.000Z",
+              "description": "Coupon",
+              "value": 4250,
+              "wht": 638,
+              "fxrate": 1.05,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 0.97, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 0.985, "doc": "" }
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 0.97,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 0.985,
+              "doc": ""
+            }
           ],
           "commitments": []
         }
@@ -549,20 +1337,72 @@
             "seniority": "Senior Secured"
           },
           "investments": [
-            { "valuta": "2021-01-31T23:00:00.000Z", "description": "Debt tranche 1", "units": -1, "value": -120000, "doc": "" },
-            { "valuta": "2022-07-01T22:00:00.000Z", "description": "Debt tranche 2", "units": -1, "value": -80000, "doc": "" }
+            {
+              "valuta": "2021-01-31T23:00:00.000Z",
+              "description": "Debt tranche 1",
+              "units": 1,
+              "value": 120000,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-07-01T22:00:00.000Z",
+              "description": "Debt tranche 2",
+              "units": 1,
+              "value": 80000,
+              "doc": ""
+            }
           ],
           "revenues": [
-            { "valuta": "2021-12-31T23:00:00.000Z", "description": "Interest", "value": 5500, "wht": 0, "doc": "" },
-            { "valuta": "2022-12-31T23:00:00.000Z", "description": "Interest", "value": 11000, "wht": 0, "doc": "" },
-            { "valuta": "2023-12-31T23:00:00.000Z", "description": "Interest", "value": 11000, "wht": 0, "doc": "" },
-            { "valuta": "2024-12-31T23:00:00.000Z", "description": "Interest", "value": 11000, "wht": 0, "doc": "" }
+            {
+              "valuta": "2021-12-31T23:00:00.000Z",
+              "description": "Interest",
+              "value": 5500,
+              "wht": 0,
+              "doc": ""
+            },
+            {
+              "valuta": "2022-12-31T23:00:00.000Z",
+              "description": "Interest",
+              "value": 11000,
+              "wht": 0,
+              "doc": ""
+            },
+            {
+              "valuta": "2023-12-31T23:00:00.000Z",
+              "description": "Interest",
+              "value": 11000,
+              "wht": 0,
+              "doc": ""
+            },
+            {
+              "valuta": "2024-12-31T23:00:00.000Z",
+              "description": "Interest",
+              "value": 11000,
+              "wht": 0,
+              "doc": ""
+            }
           ],
           "valuations": [
-            { "date": "2021-12-31T23:00:00.000Z", "unitPrice": 120000, "doc": "" },
-            { "date": "2022-12-31T23:00:00.000Z", "unitPrice": 200000, "doc": "" },
-            { "date": "2023-12-31T23:00:00.000Z", "unitPrice": 200000, "doc": "" },
-            { "date": "2024-12-31T23:00:00.000Z", "unitPrice": 200000, "doc": "" }
+            {
+              "date": "2021-12-31T23:00:00.000Z",
+              "unitPrice": 120000,
+              "doc": ""
+            },
+            {
+              "date": "2022-12-31T23:00:00.000Z",
+              "unitPrice": 200000,
+              "doc": ""
+            },
+            {
+              "date": "2023-12-31T23:00:00.000Z",
+              "unitPrice": 200000,
+              "doc": ""
+            },
+            {
+              "date": "2024-12-31T23:00:00.000Z",
+              "unitPrice": 200000,
+              "doc": ""
+            }
           ],
           "commitments": []
         }
@@ -578,32 +1418,81 @@
     {
       "iso": "EUR",
       "rates": [
-        { "date": "2019-12-31T23:00:00.000Z", "rate": 1.085 },
-        { "date": "2020-12-31T23:00:00.000Z", "rate": 1.08 },
-        { "date": "2021-12-31T23:00:00.000Z", "rate": 1.04 },
-        { "date": "2022-12-31T23:00:00.000Z", "rate": 0.995 },
-        { "date": "2023-12-31T23:00:00.000Z", "rate": 1.055 },
-        { "date": "2024-12-31T23:00:00.000Z", "rate": 1.065 }
+        {
+          "date": "2019-12-31T23:00:00.000Z",
+          "rate": 1.085
+        },
+        {
+          "date": "2020-12-31T23:00:00.000Z",
+          "rate": 1.08
+        },
+        {
+          "date": "2021-12-31T23:00:00.000Z",
+          "rate": 1.04
+        },
+        {
+          "date": "2022-12-31T23:00:00.000Z",
+          "rate": 0.995
+        },
+        {
+          "date": "2023-12-31T23:00:00.000Z",
+          "rate": 1.055
+        },
+        {
+          "date": "2024-12-31T23:00:00.000Z",
+          "rate": 1.065
+        }
       ]
     },
     {
       "iso": "USD",
       "rates": [
-        { "date": "2020-12-31T23:00:00.000Z", "rate": 0.89 },
-        { "date": "2021-12-31T23:00:00.000Z", "rate": 0.92 },
-        { "date": "2022-12-31T23:00:00.000Z", "rate": 0.925 },
-        { "date": "2023-12-31T23:00:00.000Z", "rate": 0.845 },
-        { "date": "2024-12-31T23:00:00.000Z", "rate": 0.895 }
+        {
+          "date": "2020-12-31T23:00:00.000Z",
+          "rate": 0.89
+        },
+        {
+          "date": "2021-12-31T23:00:00.000Z",
+          "rate": 0.92
+        },
+        {
+          "date": "2022-12-31T23:00:00.000Z",
+          "rate": 0.925
+        },
+        {
+          "date": "2023-12-31T23:00:00.000Z",
+          "rate": 0.845
+        },
+        {
+          "date": "2024-12-31T23:00:00.000Z",
+          "rate": 0.895
+        }
       ]
     },
     {
       "iso": "SEK",
       "rates": [
-        { "date": "2022-12-31T23:00:00.000Z", "rate": 0.087 },
-        { "date": "2023-12-31T23:00:00.000Z", "rate": 0.082 },
-        { "date": "2024-12-31T23:00:00.000Z", "rate": 0.085 }
+        {
+          "date": "2022-12-31T23:00:00.000Z",
+          "rate": 0.087
+        },
+        {
+          "date": "2023-12-31T23:00:00.000Z",
+          "rate": 0.082
+        },
+        {
+          "date": "2024-12-31T23:00:00.000Z",
+          "rate": 0.085
+        }
       ]
     }
   ],
-  "taxHiddenColumns": ["invested", "divested", "irr", "committed", "totalInvested", "openCommitment"]
+  "taxHiddenColumns": [
+    "invested",
+    "divested",
+    "irr",
+    "committed",
+    "totalInvested",
+    "openCommitment"
+  ]
 }

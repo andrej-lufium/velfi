@@ -5,17 +5,17 @@
 	import * as m from '$lib/paraglide/messages';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import { currentLocaleState,  } from '$lib/current.svelte'
+	import { currentLocaleState, isWailsEnv } from '$lib/current.svelte'
 	import NavButton from '$lib/components/navbutton.svelte'
+	import BrowserToolbar from '$lib/components/browsertoolbar.svelte'
 	import { onMount } from 'svelte'
 
 	let { children } = $props();
 	let version = $state('')
+	let wails = $state(false)
 
 	onMount(() => {
-	//if (browser) GetVersion().then(v => version = v)
-		//loadSettings()
-
+		wails = isWailsEnv()
 	})
 </script>
 
@@ -25,11 +25,14 @@
 <!-- to re-render when locale changes -->
 {#key currentLocaleState()}
 <nav class="border-b border-gray-200 bg-white px-4 py-2">
-	<div class="flex items-center justify-between">
+	<div class="flex items-center justify-between gap-2">
 		{#if page.url.pathname !== '/'}
 			<NavButton action={() => goto('/')} name={m.navBackToOverview()} tooltip={m.navBackToOverviewTooltip()} />
 		{:else}
 			<span></span>
+		{/if}
+		{#if !wails}
+			<BrowserToolbar />
 		{/if}
 		{#if page.url.pathname !== '/settings'}
 			<NavButton action={() => goto('/settings')} name={m.navSettings()} tooltip={m.navSettingsTooltip()} />

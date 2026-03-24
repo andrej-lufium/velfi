@@ -18,9 +18,13 @@ Velfi tracks issuers, assets, investments, revenues, commitments, valuations
 and currency exchange rates. Reports can be generated per asset or across the
 entire portfolio.
 
-All portfolio data are stored locally in a single file.
+All portfolio data are stored locally in a single file or in the browser's local storage if used inside a browser.
 
-## Download
+## Use in browser
+
+Check out the [Browser version](velfi/index.html) of velfi.
+
+## Download binaries
 
 | Platform | Link |
 | ---------- | ------ |

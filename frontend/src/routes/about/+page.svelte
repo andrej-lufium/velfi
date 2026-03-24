@@ -1,12 +1,30 @@
 <script lang="ts">
 	import { browser } from '$app/environment'
+	import { goto } from '$app/navigation'
 	import { GetVersion } from '$lib/wailsjs/go/main/App'
 	import { BrowserOpenURL, Environment } from '$lib/wailsjs/runtime/runtime'
 	import favicon from '$lib/assets/favicon.svg'
 	import { AssetTypeNames, AssetTypeMetadataFields, AssetMetadataFieldDefs } from '$lib/portfolio'
+	import { isWailsEnv } from '$lib/current.svelte'
+
+	declare const __APP_VERSION__: string
 
 	let version = $state('')
-	if (browser) GetVersion().then(v => version = v)
+	if (browser) {
+		if (isWailsEnv()) {
+			GetVersion().then(v => version = v)
+		} else {
+			version = __APP_VERSION__
+		}
+	}
+
+	function openURL(url: string) {
+		if (isWailsEnv()) {
+			BrowserOpenURL(url)
+		} else {
+			goto(url)
+		}
+	}
 </script>
 
 <div class="flex items-center gap-3 mb-4">
@@ -27,7 +45,7 @@
 	</p>
 	<p>
 		<button
-			onclick={() => BrowserOpenURL('https://github.com/andrej-lufium/velfi')}
+			onclick={() => openURL('https://github.com/andrej-lufium/velfi')}
 			class="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
 		>
 			github.com/andrej-lufium/velfi

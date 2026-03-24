@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 import { spawn } from 'child_process';
 
-const PAGE = process.argv[2] || 'home';
+const PAGE = process.argv[2] || '?sample';
 const OUTPUT = `screenshots/${PAGE}.png`;
 const PORT = 5173;
 

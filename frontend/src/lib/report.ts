@@ -143,10 +143,10 @@ export function createReport(asset: Asset, aggregateBy: keyof typeof AggregateBy
 		const fxrate = entry.fxrate || 1
 		const valueInBase = entry.value * fxrate
 
-		allCashflows.push({ date: entry.date, amount: valueInBase })
-
 		if (entry.kind === 'investment') {
-			if (entry.value >= 0) {
+			// Positive investment value = money paid out = negative cashflow
+			allCashflows.push({ date: entry.date, amount: -valueInBase })
+			if (entry.value > 0) {
 				row.invested = add(row.invested, entry.value)
 				row.netInvestedInBaseCurrency = add(row.netInvestedInBaseCurrency, valueInBase)
 				row.endUnits = add(row.endUnits, entry.units)
@@ -156,7 +156,9 @@ export function createReport(asset: Asset, aggregateBy: keyof typeof AggregateBy
 				row.endUnits = add(row.endUnits, entry.units)
 			}
 		} else {
+			// Positive revenue = money received = positive cashflow
 			const whtInBase = entry.wht * fxrate
+			allCashflows.push({ date: entry.date, amount: valueInBase - whtInBase })
 			if (entry.value >= 0) {
 				row.revenue = add(row.revenue, entry.value)
 				row.wht = add(row.wht, entry.wht)
@@ -254,7 +256,7 @@ export function createReport(asset: Asset, aggregateBy: keyof typeof AggregateBy
 		// IRR: all cashflows up to period end + NAV as terminal cashflow
 		const periodCashflows = allCashflows.filter(cf => cf.date.getTime() <= endDate.getTime())
 		if (periodCashflows.length > 0 && row.netAssetValue !== 0) {
-			const cfWithNav = [...periodCashflows, { date: endDate, amount: -row.netAssetValue }]
+			const cfWithNav = [...periodCashflows, { date: endDate, amount: row.netAssetValue }]
 			try {
 				row.irr = xirr(cfWithNav)
 			} catch {
@@ -266,7 +268,7 @@ export function createReport(asset: Asset, aggregateBy: keyof typeof AggregateBy
 	// Total row: use last row's commitments and compute overall IRR
 	if (rows.length > 0) {
 		totalRow.commitments = rows[rows.length - 1].commitments
-		const finalCashflows = [...allCashflows, { date: new Date(), amount: -totalRow.netAssetValue }]
+		const finalCashflows = [...allCashflows, { date: new Date(), amount: totalRow.netAssetValue }]
 		if (finalCashflows.length >= 2) {
 			try {
 				totalRow.irr = xirr(finalCashflows)

@@ -17,6 +17,7 @@
 
 	import { flip } from 'svelte/animate';
   import { fly } from 'svelte/transition';
+	import { isWailsEnv } from '$lib/current.svelte'
 
 	type DetailPage = {
 		key: keyof T | undefined
@@ -170,7 +171,7 @@
 
 	$effect(() => {
 		if (!docCol) return
-
+		if (!isWailsEnv() ||!OnFileDrop) return
 		OnFileDrop(async (_x: number, _y: number, paths: string[]) => {
 			const absDocfolder = resolveDocfolderPath(docfolder)
 			for (const path of paths) {

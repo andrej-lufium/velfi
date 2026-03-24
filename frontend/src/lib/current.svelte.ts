@@ -23,6 +23,8 @@ import { main } from './wailsjs/go/models'
 import { EventsOn, LogError, LogInfo, Quit, WindowSetTitle } from './wailsjs/runtime/runtime'
 import { setLocale, locales, getLocale } from '$lib/paraglide/runtime'
 
+// sample data
+//import samplePortfolio  from '../../../examples/sample.velfi?raw'
 //import { tick } from "svelte"
 
 type Locale = (typeof locales)[number]
@@ -42,7 +44,20 @@ let currentFile: string | undefined = $state()
 let lastSavedJson: string = $state(serializePortfolio(defaultPortfolio))
 let autosave: boolean = $state(true)
 
-export function getPortfolio(): Portfolio {
+export function isWailsEnv(): boolean {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const hasGo = browser && (window as any)['go'] && (window as any)['go']['main'] && (window as any)['go']['main']['App']
+	return browser && hasGo != undefined
+}
+export function getPortfolio(): Portfolio {	
+	console.log("Loading sample portfolio ...", browser, isWailsEnv(),import.meta.env.DEV)
+	if (import.meta.env.DEV && !isWailsEnv()) {
+			if (browser && window.location.search.includes('sample')) {
+				console.log("Loading sample portfolio in development mode...")
+	      //currentPortfolio = deserializePortfolio(samplePortfolio) as unknown as Portfolio
+	  	}
+		}
+	//console.log('returning', currentPortfolio)
 	return currentPortfolio
 }
 
@@ -153,6 +168,68 @@ export async function save() {
 	updateTitle()
 }
 
+// ── Browser / localStorage mode ───────────────────────────────────────────────
+
+const LS_PREFIX = 'velfi.portfolio.'
+
+let browserPortfolioName: string | undefined = $state()
+
+export function getBrowserPortfolioName(): string | undefined {
+	return browserPortfolioName
+}
+
+export function lsListPortfolios(): string[] {
+	if (!browser) return []
+	return Object.keys(localStorage)
+		.filter(k => k.startsWith(LS_PREFIX))
+		.map(k => k.slice(LS_PREFIX.length))
+		.sort()
+}
+
+export function lsLoad(name: string) {
+	const json = localStorage.getItem(LS_PREFIX + name)
+	if (!json) throw new Error(`Portfolio '${name}' not found in local storage`)
+	currentPortfolio = deserializePortfolio(json)
+	browserPortfolioName = name
+	markClean()
+}
+
+export function lsSaveAs(name: string) {
+	const json = serializePortfolio(currentPortfolio)
+	localStorage.setItem(LS_PREFIX + name, json)
+	browserPortfolioName = name
+	markClean()
+}
+
+export function lsSave(): boolean {
+	if (!browserPortfolioName) return false
+	lsSaveAs(browserPortfolioName)
+	return true
+}
+
+export function lsDelete(name: string) {
+	localStorage.removeItem(LS_PREFIX + name)
+	if (browserPortfolioName === name) browserPortfolioName = undefined
+}
+
+export function downloadPortfolio() {
+	const json = serializePortfolio(currentPortfolio)
+	const blob = new Blob([json], { type: 'application/json' })
+	const url = URL.createObjectURL(blob)
+	const a = document.createElement('a')
+	a.href = url
+	a.download = (browserPortfolioName ?? 'portfolio') + '.velfi'
+	a.click()
+	URL.revokeObjectURL(url)
+}
+
+export async function uploadPortfolio(file: File) {
+	const json = await file.text()
+	currentPortfolio = deserializePortfolio(json)
+	browserPortfolioName = file.name.replace(/\.velfi$/i, '')
+	markClean()
+}
+
 async function quit() {
 	if (isDirty()) {
 		const confirmed = await ConfirmDialog(
@@ -175,8 +252,10 @@ async function about() {
 }
 
 export function initialize() {
+	console.log("initializing current portfolio module...", browser, isWailsEnv())
 	// Listen for menu events from the Go backend
-	if (browser) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	if (isWailsEnv()) {
 		GetInitialFileName().then((filename) => {
 			if (filename && filename !== '') {
 				open(filename).catch((err) => {
@@ -214,5 +293,12 @@ export function initialize() {
 
 		// Load settings at startup - defer to avoid initialization order issues
 		loadSettings()
+	} else {
+		console.log('Not running in Wails environment, using localStorage mode.')
+		setInterval(() => {
+			if (autosave && browserPortfolioName && isDirty()) {
+				lsSave()
+			}
+		}, 10_000)
 	}
 }
