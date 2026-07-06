@@ -82,9 +82,7 @@ export async function saveSettings() {
 			'irr',
 			'committed',
 			'totalInvested',
-			'openCommitment',
-			'invested',
-			'divested'
+			'openCommitment'
 		]
 	})
 	await SaveConfig(config)

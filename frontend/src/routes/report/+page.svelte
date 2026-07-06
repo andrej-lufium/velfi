@@ -1,5 +1,5 @@
 <script lang="ts">
-  import {getPortfolio} from '$lib/current.svelte'
+  import {getPortfolio, isWailsEnv} from '$lib/current.svelte'
   import { AssetTypeNames, assetUnitTitle, type PortfolioReportRow } from '$lib/portfolio'
   import { createPortfolioReport, getYearRange } from '$lib/report'
   import { exportCsv } from '$lib/csv'
@@ -113,12 +113,16 @@
     if (!report || !groupByType) return null
     const groups = new SvelteMap<string, { label: string; rows: PortfolioReportRow[]; subtotal: PortfolioReportRow }>()
     for (const row of filteredRows) {
-      if (!groups.has(row.type)) {
-        groups.set(row.type, {
-          label: AssetTypeNames[row.type] || row.type,
+      // Key by display label so distinct type spellings that map to the same
+      // name (e.g. 'equity' and a stray 'Equity') merge into one section
+      // instead of producing duplicate keys (each_key_duplicate).
+      const label = AssetTypeNames[row.type] || row.type
+      if (!groups.has(label)) {
+        groups.set(label, {
+          label,
           rows: [],
           subtotal: {
-            issuerName: '', country: '', assetName: `Subtotal ${AssetTypeNames[row.type] || row.type}`,
+            issuerName: '', country: '', assetName: `Subtotal ${label}`,
             type: row.type, currency: report.totalRow.currency,
             invested: null, divested: null, startUnits: null, endUnits: null,
             nav: null, netRevenueInBaseCurrency: null, whtInBaseCurrency: null, netInvestedInBaseCurrency: null,
@@ -127,7 +131,7 @@
           },
         })
       }
-      const group = groups.get(row.type)!
+      const group = groups.get(label)!
       group.rows.push(row)
       group.subtotal.netInvestedInBaseCurrency = add(group.subtotal.netInvestedInBaseCurrency, row.netInvestedInBaseCurrency ?? 0)
       group.subtotal.netRevenueInBaseCurrency = add(group.subtotal.netRevenueInBaseCurrency, row.netRevenueInBaseCurrency ?? 0)
@@ -142,6 +146,13 @@
 
   function add(a: number | null, b: number): number {
     return Number(a ?? 0) + Number(b)
+  }
+
+  // Wails triggers the native webview print dialog; in browser mode fall back
+  // to window.print() (window.go is undefined outside Wails).
+  function printReport() {
+    if (isWailsEnv()) Print()
+    else window.print()
   }
 
   function fmt(v: unknown, col?: string): string {
@@ -177,6 +188,12 @@
   </tr>
 {/snippet}
 
+{#snippet sectionRow(label: string)}
+  <tr class="border-t border-gray-200 bg-gray-100">
+    <td colspan={columns.length} class="px-3 py-1.5 text-sm font-semibold text-gray-700">{label}</td>
+  </tr>
+{/snippet}
+
 <h1 class="text-xl font-semibold mb-4">{pf?.name || 'Portfolio'} Report</h1>
 
 {#if pf && report}
@@ -201,52 +218,31 @@
       Show zero-quantity positions
     </label>
     <NavButton action={() => exportCsv(`Portfolio-Report-${selectedYear}`, columns.map(c => c.label), [...filteredRows, report.totalRow], columns.map(c => c.key))} name="Export CSV" tooltip="Export portfolio report as CSV file" />
-    <NavButton action={() => Print()} name="Print" tooltip="Print this report" />
+    <NavButton action={() => printReport()} name="Print" tooltip="Print this report" />
   </div>
 
-  {#if groupByType && groupedRows}
-    {#each groupedRows as group (group.label)}
-      <h2 class="text-base font-semibold mt-6 mb-2">{group.label}</h2>
-      <div class="overflow-x-auto rounded-lg border border-gray-200 mb-4">
-        <table class="w-full text-sm">
-          {@render tableHeader()}
-          <tbody class="divide-y divide-gray-100">
-            {#each group.rows as row (row.assetName)}
+  <div class="overflow-x-auto rounded-lg border border-gray-200">
+    <table class="w-full text-sm">
+      {@render tableHeader()}
+      <tbody class="divide-y divide-gray-100">
+        {#if groupByType && groupedRows}
+          {#each groupedRows as group (group.label)}
+            {@render sectionRow(group.label)}
+            {#each group.rows as row, i (group.label + '-' + i)}
               {@render tableRow(row)}
             {/each}
             {@render tableRow(group.subtotal, true)}
-          </tbody>
-        </table>
-      </div>
-    {/each}
-    {#if showCurrencySubtotals}
-      <h2 class="text-base font-semibold mt-6 mb-2">By Currency</h2>
-      <div class="overflow-x-auto rounded-lg border border-gray-200 mb-4">
-        <table class="w-full text-sm">
-          {@render tableHeader()}
-          <tbody>
+          {/each}
+          {#if showCurrencySubtotals}
+            {@render sectionRow('By Currency')}
             {#each currencySubtotals as sub (sub.assetName)}
               {@render tableRow(sub, true)}
             {/each}
-          </tbody>
-        </table>
-      </div>
-    {/if}
-    <h2 class="text-base font-semibold mt-6 mb-2">Total</h2>
-    <div class="overflow-x-auto rounded-lg border border-gray-200">
-      <table class="w-full text-sm">
-        {@render tableHeader()}
-        <tbody>
+          {/if}
+          {@render sectionRow('Total')}
           {@render tableRow(report.totalRow, true)}
-        </tbody>
-      </table>
-    </div>
-  {:else}
-    <div class="overflow-x-auto rounded-lg border border-gray-200">
-      <table class="w-full text-sm">
-        {@render tableHeader()}
-        <tbody class="divide-y divide-gray-100">
-          {#each filteredRows as row (row.assetName)}
+        {:else}
+          {#each filteredRows as row, i (i)}
             {@render tableRow(row)}
           {/each}
           {#if showCurrencySubtotals}
@@ -255,10 +251,10 @@
             {/each}
           {/if}
           {@render tableRow(report.totalRow, true)}
-        </tbody>
-      </table>
-    </div>
-  {/if}
+        {/if}
+      </tbody>
+    </table>
+  </div>
 
   {#if footnotes.list.length > 0}
     <div class="mt-4 text-xs text-gray-500 space-y-0.5">

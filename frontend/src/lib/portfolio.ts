@@ -39,7 +39,7 @@ export const reportColumnDefs: { key: keyof PortfolioReportRow; label: string }[
   { key: 'openCommitment', label: 'Open Commitment' },
 ]
 
-export const defaultTaxHiddenColumns: string[] = ['invested', 'divested', 'irr', 'committed', 'totalInvested', 'openCommitment']
+export const defaultTaxHiddenColumns: string[] = ['irr', 'committed', 'totalInvested', 'openCommitment']
 
 export type Investment = {
 	valuta: Date
@@ -216,7 +216,11 @@ export function deserializePortfolio(json: string): Portfolio {
 		pf.currencies.push(newC)
 		return newC
 	}
-	pf.taxHiddenColumns ??= defaultTaxHiddenColumns
+	// Fall back to defaults when missing OR empty. Older/saved files persisted an
+	// empty array, which silently disabled the "Tax view" toggle (it hid nothing).
+	if (!pf.taxHiddenColumns || pf.taxHiddenColumns.length === 0) {
+		pf.taxHiddenColumns = [...defaultTaxHiddenColumns]
+	}
 	for (const issuer of pf.issuers) {
 		issuer.currency = findCurrency(issuer.currency as unknown as string)
 		for (const asset of issuer.assets) {

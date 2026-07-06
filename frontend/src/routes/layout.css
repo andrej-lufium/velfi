@@ -1,5 +1,10 @@
 @import 'tailwindcss';
 
+@page {
+  size: A4 landscape;
+  margin: 8mm;
+}
+
 @media print {
   nav, footer, button, select, label {
     display: none !important;
@@ -9,18 +14,46 @@
     padding: 0 !important;
   }
 
+  /* Neutralise on-screen chrome that wastes space or clips in print */
+  .overflow-x-auto {
+    overflow: visible !important;
+  }
+  .rounded-lg, .rounded {
+    border-radius: 0 !important;
+  }
+
+  h1 {
+    font-size: 11pt;
+    margin-bottom: 4pt;
+  }
+  h2 {
+    font-size: 9pt;
+    margin: 6pt 0 2pt;
+  }
+
   table {
-    font-size: 10pt;
+    font-size: 6.5pt;
+    line-height: 1.15;
     border-collapse: collapse;
     width: 100%;
   }
 
   th, td {
     border: 1px solid #ccc;
-    padding: 2pt 4pt;
+    padding: 0.5pt 2pt;
+  }
+
+  thead {
+    display: table-header-group; /* repeat header on each printed page */
   }
 
   tr {
     page-break-inside: avoid;
+  }
+
+  /* Footnotes: keep them compact */
+  .text-xs {
+    font-size: 5.5pt;
+    line-height: 1.2;
   }
 }
