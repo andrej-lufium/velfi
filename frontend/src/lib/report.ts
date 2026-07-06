@@ -7,34 +7,41 @@ function quarter(month: number): number {
 }
 
 function roundDate(date: Date, aggregateBy: keyof typeof AggregateBy): string {
-	const y = date.getFullYear()
+	// Dates are stored as UTC-midnight calendar dates; bucket in UTC so a date
+	// like 2025-12-31T00:00:00Z lands in 2025 regardless of the viewer's timezone.
+	const y = date.getUTCFullYear()
 	if (aggregateBy === 'year') return `${y}`
-	return `${y}-Q${quarter(date.getMonth() + 1)}`
+	return `${y}-Q${quarter(date.getUTCMonth() + 1)}`
 }
 
-/** Returns the first day of the period as a Date */
+/** Returns the first instant of the period as a Date (UTC) */
 export function periodStartDate(dateKey: string, aggregateBy: keyof typeof AggregateBy): Date {
 	if (aggregateBy === 'year') {
-		return new Date(Number(dateKey), 0, 1)
+		return new Date(Date.UTC(Number(dateKey), 0, 1))
 	}
 	const [yStr, qStr] = dateKey.split('-Q')
 	const q = Number(qStr)
 	const y = Number(yStr)
 	const startMonth = (q - 1) * 3
-	return new Date(y, startMonth, 1)
+	return new Date(Date.UTC(y, startMonth, 1))
 }
 
-/** Returns the last day of the period as a Date */
+/**
+ * Returns the last instant of the period as a Date (end of the final day, UTC).
+ * Must be UTC end-of-day so a valuation/cashflow dated on the last day of the
+ * period (stored as UTC midnight, e.g. 2025-12-31T00:00:00Z) is included rather
+ * than spilling into the next period in positive-offset timezones.
+ */
 export function periodEndDate(dateKey: string, aggregateBy: keyof typeof AggregateBy): Date {
 	if (aggregateBy === 'year') {
-		return new Date(Number(dateKey), 11, 31)
+		return new Date(Date.UTC(Number(dateKey), 11, 31, 23, 59, 59, 999))
 	}
 	// quarter: "2024-Q2" -> end of June
 	const [yStr, qStr] = dateKey.split('-Q')
 	const q = Number(qStr)
 	const y = Number(yStr)
 	const endMonth = q * 3 // 1-based month after quarter end
-	return new Date(y, endMonth, 0) // day 0 of next month = last day of endMonth
+	return new Date(Date.UTC(y, endMonth, 0, 23, 59, 59, 999)) // day 0 of next month = last day of endMonth
 }
 
 function emptyRow(date: string): AssetReportRow {
@@ -351,16 +358,16 @@ function findEndOfYearFxRate(currency: Currency, baseCurrency: Currency, assets:
 
 /** Get the range of years covered by any asset investment/revenue in the portfolio */
 export function getYearRange(portfolio: Portfolio): number[] {
-	let min = new Date().getFullYear()
+	let min = new Date().getUTCFullYear()
 	let max = min
 	for (const asset of allAssets(portfolio)) {
 		for (const inv of asset.investments) {
-			const y = inv.valuta.getFullYear()
+			const y = inv.valuta.getUTCFullYear()
 			if (y < min) min = y
 			if (y > max) max = y
 		}
 		for (const rev of asset.revenues) {
-			const y = rev.valuta.getFullYear()
+			const y = rev.valuta.getUTCFullYear()
 			if (y < min) min = y
 			if (y > max) max = y
 		}
